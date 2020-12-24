@@ -8,9 +8,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 {
     public class DefaultTower : ITower
     {
-        public string TextureName => "assets/towers/default";
+        /// <summary>
+        /// Constant used to initialize NextAttack.
+        /// </summary>
+        const long NO_ATTACK = -1;
 
-        public IEnumerable<string> AllTextures => new string[] { TextureName };
+        public string TextureName => shooting ? "assets/towers/default_shot" : "assets/towers/default";
+
+        public IEnumerable<string> AllTextures => new string[] { "assets/towers/default", "assets/towers/default_shot" };
 
         public Vector2 Position { get; set; }
 
@@ -18,9 +23,20 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public float AttackSpeed => 2;
 
+        public float AttackRange => 100;
+
+        /// <summary>
+        /// Time when the next attack is allowed in millis. Initialized to -1.
+        /// </summary>
+        private long NextAttack { get; set; }
+
+        private bool shooting = false;
+        private long stopShootingAnimation;
+
         public DefaultTower(float x, float y)
         {
             Position = new Vector2(x, y);
+            stopShootingAnimation = -1;
         }
 
         public void UpdateState(Map gameMap)
@@ -32,8 +48,53 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             }
 
 
-            long minDist = long.MaxValue;
+            float minDist = float.MaxValue;
+            IHasHp nearestEnemy = null;
+            foreach(IEnemy enemy in gameMap.Enemies)
+            {
+                float dist = (Position - enemy.Position).LengthSquared();
 
+                if (minDist == float.MaxValue || dist < minDist)
+                {
+                    nearestEnemy = enemy;
+                    minDist = dist;
+                }
+            }
+
+            Attack(nearestEnemy);
+
+            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            if (shooting && now > stopShootingAnimation)
+            {
+                shooting = false;
+            }
+
+        }
+
+        /// <summary>
+        /// Checks if it's time for attack and attacks the given entity.
+        /// </summary>
+        /// <param name="entity">Entity to attack.</param>
+        private void Attack(IHasHp entity)
+        {
+            if (NextAttack == NO_ATTACK)
+            {
+                entity.TakeHit(Damage);
+                NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
+                shooting = true;
+                stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
+            }
+            else
+            {
+                long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                if (now >= NextAttack)
+                {
+                    entity.TakeHit(Damage);
+                    NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
+                    shooting = true;
+                    stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
+                }
+            }
         }
     }
 }

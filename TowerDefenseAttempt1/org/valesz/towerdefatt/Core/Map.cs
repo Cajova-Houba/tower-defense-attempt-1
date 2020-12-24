@@ -34,7 +34,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// <summary>
         /// Towers available through all the game.
         /// </summary>
-        public IEnumerable<ITower> AvailableTowers
+        public List<ITower> AvailableTowers
         {
             get;
             private set;
@@ -53,6 +53,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Enemies = new List<IEnemy>();
             Towers = new List<ITower>();
             AvailableTowers = new List<ITower>();
+            AvailableTowers.Add(new DefaultTower(0, 0));
 
             Enemies.Add(new DefaultEnemy(300, 200));
         }
