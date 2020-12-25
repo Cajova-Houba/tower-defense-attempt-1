@@ -41,6 +41,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
 
         public Point Center => new Point(32, 32);
 
+        public uint Value => 50;
+
         /// <summary>
         /// Destination this enemy is trying to reach.
         /// </summary>

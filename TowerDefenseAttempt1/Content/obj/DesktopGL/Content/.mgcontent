@@ -8,6 +8,7 @@
     <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/bases/default.png</File>
     <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/enemies/default.png</File>
     <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/enemies/default_hurt.png</File>
+    <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/fonts/Score.spritefont</File>
     <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/towers/default.png</File>
     <File>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/towers/default_shot.png</File>
   </SourceFiles>
@@ -16,6 +17,7 @@
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
+    <File>assets/fonts/score.spritefont</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>

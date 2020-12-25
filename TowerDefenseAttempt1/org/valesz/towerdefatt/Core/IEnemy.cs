@@ -13,5 +13,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// Movement speed of this enemy.
         /// </summary>
         public float Speed { get; }
+
+        /// <summary>
+        /// Score player gains for killing this enemy.
+        /// </summary>
+        public uint Value { get; }
     }
 }

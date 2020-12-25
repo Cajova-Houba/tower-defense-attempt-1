@@ -21,6 +21,8 @@ namespace TowerDefenseAttempt1
         /// </summary>
         Dictionary<string, Texture2D> textures;
 
+        SpriteFont scoreFont;
+
         Map gameMap;
 
         public Game1()
@@ -49,6 +51,8 @@ namespace TowerDefenseAttempt1
 
             // TODO: use this.Content to load your game content here
             InitTextureMap(gameMap);
+
+            scoreFont = Content.Load<SpriteFont>("assets/fonts/score");
         }
 
         protected override void Update(GameTime gameTime)
@@ -67,6 +71,22 @@ namespace TowerDefenseAttempt1
             foreach(IHasAI tower in gameMap.Towers)
             {
                 tower.UpdateState(gameMap);
+            }
+
+            uint enemiesToSpawn = 0;
+            for(int i = gameMap.Enemies.Count -1; i >= 0; i--)
+            {
+                if (gameMap.Enemies[i].Hp == 0)
+                {
+                    gameMap.AddScore(gameMap.Enemies[i].Value);
+                    enemiesToSpawn++;
+                    gameMap.Enemies.RemoveAt(i);
+                }
+            }
+            
+            for(int i = 0; i< enemiesToSpawn; i++)
+            {
+                gameMap.SpawnEnemy();
             }
 
             base.Update(gameTime);
@@ -112,6 +132,8 @@ namespace TowerDefenseAttempt1
                     _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(tower.Shot[0], new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f,0f), SpriteEffects.None, 1f);
                 }
             }
+
+            _spriteBatch.DrawString(scoreFont, gameMap.Score.ToString(), new Vector2(600, 15), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);

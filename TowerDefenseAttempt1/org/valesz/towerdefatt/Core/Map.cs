@@ -40,8 +40,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             private set;
         }
 
-        // todo: something else
-        private bool stuffSpawned;
+        /// <summary>
+        /// Score gained by killing enemies.
+        /// </summary>
+        public uint Score { get; private set; }
 
         /// <summary>
         /// Resets the current game's state and initializes new map with given base.
@@ -54,8 +56,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Towers = new List<ITower>();
             AvailableTowers = new List<ITower>();
             AvailableTowers.Add(new DefaultTower(0, 0));
+            Score = 0;
 
-            Enemies.Add(new DefaultEnemy(300, 200));
+            SpawnEnemy();
         }
 
         /// <summary>
@@ -87,6 +90,23 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public void PlaceTower(DefaultTower tower)
         {
             Towers.Add(tower);
+        }
+
+        /// <summary>
+        /// Adds value to the score.
+        /// </summary>
+        /// <param name="value">Value to be added to the current score.</param>
+        public void AddScore(uint value)
+        {
+            Score += value;
+        }
+
+        /// <summary>
+        /// Spawns enemy at default position.
+        /// </summary>
+        public void SpawnEnemy()
+        {
+            Enemies.Add(new DefaultEnemy(300, 200));
         }
     }
 }

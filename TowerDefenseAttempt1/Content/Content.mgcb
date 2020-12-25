@@ -61,6 +61,13 @@
 /processorParam:TextureFormat=Color
 /build:assets/enemies/default_hurt.png
 
+#begin assets/fonts/Score.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:assets/fonts/Score.spritefont;assets/fonts/score.spritefont
+
 #begin assets/towers/default.png
 /importer:TextureImporter
 /processor:TextureProcessor

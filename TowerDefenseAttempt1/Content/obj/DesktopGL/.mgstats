@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/towers/default_shot.png","C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/bin/DesktopGL/assets/towers/default_shot.xnb","TextureProcessor","Texture2DContent",6427,16469,0,1803816
+"C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/fonts/Score.spritefont","C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/bin/DesktopGL/assets/fonts/score.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21538,0,2611153
