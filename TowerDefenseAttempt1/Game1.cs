@@ -29,6 +29,8 @@ namespace TowerDefenseAttempt1
         /// Side panel for displaying game stats and buying towers.
         /// </summary>
         Texture2D sidePanel;
+        float sidePanelX = 630;
+        float sidePanelY = 20;
 
         Map gameMap;
 
@@ -118,7 +120,7 @@ namespace TowerDefenseAttempt1
         {
             MouseState state = Mouse.GetState();
             
-            if (state.LeftButton == ButtonState.Pressed)
+            if (state.LeftButton == ButtonState.Pressed && state.X < sidePanelX)
             {
                 gameMap.PlaceTower(new DefaultTower(state.X, state.Y));
             }
@@ -177,8 +179,18 @@ namespace TowerDefenseAttempt1
             _spriteBatch.DrawString(scoreFont, "Kills", new Vector2(text1XBase, textHeightBase + lineHeight), Color.Black);
             _spriteBatch.DrawString(scoreFont, gameMap.EnemiesKilled.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight), Color.Black);
 
-            _spriteBatch.DrawString(scoreFont, "Base HP", new Vector2(text1XBase, textHeightBase + lineHeight*2), Color.Black);
-            _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "Money", new Vector2(text1XBase, textHeightBase + lineHeight*2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Money.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*2), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "Base HP", new Vector2(text1XBase, textHeightBase + lineHeight*3), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*3), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "Towers", new Vector2(text1XBase, textHeightBase + lineHeight * 5), Color.Black);
+            for(int i = 0; i < gameMap.AvailableTowers.Count; i++)
+            {
+                ITower tower = gameMap.AvailableTowers[i];
+                _spriteBatch.Draw(textures[tower.TextureName], new Vector2(text1XBase, textHeightBase + lineHeight * 6 + i*70), Color.White);
+            }
         }
 
         /// <summary>
@@ -194,6 +206,15 @@ namespace TowerDefenseAttempt1
             Vector2 distanceVector = (point2 - point1).ToVector2();
             float len = distanceVector.Length();
             float alpha = (float)Math.Asin(distanceVector.Y / len);
+
+            // 2nd and 3rd quadrants
+            if ((distanceVector.X < 0 && distanceVector.Y > 0) || 
+                (distanceVector.X < 0 && distanceVector.Y < 0)
+                )
+            {
+                alpha = (float)(Math.PI - alpha);
+            }
+
             _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(point1, new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f, 0f), SpriteEffects.None, 1f);
         }
 

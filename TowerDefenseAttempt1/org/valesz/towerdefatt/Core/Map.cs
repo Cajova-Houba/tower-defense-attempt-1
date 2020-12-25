@@ -51,6 +51,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public uint EnemiesKilled { get; private set; }
 
         /// <summary>
+        /// How much money player has. Money can be gained by killing enemies.
+        /// </summary>
+        public uint Money { get; private set; }
+
+        /// <summary>
         /// Resets the current game's state and initializes new map with given base.
         /// </summary>
         /// <param name="playerBase">Player's base</param>
@@ -62,6 +67,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             AvailableTowers = new List<ITower>();
             AvailableTowers.Add(new DefaultTower(0, 0));
             Score = 0;
+            Money = 0;
 
             SpawnEnemy();
         }
@@ -101,12 +107,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Adds value to the score.
+        /// Adds value to the score and also to the money.
         /// </summary>
         /// <param name="value">Value to be added to the current score.</param>
         public void AddScore(uint value)
         {
             Score += value;
+            Money += value;
         }
 
         /// <summary>
