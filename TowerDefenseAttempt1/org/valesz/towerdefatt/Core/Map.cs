@@ -89,7 +89,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// <param name="tower">Tower to be placed</param>
         public void PlaceTower(DefaultTower tower)
         {
-            Towers.Add(tower);
+            if (Towers.Count == 0)
+            {
+                Towers.Add(tower);
+            }
         }
 
         /// <summary>

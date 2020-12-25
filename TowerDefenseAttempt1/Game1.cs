@@ -92,11 +92,14 @@ namespace TowerDefenseAttempt1
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Checks for mous click and places tower if possible.
+        /// </summary>
         private void HandleMouse()
         {
             MouseState state = Mouse.GetState();
             
-            if (state.LeftButton == ButtonState.Pressed && gameMap.Towers.Count == 0)
+            if (state.LeftButton == ButtonState.Pressed)
             {
                 gameMap.PlaceTower(new DefaultTower(state.X, state.Y));
             }
@@ -122,14 +125,7 @@ namespace TowerDefenseAttempt1
                 _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
                 if (tower.Shot != null)
                 {
-                    // how to draw a line
-                    // 1. know the lngth of a line and draw it as a rectangle with height of 1
-                    // 2. rotate it by angle phi (can be calculated using trigonometry)
-
-                    Vector2 distanceVector = tower.Shot[1].ToVector2() - tower.Shot[0].ToVector2();
-                    float len = distanceVector.Length();
-                    float alpha = (float)Math.Asin(distanceVector.Y / len);
-                    _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(tower.Shot[0], new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f,0f), SpriteEffects.None, 1f);
+                    DrawLine(tower.Shot[0], tower.Shot[1]);
                 }
             }
 
@@ -139,6 +135,27 @@ namespace TowerDefenseAttempt1
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Draws a black line from point point1 to point point2.
+        /// </summary>
+        /// <param name="point1">Starting point of the line.</param>
+        /// <param name="point2">Ending point of the line. </param>
+        private void DrawLine(Point point1, Point point2)
+        {
+            // how to draw a line
+            // 1. know the lngth of a line and draw it as a rectangle with height of 1
+            // 2. rotate it by angle phi (can be calculated using trigonometry)
+            Vector2 distanceVector = (point1 - point2).ToVector2();
+            float len = distanceVector.Length();
+            float alpha = (float)Math.Asin(distanceVector.Y / len);
+            _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(point1, new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f, 0f), SpriteEffects.None, 1f);
+        }
+
+        /// <summary>
+        /// Loads all textures needed by the objects in the given game map. Textures are stored in the
+        /// "textures" dictionary.
+        /// </summary>
+        /// <param name="gameMap">Map to laod textures for.</param>
         private void InitTextureMap(Map gameMap)
         {
             textures = new Dictionary<string, Texture2D>();
