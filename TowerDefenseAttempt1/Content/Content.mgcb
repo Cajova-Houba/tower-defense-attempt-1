@@ -68,6 +68,18 @@
 /processorParam:TextureFormat=Compressed
 /build:assets/fonts/Score.spritefont;assets/fonts/score.spritefont
 
+#begin assets/ground/grass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:assets/ground/grass.png
+
 #begin assets/towers/default.png
 /importer:TextureImporter
 /processor:TextureProcessor

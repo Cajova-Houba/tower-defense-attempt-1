@@ -23,6 +23,8 @@ namespace TowerDefenseAttempt1
 
         SpriteFont scoreFont;
 
+        Texture2D grassTexture;
+
         Map gameMap;
 
         public Game1()
@@ -53,6 +55,7 @@ namespace TowerDefenseAttempt1
             InitTextureMap(gameMap);
 
             scoreFont = Content.Load<SpriteFont>("assets/fonts/score");
+            grassTexture = Content.Load<Texture2D>("assets/ground/grass");
         }
 
         protected override void Update(GameTime gameTime)
@@ -113,8 +116,11 @@ namespace TowerDefenseAttempt1
             _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            _spriteBatch.Draw(grassTexture, 
+                new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), 
+                new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), 
+                Color.White);
             _spriteBatch.Draw(textures[gameMap.Base.TextureName], gameMap.Base.Position, Color.White);
             foreach (IHasTexture enemy in gameMap.Enemies) 
             {
@@ -145,7 +151,7 @@ namespace TowerDefenseAttempt1
             // how to draw a line
             // 1. know the lngth of a line and draw it as a rectangle with height of 1
             // 2. rotate it by angle phi (can be calculated using trigonometry)
-            Vector2 distanceVector = (point1 - point2).ToVector2();
+            Vector2 distanceVector = (point2 - point1).ToVector2();
             float len = distanceVector.Length();
             float alpha = (float)Math.Asin(distanceVector.Y / len);
             _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(point1, new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f, 0f), SpriteEffects.None, 1f);
