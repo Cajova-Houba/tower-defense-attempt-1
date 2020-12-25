@@ -39,6 +39,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
 
         public float AttackSpeed { get; private set; }
 
+        public Point Center => new Point(32, 32);
+
         /// <summary>
         /// Destination this enemy is trying to reach.
         /// </summary>

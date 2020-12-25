@@ -93,13 +93,24 @@ namespace TowerDefenseAttempt1
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(textures[gameMap.Base.TextureName], gameMap.Base.Position, Color.White);
-            foreach (IHasTexture tower in gameMap.Towers) 
-            {
-                _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
-            }
             foreach (IHasTexture enemy in gameMap.Enemies) 
             {
                 _spriteBatch.Draw(textures[enemy.TextureName], enemy.Position, Color.White);
+            }
+            foreach (ITower tower in gameMap.Towers) 
+            {
+                _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
+                if (tower.Shot != null)
+                {
+                    // how to draw a line
+                    // 1. know the lngth of a line and draw it as a rectangle with height of 1
+                    // 2. rotate it by angle phi (can be calculated using trigonometry)
+
+                    Vector2 distanceVector = tower.Shot[1].ToVector2() - tower.Shot[0].ToVector2();
+                    float len = distanceVector.Length();
+                    float alpha = (float)Math.Asin(distanceVector.Y / len);
+                    _spriteBatch.Draw(textures["assets/attack/shot"], new Rectangle(tower.Shot[0], new Point((int)len, 1)), null, Color.White, alpha, new Vector2(0f,0f), SpriteEffects.None, 1f);
+                }
             }
             _spriteBatch.End();
 
@@ -109,8 +120,9 @@ namespace TowerDefenseAttempt1
         private void InitTextureMap(Map gameMap)
         {
             textures = new Dictionary<string, Texture2D>();
+            textures.Add("assets/attack/shot", Content.Load<Texture2D>("assets/attack/shot"));
 
-            foreach(string textureName in gameMap.GetAllTextures())
+            foreach (string textureName in gameMap.GetAllTextures())
             {
                 textures.Add(textureName, Content.Load<Texture2D>(textureName));
             }

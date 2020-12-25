@@ -25,10 +25,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public float AttackRange => 100;
 
+        public Point[] Shot { get; private set; }
+        public Point ShootingPoint => new Point(34, 9);
+        public Point Center => new Point(32,32);
+
         /// <summary>
         /// Time when the next attack is allowed in millis. Initialized to -1.
         /// </summary>
         private long NextAttack { get; set; }
+
 
         private bool shooting = false;
         private long stopShootingAnimation;
@@ -37,6 +42,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         {
             Position = new Vector2(x, y);
             stopShootingAnimation = -1;
+            Shot = null;
         }
 
         public void UpdateState(Map gameMap)
@@ -67,6 +73,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             if (shooting && now > stopShootingAnimation)
             {
                 shooting = false;
+                Shot = null;
             }
 
         }
@@ -83,6 +90,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
                 NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
                 shooting = true;
                 stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
+                Shot = new Point[]
+                    {
+                        Position.ToPoint() + ShootingPoint,
+                        entity.Position.ToPoint() + entity.Center
+                    };
             }
             else
             {
@@ -93,6 +105,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
                     NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
                     shooting = true;
                     stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
+                    Shot = new Point[]
+                    {
+                        Position.ToPoint() + ShootingPoint,
+                        entity.Position.ToPoint() + entity.Center
+                    };
                 }
             }
         }

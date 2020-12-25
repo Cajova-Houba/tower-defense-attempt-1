@@ -7,7 +7,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
     /// <summary>
     /// Base interface for objects with hit points.
     /// </summary>
-    public interface IHasHp
+    public interface IHasHp : IHasPosition
     {
         /// <summary>
         /// Returns HP of this enemy.

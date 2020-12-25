@@ -12,6 +12,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Base
         public string TextureName => "assets/bases/default";
         public IEnumerable<string> AllTextures => new string[] { TextureName };
 
+        public Point Center => new Point(32, 32);
+
         public uint Hp
         {
             get;
