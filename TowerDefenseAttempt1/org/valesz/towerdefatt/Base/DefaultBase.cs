@@ -20,6 +20,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Base
             private set;
         }
 
+        public uint MaxHp => 500;
+
         public Vector2 Position
         {
             get;
@@ -28,7 +30,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Base
 
         public DefaultBase(float x, float y)
         {
-            Hp = 500;
+            Hp = MaxHp;
             Position = new Vector2(x, y);
         }
 

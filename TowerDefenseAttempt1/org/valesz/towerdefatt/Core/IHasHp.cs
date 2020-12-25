@@ -19,6 +19,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
+        /// Returns the max HP of this entity.
+        /// </summary>
+        public uint MaxHp { get; }
+
+        /// <summary>
         /// Take hit to HP.
         /// </summary>
         /// <param name="damage">Damage. Max of current HP can be applied.</param>

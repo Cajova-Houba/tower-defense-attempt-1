@@ -33,6 +33,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
             private set;
         }
 
+        public uint MaxHp => MAX_HP;
+
         public float Speed { get; private set; }
 
         public uint Damage { get; private set; }

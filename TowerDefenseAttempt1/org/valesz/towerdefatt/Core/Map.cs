@@ -46,6 +46,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public uint Score { get; private set; }
 
         /// <summary>
+        /// Enemy kill counter.
+        /// </summary>
+        public uint EnemiesKilled { get; private set; }
+
+        /// <summary>
         /// Resets the current game's state and initializes new map with given base.
         /// </summary>
         /// <param name="playerBase">Player's base</param>
@@ -102,6 +107,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public void AddScore(uint value)
         {
             Score += value;
+        }
+
+        /// <summary>
+        /// Increments the the enemy kill counter by 1.
+        /// </summary>
+        public void IncrementKillCounter()
+        {
+            EnemiesKilled += 1;
         }
 
         /// <summary>

@@ -25,6 +25,11 @@ namespace TowerDefenseAttempt1
 
         Texture2D grassTexture;
 
+        /// <summary>
+        /// Side panel for displaying game stats and buying towers.
+        /// </summary>
+        Texture2D sidePanel;
+
         Map gameMap;
 
         public Game1()
@@ -56,6 +61,16 @@ namespace TowerDefenseAttempt1
 
             scoreFont = Content.Load<SpriteFont>("assets/fonts/score");
             grassTexture = Content.Load<Texture2D>("assets/ground/grass");
+
+            InitSidePanel();
+        }
+
+        private void InitSidePanel()
+        {
+            sidePanel = new Texture2D(GraphicsDevice, 150, 400);
+            Color[] data = new Color[150 * 400];
+            for (int i = 0; i < data.Length; ++i) data[i] = Color.LightGray;
+            sidePanel.SetData(data);
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,6 +97,7 @@ namespace TowerDefenseAttempt1
                 if (gameMap.Enemies[i].Hp == 0)
                 {
                     gameMap.AddScore(gameMap.Enemies[i].Value);
+                    gameMap.IncrementKillCounter();
                     enemiesToSpawn++;
                     gameMap.Enemies.RemoveAt(i);
                 }
@@ -135,10 +151,34 @@ namespace TowerDefenseAttempt1
                 }
             }
 
-            _spriteBatch.DrawString(scoreFont, gameMap.Score.ToString(), new Vector2(600, 15), Color.Black);
+            DrawSidePanel();
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Draws side panel with game stats and tower 'shop'.
+        /// </summary>
+        private void DrawSidePanel()
+        {
+            float lineHeight = 15;
+            float textHeightBase = 30;
+            float sidePanelX = 630;
+            float sidePanelY = 20;
+            float text1XBase = sidePanelX + 10;
+            float text2XBase = sidePanelX + 80;
+
+            _spriteBatch.Draw(sidePanel, new Vector2(sidePanelX, sidePanelY), Color.White);
+            _spriteBatch.DrawString(scoreFont, "Score", new Vector2(text1XBase, textHeightBase), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Score.ToString(), new Vector2(text2XBase, textHeightBase), Color.Black);
+
+
+            _spriteBatch.DrawString(scoreFont, "Kills", new Vector2(text1XBase, textHeightBase + lineHeight), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.EnemiesKilled.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "Base HP", new Vector2(text1XBase, textHeightBase + lineHeight*2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*2), Color.Black);
         }
 
         /// <summary>
