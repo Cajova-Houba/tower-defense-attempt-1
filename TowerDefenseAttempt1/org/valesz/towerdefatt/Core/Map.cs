@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
 
@@ -41,6 +39,12 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
+        /// Tower selected in shop by player. Initialized to null.
+        /// </summary>
+
+        public ITower SelectedShopTower { get; private set; }
+
+        /// <summary>
         /// Score gained by killing enemies.
         /// </summary>
         public uint Score { get; private set; }
@@ -67,7 +71,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             AvailableTowers = new List<ITower>();
             AvailableTowers.Add(new DefaultTower(0, 0));
             Score = 0;
-            Money = 0;
+            Money = new DefaultTower(0,0).Price;
+            SelectedShopTower = null;
 
             SpawnEnemy();
         }
@@ -95,14 +100,17 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Place tower to the map.
+        /// Buys given tower and places it on the map. Buying a tower resets the SelectedShopTower.
+        /// If the player does not have enough money, no tower will be placed and SelectedShopTower
+        /// will still be reset.
         /// </summary>
         /// <param name="tower">Tower to be placed</param>
-        public void PlaceTower(DefaultTower tower)
+        public void BuyTower(ITower tower)
         {
-            if (Towers.Count == 0)
+            if (Money >= tower.Price)
             {
                 Towers.Add(tower);
+                Money -= tower.Price;
             }
         }
 

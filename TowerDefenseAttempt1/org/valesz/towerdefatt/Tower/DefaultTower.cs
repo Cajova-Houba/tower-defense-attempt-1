@@ -29,6 +29,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         public Point ShootingPoint => new Point(34, 9);
         public Point Center => new Point(32,32);
 
+        public uint Price => 50;
+
         /// <summary>
         /// Time when the next attack is allowed in millis. Initialized to -1.
         /// </summary>

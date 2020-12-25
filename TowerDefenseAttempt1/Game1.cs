@@ -32,6 +32,11 @@ namespace TowerDefenseAttempt1
         float sidePanelX = 630;
         float sidePanelY = 20;
 
+        /// <summary>
+        /// Sets to true when the left mouse button is presed (used to track click: press-release).
+        /// </summary>
+        bool leftMouseClick;
+
         Map gameMap;
 
         public Game1()
@@ -122,7 +127,11 @@ namespace TowerDefenseAttempt1
             
             if (state.LeftButton == ButtonState.Pressed && state.X < sidePanelX)
             {
-                gameMap.PlaceTower(new DefaultTower(state.X, state.Y));
+                leftMouseClick = true;
+            } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X < sidePanelX)
+            {
+                leftMouseClick = false;
+                gameMap.BuyTower(new DefaultTower(state.X, state.Y));
             }
         }
 
@@ -166,8 +175,6 @@ namespace TowerDefenseAttempt1
         {
             float lineHeight = 15;
             float textHeightBase = 30;
-            float sidePanelX = 630;
-            float sidePanelY = 20;
             float text1XBase = sidePanelX + 10;
             float text2XBase = sidePanelX + 80;
 

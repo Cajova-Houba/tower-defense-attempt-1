@@ -21,5 +21,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// Start and end point of a shot. May return null if the tower is not shooting.
         /// </summary>
         Point[] Shot { get; }
+
+        /// <summary>
+        /// Price of this tower in the shop.
+        /// </summary>
+        uint Price { get; }
     }
 }
