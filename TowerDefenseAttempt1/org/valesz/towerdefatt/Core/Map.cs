@@ -113,9 +113,16 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
                 Money -= tower.Price;
             }
 
-            // deselect tower
+            DeselectShopTower();
+        }
+
+        /// <summary>
+        /// Deselects selected tower in shop (if any).
+        /// </summary>
+        public void DeselectShopTower()
+        {
             SelectedShopTower = null;
-            foreach(ITower t in AvailableTowers)
+            foreach (ITower t in AvailableTowers)
             {
                 t.Selected = false;
             }
@@ -148,7 +155,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Selects available tower from shop on the given coordinates.
+        /// Deselects all previously selected towers in shop and then selects available tower 
+        /// from shop on the given coordinates. If the tower on the given coordinates is already
+        /// selected, this method just deselects it.
         /// </summary>
         public void SelectTowerFromShop(float x, float y)
         {
@@ -158,11 +167,21 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
                     (availableTower.Position.Y <= y && availableTower.Position.Y + 64 >= y)  
                     )
                 {
-                    SelectedShopTower = availableTower;
-                    availableTower.Selected = true;
+                    // tower already selected => deselect
+                    if (availableTower.Selected)
+                    {
+                        DeselectShopTower();
+                    } else
+                    {
+                        SelectedShopTower = availableTower;
+                        availableTower.Selected = true;
+                    }
                     return;
                 }
             }
+
+            // no tower lise on given coordinates => deselect
+            DeselectShopTower();
         }
     }
 }
