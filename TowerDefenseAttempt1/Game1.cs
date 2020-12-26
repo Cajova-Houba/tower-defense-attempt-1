@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Base;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.SpawnPoint;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
 
 namespace TowerDefenseAttempt1
@@ -50,7 +51,12 @@ namespace TowerDefenseAttempt1
         {
             // TODO: Add your initialization logic here
             gameMap = new Map();
-            gameMap.StartNewMap(new DefaultBase(100,100));
+            gameMap.StartNewMap(new DefaultBase(100,100), new ISpawnPoint[] {
+                new DefaultSpawnPoint(550, 30),
+                new DefaultSpawnPoint(480, 160),
+                new DefaultSpawnPoint(510, 270)
+            });
+            
 
             base.Initialize();
         }

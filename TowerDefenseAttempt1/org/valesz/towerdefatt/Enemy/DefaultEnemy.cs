@@ -55,6 +55,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
         /// </summary>
         private long NextAttack { get; set; }
 
+        public DefaultEnemy(Vector2 position) : this(position.X, position.Y) {}
+
         public DefaultEnemy(float x, float y)
         {
             Hp = MAX_HP;

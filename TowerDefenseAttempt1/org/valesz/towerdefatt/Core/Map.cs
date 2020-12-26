@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
 
@@ -65,10 +66,18 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         private uint EnemiesToSpawn { get; set; }
 
         /// <summary>
+        /// A collections of points on map where enemies spawn.
+        /// </summary>
+        private List<ISpawnPoint> SpawnPoints { get; set; }
+
+        private Random r;
+
+        /// <summary>
         /// Resets the current game's state and initializes new map with given base.
         /// </summary>
-        /// <param name="playerBase">Player's base</param>
-        public void StartNewMap(IBase playerBase)
+        /// <param name="playerBase">Player's base.</param>
+        /// <param name="spawnPoints">Spawn points.</param>
+        public void StartNewMap(IBase playerBase, IEnumerable<ISpawnPoint> spawnPoints)
         {
             Base = playerBase;
             Enemies = new List<IEnemy>();
@@ -79,6 +88,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Money = new DefaultTower(0,0).Price;
             SelectedShopTower = null;
             EnemiesToSpawn = 1;
+            r = new Random();
+            SpawnPoints = new List<ISpawnPoint>();
+            SpawnPoints.AddRange(spawnPoints);
 
             SpawnEnemy();
         }
@@ -159,7 +171,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         {
             for(int i = 0; i < EnemiesToSpawn; i++)
             {
-                Enemies.Add(new DefaultEnemy(300, 200));
+                ISpawnPoint spawnPoint = SelectRandomSpawnPoint();
+                if (spawnPoint == null)
+                {
+                    break;
+                }
+
+                Enemies.Add(new DefaultEnemy(spawnPoint.Position));
             }
             //EnemiesToSpawn++;
         }
@@ -192,6 +210,32 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 
             // no tower lise on given coordinates => deselect
             DeselectShopTower();
+        }
+
+        /// <summary>
+        /// Adds a new spawn point to this map.
+        /// </summary>
+        /// <param name="spawnPoint">Spawn potin to add</param>
+        public void AddSpawnPoint(ISpawnPoint spawnPoint)
+        {
+            if (SpawnPoints != null)
+            {
+                SpawnPoints.Add(spawnPoint);
+            }
+        }
+
+        /// <summary>
+        /// Selects random spawn point. If no spawn points are available, null is returned.
+        /// </summary>
+        /// <returns>Spawn point or null.</returns>
+        private ISpawnPoint SelectRandomSpawnPoint()
+        {
+            if (SpawnPoints == null || SpawnPoints.Count == 0)
+            {
+                return null;
+            }
+
+            return SpawnPoints[r.Next(SpawnPoints.Count)];
         }
     }
 }
