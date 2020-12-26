@@ -60,6 +60,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public uint Money { get; private set; }
 
         /// <summary>
+        /// How many enemies to spawn. Initialized to 1.
+        /// </summary>
+        private uint EnemiesToSpawn { get; set; }
+
+        /// <summary>
         /// Resets the current game's state and initializes new map with given base.
         /// </summary>
         /// <param name="playerBase">Player's base</param>
@@ -73,6 +78,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Score = 0;
             Money = new DefaultTower(0,0).Price;
             SelectedShopTower = null;
+            EnemiesToSpawn = 1;
 
             SpawnEnemy();
         }
@@ -151,7 +157,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         public void SpawnEnemy()
         {
-            Enemies.Add(new DefaultEnemy(300, 200));
+            for(int i = 0; i < EnemiesToSpawn; i++)
+            {
+                Enemies.Add(new DefaultEnemy(300, 200));
+            }
+            //EnemiesToSpawn++;
         }
 
         /// <summary>
