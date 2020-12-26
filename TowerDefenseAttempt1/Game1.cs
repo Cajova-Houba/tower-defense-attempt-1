@@ -144,7 +144,7 @@ namespace TowerDefenseAttempt1
                 } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X < sidePanelX)
                 {
                     leftMouseClick = false;
-                    gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X, state.Y));
+                    gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X-gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
                 }
             }
         }
