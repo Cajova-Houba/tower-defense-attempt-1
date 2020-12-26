@@ -13,9 +13,21 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         /// </summary>
         const long NO_ATTACK = -1;
 
-        public string TextureName => shooting ? "assets/towers/default_shot" : "assets/towers/default";
+        public string TextureName
+        {
+            get
+            {
+                if (shooting)
+                {
+                    return Selected ? "assets/towers/default_shot_selected" : "assets/towers/default_shot";
+                } else
+                {
+                    return Selected ? "assets/towers/default_selected" : "assets/towers/default";
+                }
+            }
+        }
 
-        public IEnumerable<string> AllTextures => new string[] { "assets/towers/default", "assets/towers/default_shot" };
+        public IEnumerable<string> AllTextures => new string[] { "assets/towers/default", "assets/towers/default_shot", "assets/towers/default_selected", "assets/towers/default_shot_selected" };
 
         public Vector2 Position { get; set; }
 
@@ -31,6 +43,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public uint Price => 50;
 
+        public bool Selected { get; set; }
+
         /// <summary>
         /// Time when the next attack is allowed in millis. Initialized to -1.
         /// </summary>
@@ -45,6 +59,12 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             Position = new Vector2(x, y);
             stopShootingAnimation = -1;
             Shot = null;
+            Selected = false;
+        }
+
+        public ITower Clone(float x, float y)
+        {
+            return new DefaultTower(x, y);
         }
 
         public void UpdateState(Map gameMap)

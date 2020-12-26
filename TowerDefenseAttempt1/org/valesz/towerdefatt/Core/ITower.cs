@@ -26,5 +26,18 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// Price of this tower in the shop.
         /// </summary>
         uint Price { get; }
+
+        /// <summary>
+        /// Flag set to true if the players selects this tower either in shop or on the map.
+        /// </summary>
+        bool Selected { get; set; }
+
+        /// <summary>
+        /// Initializes new instnace of this type with given coordinates.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <returns></returns>
+        ITower Clone(float x, float y);
     }
 }

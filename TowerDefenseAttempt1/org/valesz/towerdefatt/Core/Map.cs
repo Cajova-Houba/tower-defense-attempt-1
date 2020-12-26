@@ -104,13 +104,20 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// If the player does not have enough money, no tower will be placed and SelectedShopTower
         /// will still be reset.
         /// </summary>
-        /// <param name="tower">Tower to be placed</param>
+        /// <param name="tower">Instance of a tower to be placed</param>
         public void BuyTower(ITower tower)
         {
             if (Money >= tower.Price)
             {
                 Towers.Add(tower);
                 Money -= tower.Price;
+            }
+
+            // deselect tower
+            SelectedShopTower = null;
+            foreach(ITower t in AvailableTowers)
+            {
+                t.Selected = false;
             }
         }
 
@@ -138,6 +145,24 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public void SpawnEnemy()
         {
             Enemies.Add(new DefaultEnemy(300, 200));
+        }
+
+        /// <summary>
+        /// Selects available tower from shop on the given coordinates.
+        /// </summary>
+        public void SelectTowerFromShop(float x, float y)
+        {
+            foreach(ITower availableTower in AvailableTowers)
+            {
+                if ((availableTower.Position.X <= x && availableTower.Position.X + 64 >= x) &&
+                    (availableTower.Position.Y <= y && availableTower.Position.Y + 64 >= y)  
+                    )
+                {
+                    SelectedShopTower = availableTower;
+                    availableTower.Selected = true;
+                    return;
+                }
+            }
         }
     }
 }

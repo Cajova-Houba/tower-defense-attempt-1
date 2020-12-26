@@ -125,13 +125,27 @@ namespace TowerDefenseAttempt1
         {
             MouseState state = Mouse.GetState();
             
-            if (state.LeftButton == ButtonState.Pressed && state.X < sidePanelX)
+            // selecting tower from shop
+            if (state.LeftButton == ButtonState.Pressed && state.X > sidePanelX)
             {
                 leftMouseClick = true;
-            } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X < sidePanelX)
+            } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X > sidePanelX)
             {
                 leftMouseClick = false;
-                gameMap.BuyTower(new DefaultTower(state.X, state.Y));
+                gameMap.SelectTowerFromShop(state.X, state.Y);
+            } 
+
+            // placing selected tower
+            else if (gameMap.SelectedShopTower != null)
+            {
+                if (state.LeftButton == ButtonState.Pressed &&  state.X < sidePanelX)
+                {
+                    leftMouseClick = true;
+                } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X < sidePanelX)
+                {
+                    leftMouseClick = false;
+                    gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X, state.Y));
+                }
             }
         }
 
@@ -193,10 +207,14 @@ namespace TowerDefenseAttempt1
             _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*3), Color.Black);
 
             _spriteBatch.DrawString(scoreFont, "Towers", new Vector2(text1XBase, textHeightBase + lineHeight * 5), Color.Black);
+            float tX = text1XBase;
             for(int i = 0; i < gameMap.AvailableTowers.Count; i++)
             {
+                float tY = textHeightBase + lineHeight * 6 + 5 + i * 70;
                 ITower tower = gameMap.AvailableTowers[i];
-                _spriteBatch.Draw(textures[tower.TextureName], new Vector2(text1XBase, textHeightBase + lineHeight * 6 + i*70), Color.White);
+                tower.Position = new Vector2(tX, tY);
+                _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
+                _spriteBatch.DrawString(scoreFont, "x" + tower.Price.ToString(), new Vector2(tX + 70, tY + 27), Color.Black);
             }
         }
 
