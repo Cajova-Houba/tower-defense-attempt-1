@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Base;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.SpawnPoint;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Spawn;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
 
 namespace TowerDefenseAttempt1
@@ -51,11 +51,17 @@ namespace TowerDefenseAttempt1
         {
             // TODO: Add your initialization logic here
             gameMap = new Map();
-            gameMap.StartNewMap(new DefaultBase(100,100), new ISpawnPoint[] {
+            gameMap.StartNewMap(new DefaultBase(100,100), new WaveSpawner(new List<ISpawnPoint> {
                 new DefaultSpawnPoint(550, 30),
+                new DefaultSpawnPoint(545, 38),
+                new DefaultSpawnPoint(510, 83),
+                new DefaultSpawnPoint(479, 155),
                 new DefaultSpawnPoint(480, 160),
-                new DefaultSpawnPoint(510, 270)
-            });
+                new DefaultSpawnPoint(495, 170),
+                new DefaultSpawnPoint(510, 270),
+                new DefaultSpawnPoint(515, 280),
+                new DefaultSpawnPoint(505, 301)
+            }));
             
 
             base.Initialize();
@@ -104,22 +110,16 @@ namespace TowerDefenseAttempt1
                 tower.UpdateState(gameMap);
             }
 
-            uint enemiesToSpawn = 0;
             for(int i = gameMap.Enemies.Count -1; i >= 0; i--)
             {
                 if (gameMap.Enemies[i].Hp == 0)
                 {
                     gameMap.AddScore(gameMap.Enemies[i].Value);
                     gameMap.IncrementKillCounter();
-                    enemiesToSpawn++;
                     gameMap.Enemies.RemoveAt(i);
                 }
             }
-            
-            for(int i = 0; i< enemiesToSpawn; i++)
-            {
-                gameMap.SpawnEnemy();
-            }
+            gameMap.SpawnEnemies();
 
             base.Update(gameTime);
         }
@@ -169,11 +169,8 @@ namespace TowerDefenseAttempt1
                 new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), 
                 Color.White);
             _spriteBatch.Draw(textures[gameMap.Base.TextureName], gameMap.Base.Position, Color.White);
-            foreach (IHasTexture enemy in gameMap.Enemies) 
-            {
-                _spriteBatch.Draw(textures[enemy.TextureName], enemy.Position, Color.White);
-            }
-            foreach (ITower tower in gameMap.Towers) 
+
+            foreach (ITower tower in gameMap.Towers)
             {
                 _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
                 if (tower.Shot != null)
@@ -181,6 +178,12 @@ namespace TowerDefenseAttempt1
                     DrawLine(tower.Shot[0], tower.Shot[1]);
                 }
             }
+
+            foreach (IHasTexture enemy in gameMap.Enemies) 
+            {
+                _spriteBatch.Draw(textures[enemy.TextureName], enemy.Position, Color.White);
+            }
+            
 
             DrawSidePanel();
             _spriteBatch.End();
@@ -206,17 +209,20 @@ namespace TowerDefenseAttempt1
             _spriteBatch.DrawString(scoreFont, "Kills", new Vector2(text1XBase, textHeightBase + lineHeight), Color.Black);
             _spriteBatch.DrawString(scoreFont, gameMap.EnemiesKilled.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight), Color.Black);
 
-            _spriteBatch.DrawString(scoreFont, "Money", new Vector2(text1XBase, textHeightBase + lineHeight*2), Color.Black);
-            _spriteBatch.DrawString(scoreFont, gameMap.Money.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "Enemies", new Vector2(text1XBase, textHeightBase + lineHeight*2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Enemies.Count.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*2), Color.Black);
 
-            _spriteBatch.DrawString(scoreFont, "Base HP", new Vector2(text1XBase, textHeightBase + lineHeight*3), Color.Black);
-            _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*3), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "Money", new Vector2(text1XBase, textHeightBase + lineHeight*3), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Money.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*3), Color.Black);
 
-            _spriteBatch.DrawString(scoreFont, "Towers", new Vector2(text1XBase, textHeightBase + lineHeight * 5), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "Base HP", new Vector2(text1XBase, textHeightBase + lineHeight*4), Color.Black);
+            _spriteBatch.DrawString(scoreFont, gameMap.Base.Hp.ToString(), new Vector2(text2XBase, textHeightBase + lineHeight*4), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "Towers", new Vector2(text1XBase, textHeightBase + lineHeight * 6), Color.Black);
             float tX = text1XBase;
             for(int i = 0; i < gameMap.AvailableTowers.Count; i++)
             {
-                float tY = textHeightBase + lineHeight * 6 + 5 + i * 70;
+                float tY = textHeightBase + lineHeight * 7 + 5 + i * 70;
                 ITower tower = gameMap.AvailableTowers[i];
                 tower.Position = new Vector2(tX, tY);
                 _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);

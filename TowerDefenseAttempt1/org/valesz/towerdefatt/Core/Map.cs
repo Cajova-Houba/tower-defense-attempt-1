@@ -70,14 +70,17 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         private List<ISpawnPoint> SpawnPoints { get; set; }
 
-        private Random r;
+        /// <summary>
+        /// Spawner to be used on this map.
+        /// </summary>
+        private AbstractSpawner spawner;
 
         /// <summary>
         /// Resets the current game's state and initializes new map with given base.
         /// </summary>
         /// <param name="playerBase">Player's base.</param>
-        /// <param name="spawnPoints">Spawn points.</param>
-        public void StartNewMap(IBase playerBase, IEnumerable<ISpawnPoint> spawnPoints)
+        /// <param name="spawner">Spawner to be used on this map.</param>
+        public void StartNewMap(IBase playerBase, AbstractSpawner spawner)
         {
             Base = playerBase;
             Enemies = new List<IEnemy>();
@@ -88,11 +91,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Money = new DefaultTower(0,0).Price;
             SelectedShopTower = null;
             EnemiesToSpawn = 1;
-            r = new Random();
-            SpawnPoints = new List<ISpawnPoint>();
-            SpawnPoints.AddRange(spawnPoints);
+            this.spawner = spawner;
 
-            SpawnEnemy();
+            SpawnEnemies();
         }
 
         /// <summary>
@@ -165,21 +166,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Spawns enemy at default position.
+        /// Spawns enemies on this map using provided Spawner object. 
+        /// Enemies are spawned only when there are no enemies left on the map.
         /// </summary>
-        public void SpawnEnemy()
+        public void SpawnEnemies()
         {
-            for(int i = 0; i < EnemiesToSpawn; i++)
+            if (Enemies.Count == 0)
             {
-                ISpawnPoint spawnPoint = SelectRandomSpawnPoint();
-                if (spawnPoint == null)
-                {
-                    break;
-                }
-
-                Enemies.Add(new DefaultEnemy(spawnPoint.Position));
+                Enemies.AddRange(spawner.Spawn());
             }
-            //EnemiesToSpawn++;
         }
 
         /// <summary>
@@ -210,32 +205,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 
             // no tower lise on given coordinates => deselect
             DeselectShopTower();
-        }
-
-        /// <summary>
-        /// Adds a new spawn point to this map.
-        /// </summary>
-        /// <param name="spawnPoint">Spawn potin to add</param>
-        public void AddSpawnPoint(ISpawnPoint spawnPoint)
-        {
-            if (SpawnPoints != null)
-            {
-                SpawnPoints.Add(spawnPoint);
-            }
-        }
-
-        /// <summary>
-        /// Selects random spawn point. If no spawn points are available, null is returned.
-        /// </summary>
-        /// <returns>Spawn point or null.</returns>
-        private ISpawnPoint SelectRandomSpawnPoint()
-        {
-            if (SpawnPoints == null || SpawnPoints.Count == 0)
-            {
-                return null;
-            }
-
-            return SpawnPoints[r.Next(SpawnPoints.Count)];
         }
     }
 }

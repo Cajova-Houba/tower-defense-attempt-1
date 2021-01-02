@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 
-namespace TowerDefenseAttempt1.org.valesz.towerdefatt.SpawnPoint
+namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Spawn
 {
     public class DefaultSpawnPoint : ISpawnPoint
     {
