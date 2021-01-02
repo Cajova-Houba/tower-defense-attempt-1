@@ -218,7 +218,7 @@ namespace TowerDefenseAttempt1
             float lineHeight = 15;
             float textHeightBase = 30;
             float text1XBase = sidePanelX + 10;
-            float text2XBase = sidePanelX + 80;
+            float text2XBase = sidePanelX + 85;
 
             _spriteBatch.Draw(sidePanel, new Vector2(sidePanelX, sidePanelY), Color.White);
             _spriteBatch.DrawString(scoreFont, "Score", new Vector2(text1XBase, textHeightBase), Color.Black);
@@ -239,14 +239,38 @@ namespace TowerDefenseAttempt1
 
             _spriteBatch.DrawString(scoreFont, "Towers", new Vector2(text1XBase, textHeightBase + lineHeight * 6), Color.Black);
             float tX = text1XBase;
+            float tY = 0;
             for(int i = 0; i < gameMap.AvailableTowers.Count; i++)
             {
-                float tY = textHeightBase + lineHeight * 7 + 5 + i * 70;
+                tY = textHeightBase + lineHeight * 7 + 5 + i * 70;
                 ITower tower = gameMap.AvailableTowers[i];
                 tower.Position = new Vector2(tX, tY);
                 _spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
                 _spriteBatch.DrawString(scoreFont, "x" + tower.Price.ToString(), new Vector2(tX + 70, tY + 27), Color.Black);
             }
+
+            if (gameMap.SelectedMapTower != null)
+            {
+                DrawSelectedMapTower(gameMap.SelectedMapTower, tY + 100, tX, text2XBase, lineHeight);
+            }
+        }
+
+        /// <summary>
+        /// Draws tower that is selected on the map on the side panel.
+        /// </summary>
+        private void DrawSelectedMapTower(ITower tower, float textHeight, float text1X, float text2X, float lineHeight)
+        {
+            _spriteBatch.DrawString(scoreFont, "Selected tower", new Vector2(text1X, textHeight), Color.Black);
+            textHeight += 5;
+
+            _spriteBatch.DrawString(scoreFont, "Attack", new Vector2(text1X, textHeight + lineHeight), Color.Black);
+            _spriteBatch.DrawString(scoreFont, tower.Damage.ToString(), new Vector2(text2X, textHeight + lineHeight), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "Speed", new Vector2(text1X, textHeight + lineHeight * 2), Color.Black);
+            _spriteBatch.DrawString(scoreFont, tower.AttackSpeed.ToString(), new Vector2(text2X, textHeight + lineHeight * 2), Color.Black);
+
+            _spriteBatch.DrawString(scoreFont, "(U)pgrade", new Vector2(text1X, textHeight + lineHeight * 3), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "x"+tower.Price.ToString(), new Vector2(text2X, textHeight + lineHeight * 3), Color.Black);
         }
 
         /// <summary>
