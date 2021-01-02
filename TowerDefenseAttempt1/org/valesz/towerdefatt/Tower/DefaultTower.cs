@@ -31,9 +31,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public Vector2 Position { get; set; }
 
-        public uint Damage => 10;
+        public uint Damage {get; private set;}
 
-        public float AttackSpeed => 2;
+        public float AttackSpeed { get; private set; }
 
         public float AttackRange => 100;
 
@@ -44,6 +44,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         public uint Price => 50;
 
         public bool Selected { get; set; }
+        public uint UpgradePrice { get; private set; }
+
+        public float UpgradePriceFactor => 2f;
+
+        public float DamageUpgradeFactor => 1.5f;
+
+        public float AttackSpeedUpgradeFactor => 1.5f;
 
         /// <summary>
         /// Time when the next attack is allowed in millis. Initialized to -1.
@@ -56,6 +63,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public DefaultTower(float x, float y)
         {
+            Damage = 10;
+            UpgradePrice = 100;
+            AttackSpeed = 2;
             Position = new Vector2(x, y);
             stopShootingAnimation = -1;
             Shot = null;
@@ -98,6 +108,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
                 Shot = null;
             }
 
+        }
+
+        public void Upgrade()
+        {
+            UpgradePrice = (uint)( UpgradePrice * UpgradePriceFactor);
+            Damage = (uint)(Damage * DamageUpgradeFactor);
+            AttackSpeed = AttackSpeed * AttackSpeedUpgradeFactor;
         }
 
         /// <summary>

@@ -33,11 +33,36 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         bool Selected { get; set; }
 
         /// <summary>
+        /// How much does it cost to upgrade this tower (may change with each upgrade).
+        /// </summary>
+        uint UpgradePrice { get; }
+
+        /// <summary>
+        /// How much the price changes with each upgrade.
+        /// </summary>
+        float UpgradePriceFactor { get; }
+
+        /// <summary>
+        /// How much the damage changes with each upgrade.
+        /// </summary>
+        float DamageUpgradeFactor { get; }
+
+        /// <summary>
+        /// How much the attack speed changes with each upgrade.
+        /// </summary>
+        float AttackSpeedUpgradeFactor { get; }
+
+        /// <summary>
         /// Initializes new instnace of this type with given coordinates.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <returns></returns>
         ITower Clone(float x, float y);
+
+        /// <summary>
+        /// Upgrades stats of this tower by given coefficients.
+        /// </summary>
+        void Upgrade();
     }
 }

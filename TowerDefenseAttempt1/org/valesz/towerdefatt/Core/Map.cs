@@ -143,6 +143,19 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
+        /// Attempts to upgrade tower currently selected on the map. If no tower is selected,
+        /// nothing happens.
+        /// </summary>
+        public void UpgradeSelectedTower()
+        {
+            if (SelectedMapTower != null && Money >= SelectedMapTower.UpgradePrice)
+            {
+                Money -= SelectedMapTower.UpgradePrice;
+                SelectedMapTower.Upgrade();
+            }
+        }
+
+        /// <summary>
         /// Deselects selected tower in shop (if any).
         /// </summary>
         public void DeselectShopTower()
@@ -205,6 +218,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
                     }
                     else
                     {
+                        // deselect others and select the current one
+                        DeselectMapTower();
                         SelectedMapTower = mapTower;
                         mapTower.Selected = true;
                     }
@@ -235,6 +250,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
                         DeselectShopTower();
                     } else
                     {
+                        // deselect others and select the current one
+                        DeselectShopTower();
                         SelectedShopTower = availableTower;
                         availableTower.Selected = true;
                     }

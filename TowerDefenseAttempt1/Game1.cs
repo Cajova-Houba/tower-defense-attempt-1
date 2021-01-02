@@ -38,6 +38,16 @@ namespace TowerDefenseAttempt1
         /// </summary>
         bool leftMouseClick;
 
+        /// <summary>
+        /// When was the last tower upgraded (in ms).
+        /// </summary>
+        long lastTowerUgrade = -1;
+
+        /// <summary>
+        /// Min time interval between tower upgrades (in ms). Applied only when the update key is pressed (without release).
+        /// </summary>
+        long towerUpgradeTimeInterval = 1000;
+
         Map gameMap;
 
         public Game1()
@@ -99,6 +109,8 @@ namespace TowerDefenseAttempt1
 
             HandleMouse();
 
+            HandleKeyboard();
+
             // TODO: Add your update logic here
             foreach(IHasAI enemy in gameMap.Enemies)
             {
@@ -122,6 +134,28 @@ namespace TowerDefenseAttempt1
             gameMap.SpawnEnemies();
 
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Handle press of non-exit keys.
+        /// </summary>
+        private void HandleKeyboard()
+        {
+            // tower upgrade
+            if (Keyboard.GetState().IsKeyDown(Keys.U))
+            {
+                long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                if (lastTowerUgrade < 0 || lastTowerUgrade + towerUpgradeTimeInterval <= now)
+                {
+                    gameMap.UpgradeSelectedTower();
+                    lastTowerUgrade = now;
+                }
+            } else if (Keyboard.GetState().IsKeyUp(Keys.U))
+            {
+                // upgrade key release = reset the timer so that the upgrades
+                // can be purchased every key 'click'
+                lastTowerUgrade = -1;
+            }
         }
 
         /// <summary>
@@ -270,7 +304,7 @@ namespace TowerDefenseAttempt1
             _spriteBatch.DrawString(scoreFont, tower.AttackSpeed.ToString(), new Vector2(text2X, textHeight + lineHeight * 2), Color.Black);
 
             _spriteBatch.DrawString(scoreFont, "(U)pgrade", new Vector2(text1X, textHeight + lineHeight * 3), Color.Black);
-            _spriteBatch.DrawString(scoreFont, "x"+tower.Price.ToString(), new Vector2(text2X, textHeight + lineHeight * 3), Color.Black);
+            _spriteBatch.DrawString(scoreFont, "x"+tower.UpgradePrice.ToString(), new Vector2(text2X, textHeight + lineHeight * 3), Color.Black);
         }
 
         /// <summary>
