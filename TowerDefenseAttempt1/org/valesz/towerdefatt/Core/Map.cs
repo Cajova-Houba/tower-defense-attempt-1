@@ -61,16 +61,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public uint Money { get; private set; }
 
         /// <summary>
-        /// How many enemies to spawn. Initialized to 1.
-        /// </summary>
-        private uint EnemiesToSpawn { get; set; }
-
-        /// <summary>
-        /// A collections of points on map where enemies spawn.
-        /// </summary>
-        private List<ISpawnPoint> SpawnPoints { get; set; }
-
-        /// <summary>
         /// Spawner to be used on this map.
         /// </summary>
         private AbstractSpawner spawner;
@@ -90,7 +80,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Score = 0;
             Money = new DefaultTower(0,0).Price;
             SelectedShopTower = null;
-            EnemiesToSpawn = 1;
             this.spawner = spawner;
 
             SpawnEnemies();
