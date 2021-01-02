@@ -46,6 +46,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public ITower SelectedShopTower { get; private set; }
 
         /// <summary>
+        /// Tower on map selected by player. Initialized to null.
+        /// </summary>
+        public ITower SelectedMapTower { get; private set; }
+
+        /// <summary>
         /// Score gained by killing enemies.
         /// </summary>
         public uint Score { get; private set; }
@@ -81,6 +86,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Money = new DefaultTower(0,0).Price;
             SelectedShopTower = null;
             this.spawner = spawner;
+            SelectedMapTower = null;
 
             SpawnEnemies();
         }
@@ -125,6 +131,18 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
+        /// Deselects selected tower on map (if any).
+        /// </summary>
+        public void DeselectMapTower()
+        {
+            SelectedMapTower = null;
+            foreach(ITower t in Towers)
+            {
+                t.Selected = false;
+            }
+        }
+
+        /// <summary>
         /// Deselects selected tower in shop (if any).
         /// </summary>
         public void DeselectShopTower()
@@ -164,6 +182,38 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             {
                 Enemies.AddRange(spawner.Spawn());
             }
+        }
+
+        /// <summary>
+        /// Deselects all previously selected towers (on the map) and then selects tower on the map. If the tower on the given coordinates is already
+        /// selected, this method just deselects it.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SelectTowerOnTheMap(float x, float y)
+        {
+            foreach (ITower mapTower in Towers)
+            {
+                if ((mapTower.Position.X <= x && mapTower.Position.X + 64 >= x) &&
+                    (mapTower.Position.Y <= y && mapTower.Position.Y + 64 >= y)
+                    )
+                {
+                    // tower already selected => deselect
+                    if (mapTower.Selected)
+                    {
+                        DeselectMapTower();
+                    }
+                    else
+                    {
+                        SelectedMapTower = mapTower;
+                        mapTower.Selected = true;
+                    }
+                    return;
+                }
+            }
+
+            // no tower lise on given coordinates => deselect
+            DeselectMapTower();
         }
 
         /// <summary>

@@ -131,27 +131,46 @@ namespace TowerDefenseAttempt1
         {
             MouseState state = Mouse.GetState();
             
-            // selecting tower from shop
-            if (state.LeftButton == ButtonState.Pressed && state.X > sidePanelX)
+            // beginning the mouse click
+            if (state.LeftButton == ButtonState.Pressed)
             {
                 leftMouseClick = true;
-            } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X > sidePanelX)
-            {
-                leftMouseClick = false;
-                gameMap.SelectTowerFromShop(state.X, state.Y);
             } 
 
-            // placing selected tower
-            else if (gameMap.SelectedShopTower != null)
+            // releasing the mouse = end of the click
+            else if (state.LeftButton == ButtonState.Released && leftMouseClick)
             {
-                if (state.LeftButton == ButtonState.Pressed &&  state.X < sidePanelX)
+
+                // click ended on the side panel
+                // attempting to select/deselect tower in shop
+                if (state.X >= sidePanelX)
                 {
-                    leftMouseClick = true;
-                } else if (state.LeftButton == ButtonState.Released && leftMouseClick && state.X < sidePanelX)
-                {
-                    leftMouseClick = false;
-                    gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X-gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+
+                    if (gameMap.SelectedMapTower != null)
+                    {
+                        // click ended in the side panel but tower on the map is selected
+                        gameMap.DeselectMapTower();
+                    }
+
+                    gameMap.SelectTowerFromShop(state.X, state.Y);
                 }
+
+                // click ended on the map
+                // either attempting to select/deselect tower on the map
+                // or place a new one from the shop
+                else
+                {
+                    if (gameMap.SelectedShopTower == null)
+                    {
+                        gameMap.SelectTowerOnTheMap(state.X, state.Y);
+                    } else
+                    {
+                        gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+                    }
+                }
+
+
+                leftMouseClick = false;
             }
         }
 
