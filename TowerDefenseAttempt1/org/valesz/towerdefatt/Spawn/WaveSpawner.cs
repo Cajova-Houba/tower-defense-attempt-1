@@ -33,12 +33,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Spawn
                 }
             }
 
+            // float used so that the enemiesPerWave doesn't grow too fast
             enemiesPerWave*=1.5f;
 
             // float overflow
             if (enemiesPerWave < 0)
             {
-                enemiesPerWave = (float)uint.MaxValue;
+                // uint because that's used in the for loop above 
+                // and uint.MaxValue < float.MaxValue
+                enemiesPerWave = uint.MaxValue;
             }
             return enemies;
         }
