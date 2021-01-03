@@ -84,11 +84,20 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             AvailableTowers.Add(new DefaultTower(0, 0));
             Score = 0;
             Money = new DefaultTower(0,0).Price;
-            SelectedShopTower = null;
+            DeselectMapTower();
+            DeselectShopTower();
             this.spawner = spawner;
-            SelectedMapTower = null;
 
             SpawnEnemies();
+        }
+
+        /// <summary>
+        /// Returns true if the current game was lost.
+        /// </summary>
+        /// <returns></returns>
+        public bool GameLost()
+        {
+            return Base != null && Base.Hp == 0;
         }
 
         /// <summary>

@@ -33,6 +33,8 @@ namespace TowerDefenseAttempt1
         float sidePanelY = 20;
         StatsDisplaySidePanel statsDisplaySidePanel;
 
+        GameOverPanel gameOverPanel;
+
         /// <summary>
         /// Sets to true when the left mouse button is presed (used to track click: press-release).
         /// </summary>
@@ -61,7 +63,15 @@ namespace TowerDefenseAttempt1
         {
             // TODO: Add your initialization logic here
             gameMap = new Map();
-            gameMap.StartNewMap(new DefaultBase(100,100), new WaveSpawner(new List<ISpawnPoint> {
+            StartNewMap();
+            
+
+            base.Initialize();
+        }
+
+        private void StartNewMap()
+        {
+            gameMap.StartNewMap(new DefaultBase(50, 50), new WaveSpawner(new List<ISpawnPoint> {
                 new DefaultSpawnPoint(550, 30),
                 new DefaultSpawnPoint(545, 38),
                 new DefaultSpawnPoint(510, 83),
@@ -72,9 +82,6 @@ namespace TowerDefenseAttempt1
                 new DefaultSpawnPoint(515, 280),
                 new DefaultSpawnPoint(505, 301)
             }));
-            
-
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -92,6 +99,14 @@ namespace TowerDefenseAttempt1
             grassTexture = Content.Load<Texture2D>("assets/ground/grass");
 
             InitSidePanel();
+            InitGameOverPanel();
+
+        }
+
+        private void InitGameOverPanel()
+        {
+            gameOverPanel = new GameOverPanel(400, 100, 100, 100, Color.LightGray, scoreFont, gameMap);
+            gameOverPanel.InitPanel(GraphicsDevice);
         }
 
         private void InitSidePanel()
@@ -114,26 +129,29 @@ namespace TowerDefenseAttempt1
             HandleKeyboard();
 
             // TODO: Add your update logic here
-            foreach(IHasAI enemy in gameMap.Enemies)
+            if (!gameMap.GameLost())
             {
-                enemy.UpdateState(gameMap);
-            }
-
-            foreach(IHasAI tower in gameMap.Towers)
-            {
-                tower.UpdateState(gameMap);
-            }
-
-            for(int i = gameMap.Enemies.Count -1; i >= 0; i--)
-            {
-                if (gameMap.Enemies[i].Hp == 0)
+                foreach(IHasAI enemy in gameMap.Enemies)
                 {
-                    gameMap.AddScore(gameMap.Enemies[i].Value);
-                    gameMap.IncrementKillCounter();
-                    gameMap.Enemies.RemoveAt(i);
+                    enemy.UpdateState(gameMap);
                 }
+
+                foreach(IHasAI tower in gameMap.Towers)
+                {
+                    tower.UpdateState(gameMap);
+                }
+
+                for(int i = gameMap.Enemies.Count -1; i >= 0; i--)
+                {
+                    if (gameMap.Enemies[i].Hp == 0)
+                    {
+                        gameMap.AddScore(gameMap.Enemies[i].Value);
+                        gameMap.IncrementKillCounter();
+                        gameMap.Enemies.RemoveAt(i);
+                    }
+                }
+                gameMap.SpawnEnemies();
             }
-            gameMap.SpawnEnemies();
 
             base.Update(gameTime);
         }
@@ -176,34 +194,40 @@ namespace TowerDefenseAttempt1
             // releasing the mouse = end of the click
             else if (state.LeftButton == ButtonState.Released && leftMouseClick)
             {
-
-                // click ended on the side panel
-                // attempting to select/deselect tower in shop
-                if (state.X >= sidePanelX)
+                if (!gameMap.GameLost())
                 {
-
-                    if (gameMap.SelectedMapTower != null)
+                    // click ended on the side panel
+                    // attempting to select/deselect tower in shop
+                    if (state.X >= sidePanelX)
                     {
-                        // click ended in the side panel but tower on the map is selected
-                        gameMap.DeselectMapTower();
+
+                        if (gameMap.SelectedMapTower != null)
+                        {
+                            // click ended in the side panel but tower on the map is selected
+                            gameMap.DeselectMapTower();
+                        }
+
+                        gameMap.SelectTowerFromShop(state.X, state.Y);
                     }
 
-                    gameMap.SelectTowerFromShop(state.X, state.Y);
+                    // click ended on the map
+                    // either attempting to select/deselect tower on the map
+                    // or place a new one from the shop
+                    else
+                    {
+                        if (gameMap.SelectedShopTower == null)
+                        {
+                            gameMap.SelectTowerOnTheMap(state.X, state.Y);
+                        } else
+                        {
+                            gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+                        }
+                    }
+                } else if (gameOverPanel.RetryButtonClicked(state.X, state.Y))
+                {
+                    StartNewMap();
                 }
 
-                // click ended on the map
-                // either attempting to select/deselect tower on the map
-                // or place a new one from the shop
-                else
-                {
-                    if (gameMap.SelectedShopTower == null)
-                    {
-                        gameMap.SelectTowerOnTheMap(state.X, state.Y);
-                    } else
-                    {
-                        gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
-                    }
-                }
 
 
                 leftMouseClick = false;
@@ -241,9 +265,22 @@ namespace TowerDefenseAttempt1
             
 
             DrawSidePanel();
+
+            DrawGameOverPanel();
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Draw panel on the end of the game.
+        /// </summary>
+        private void DrawGameOverPanel()
+        {
+            if (gameMap.GameLost())
+            {
+                gameOverPanel.DrawPanel(_spriteBatch);
+            }
         }
 
         /// <summary>

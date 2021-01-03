@@ -10,15 +10,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
     /// <summary>
     /// Simple panel which displays stats as lines data in two columns.
     /// </summary>
-    public class StatsDisplaySidePanel
+    public class StatsDisplaySidePanel : AbstractPanel
     {
-        public int PanelWidth { get; set; }
-        public int PanelHeight { get; set; }
-
-        public float X { get; set; }
-        public float Y { get; set; }
-
-        public Color BackgroundColor { get; set; }
 
         /// <summary>
         /// Height of one line item.
@@ -40,44 +33,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         /// </summary>
         public float Column2Base { get; set; }
 
-        /// <summary>
-        /// Font to be used to print text.
-        /// </summary>
-        public SpriteFont TextFont { get; set; }
-
-        /// <summary>
-        /// Game map object to get data from.
-        /// </summary>
-        public Map GameMap { get; set; }
-
-        private Texture2D panelBackground;
 
         public StatsDisplaySidePanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, float lineHeight, float contentTopBase, float column1Base, float column2Base, SpriteFont font, Map gameMap)
+            :base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, font, gameMap)
         {
-            PanelWidth = panelWidth;
-            PanelHeight = panelHeight;
-            X = x;
-            Y = y;
-            BackgroundColor = backgroundColor;
             LineHeight = lineHeight;
             ContentTopBase = contentTopBase;
             Column1Base = column1Base;
             Column2Base = column2Base;
-            TextFont = font;
-            GameMap = gameMap;
-        }
-
-
-
-        /// <summary>
-        /// Initializes the background of this panel.
-        /// </summary>
-        public void InitPanel(GraphicsDevice graphicsDevice)
-        {
-            panelBackground = new Texture2D(graphicsDevice, PanelWidth, PanelHeight);
-            Color[] data = new Color[PanelWidth * PanelHeight];
-            for (int i = 0; i < data.Length; ++i) data[i] = BackgroundColor;
-            panelBackground.SetData(data);
         }
 
         /// <summary>
