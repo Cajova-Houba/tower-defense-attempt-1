@@ -19,7 +19,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         protected Texture2D againButtonBackground;
 
         public GameOverPanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, SpriteFont textFont, Map gameMap) 
-            : base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, textFont, gameMap)
+            : base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, textFont, textFont, gameMap)
         {
         }
 

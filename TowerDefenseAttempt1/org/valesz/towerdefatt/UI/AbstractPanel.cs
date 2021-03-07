@@ -31,6 +31,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         public SpriteFont TextFont { get; set; }
 
         /// <summary>
+        /// Same as TextFont but bold.
+        /// </summary>
+        public SpriteFont BoldTextFont { get; set; }
+
+        /// <summary>
         /// Game map object to get data from.
         /// </summary>
         public Map GameMap { get; set; }
@@ -38,13 +43,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         protected Texture2D panelBackground;
 
 
-        protected AbstractPanel(int panelWidth, int panelHeight, Vector2 position, Color backgroundColor, SpriteFont textFont, Map gameMap)
+        protected AbstractPanel(int panelWidth, int panelHeight, Vector2 position, Color backgroundColor, SpriteFont textFont, SpriteFont boldTextFont, Map gameMap)
         {
             PanelWidth = panelWidth;
             PanelHeight = panelHeight;
             Position = position;
             BackgroundColor = backgroundColor;
             TextFont = textFont;
+            BoldTextFont = boldTextFont;
             GameMap = gameMap;
         }
 

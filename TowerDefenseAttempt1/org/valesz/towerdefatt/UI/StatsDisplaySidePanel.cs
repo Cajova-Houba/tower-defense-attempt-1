@@ -34,8 +34,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         public float Column2Base { get; set; }
 
 
-        public StatsDisplaySidePanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, float lineHeight, float contentTopBase, float column1Base, float column2Base, SpriteFont font, Map gameMap)
-            :base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, font, gameMap)
+        public StatsDisplaySidePanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, float lineHeight, float contentTopBase, float column1Base, float column2Base, SpriteFont font, SpriteFont boldFont, Map gameMap)
+            :base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, font, boldFont, gameMap)
         {
             LineHeight = lineHeight;
             ContentTopBase = contentTopBase;
@@ -51,13 +51,17 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         public void DrawPanel(SpriteBatch spriteBatch, Dictionary<string, Texture2D> textures)
         {
             spriteBatch.Draw(panelBackground, new Vector2(X, Y), Color.White);
-            DrawTextLine(spriteBatch, "Score", GameMap.Score.ToString(), 0);
-            DrawTextLine(spriteBatch, "Kills", GameMap.EnemiesKilled.ToString(), 1);
-            DrawTextLine(spriteBatch, "Enemies", GameMap.Enemies.Count.ToString(), 2);
-            DrawTextLine(spriteBatch, "Money", GameMap.Money.ToString(), 3);
-            DrawTextLine(spriteBatch, "Base HP", GameMap.Base.Hp.ToString(), 4);
+            int cntr = 0;
+            DrawTextLine(spriteBatch, "Money", GameMap.Money.ToString(), cntr++, true);
+            cntr++;
 
-            DrawTowerShop(spriteBatch, "Towers", 6, textures);
+            DrawTextLine(spriteBatch, "Score", GameMap.Score.ToString(), cntr++);
+            DrawTextLine(spriteBatch, "Kills", GameMap.EnemiesKilled.ToString(), cntr++);
+            DrawTextLine(spriteBatch, "Enemies", GameMap.Enemies.Count.ToString(), cntr++);
+            DrawTextLine(spriteBatch, "Base HP", GameMap.Base.Hp.ToString(), cntr++);
+            cntr++;
+
+            DrawTowerShop(spriteBatch, "Towers", cntr++, textures);
 
             DrawSelectedMapTower(spriteBatch, GameMap.SelectedMapTower, 18);
         }
@@ -69,10 +73,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         /// <param name="column1">Contents of the column 1.</param>
         /// <param name="column2">Contents of the column 2.</param>
         /// <param name="lineNumber">Number of the line (used for spacing). Starts at 0.</param>
-        private void DrawTextLine(SpriteBatch spriteBatch, string column1, string column2, int lineNumber)
+        private void DrawTextLine(SpriteBatch spriteBatch, string column1, string column2, int lineNumber, bool bold = false)
         {
-            spriteBatch.DrawString(TextFont, column1, new Vector2(X + Column1Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
-            spriteBatch.DrawString(TextFont, column2, new Vector2(X + Column2Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
+            SpriteFont font = bold ? BoldTextFont : TextFont;
+            spriteBatch.DrawString(font, column1, new Vector2(X + Column1Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
+            spriteBatch.DrawString(font, column2, new Vector2(X + Column2Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace TowerDefenseAttempt1
         /// </summary>
         Dictionary<string, Texture2D> textures;
 
-        SpriteFont scoreFont;
+        SpriteFont scoreFont, scoreFontBold;
 
         Texture2D grassTexture;
 
@@ -86,8 +86,6 @@ namespace TowerDefenseAttempt1
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -96,6 +94,7 @@ namespace TowerDefenseAttempt1
             InitTextureMap(gameMap);
 
             scoreFont = Content.Load<SpriteFont>("assets/fonts/score");
+            scoreFontBold = Content.Load<SpriteFont>("assets/fonts/scoreBold");
             grassTexture = Content.Load<Texture2D>("assets/ground/grass");
 
             InitSidePanel();
@@ -115,7 +114,7 @@ namespace TowerDefenseAttempt1
                 Color.LightGray, 
                 15, 30, 
                 10, 85, 
-                scoreFont, gameMap);
+                scoreFont, scoreFontBold, gameMap);
             statsDisplaySidePanel.InitPanel(GraphicsDevice);
         }
 
