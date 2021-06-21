@@ -4,17 +4,17 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/attack/shot.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/bases/default.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/enemies/default.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/enemies/default_hurt.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/fonts/Score.spritefont</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/fonts/ScoreBold.spritefont</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/ground/grass.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_selected.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_shot.png</File>
-    <File>C:/Users/zdenda.DESKTOP-KS2IS4C/prg/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_shot_selected.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/attack/shot.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/bases/default.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/enemies/default.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/enemies/default_hurt.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/fonts/Score.spritefont</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/fonts/ScoreBold.spritefont</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/ground/grass.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_selected.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_shot.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_shot_selected.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

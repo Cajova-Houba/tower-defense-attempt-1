@@ -12,6 +12,8 @@ namespace TowerDefenseAttempt1
 {
     public class Game1 : Game
     {
+        private const int WIDTH = 1000;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
@@ -29,8 +31,10 @@ namespace TowerDefenseAttempt1
         /// <summary>
         /// Side panel for displaying game stats and buying towers.
         /// </summary>
-        float sidePanelX = 630;
+        float sidePanelX = 750;
         float sidePanelY = 20;
+        int sidePanelW = 225;
+        int sidePanelH = 430;
         StatsDisplaySidePanel statsDisplaySidePanel;
 
         GameOverPanel gameOverPanel;
@@ -55,16 +59,21 @@ namespace TowerDefenseAttempt1
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;   
+            IsMouseVisible = true;
+
+            
         }
 
         protected override void Initialize()
         {
+            _graphics.PreferredBackBufferWidth = WIDTH;
+            _graphics.ApplyChanges();
+
             // TODO: Add your initialization logic here
             gameMap = new Map();
             StartNewMap();
-            
 
             base.Initialize();
         }
@@ -110,7 +119,7 @@ namespace TowerDefenseAttempt1
 
         private void InitSidePanel()
         {
-            statsDisplaySidePanel = new StatsDisplaySidePanel(150, 400, sidePanelX, sidePanelY, 
+            statsDisplaySidePanel = new StatsDisplaySidePanel(sidePanelW, sidePanelH, sidePanelX, sidePanelY, 
                 Color.LightGray, 
                 15, 30, 
                 10, 85, 
