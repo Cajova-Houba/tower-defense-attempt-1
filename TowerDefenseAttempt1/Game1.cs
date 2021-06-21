@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.Base;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Controls;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.Spawn;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI;
 
 namespace TowerDefenseAttempt1
@@ -38,23 +38,11 @@ namespace TowerDefenseAttempt1
         StatsDisplaySidePanel statsDisplaySidePanel;
 
         GameOverPanel gameOverPanel;
-
-        /// <summary>
-        /// Sets to true when the left mouse button is presed (used to track click: press-release).
-        /// </summary>
-        bool leftMouseClick;
-
-        /// <summary>
-        /// When was the last tower upgraded (in ms).
-        /// </summary>
-        long lastTowerUgrade = -1;
-
-        /// <summary>
-        /// Min time interval between tower upgrades (in ms). Applied only when the update key is pressed (without release).
-        /// </summary>
-        long towerUpgradeTimeInterval = 1000;
-
         Map gameMap;
+
+        KeyboardHandler keyboardHandler;
+        MouseHandler mouseHandler;
+        GameState gameState;
 
         public Game1()
         {
@@ -62,8 +50,6 @@ namespace TowerDefenseAttempt1
             
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            
         }
 
         protected override void Initialize()
@@ -71,26 +57,15 @@ namespace TowerDefenseAttempt1
             _graphics.PreferredBackBufferWidth = WIDTH;
             _graphics.ApplyChanges();
 
+            keyboardHandler = new KeyboardHandler();
+            mouseHandler = new MouseHandler();
+            gameState = new GameState();
+
             // TODO: Add your initialization logic here
             gameMap = new Map();
-            StartNewMap();
+            ConfigUtils.StartNewMapWithDefaultConfiguration(gameMap);
 
             base.Initialize();
-        }
-
-        private void StartNewMap()
-        {
-            gameMap.StartNewMap(new DefaultBase(50, 50), new WaveSpawner(new List<ISpawnPoint> {
-                new DefaultSpawnPoint(550, 30),
-                new DefaultSpawnPoint(545, 38),
-                new DefaultSpawnPoint(510, 83),
-                new DefaultSpawnPoint(479, 155),
-                new DefaultSpawnPoint(480, 160),
-                new DefaultSpawnPoint(495, 170),
-                new DefaultSpawnPoint(510, 270),
-                new DefaultSpawnPoint(515, 280),
-                new DefaultSpawnPoint(505, 301)
-            }));
         }
 
         protected override void LoadContent()
@@ -129,12 +104,13 @@ namespace TowerDefenseAttempt1
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (keyboardHandler.ShouldExit())
+            {
                 Exit();
+            }
 
-            HandleMouse();
-
-            HandleKeyboard();
+            mouseHandler.HandleMouse(gameMap, sidePanelX, gameOverPanel);
+            keyboardHandler.HandleKeyboard(gameState, gameMap);
 
             // TODO: Add your update logic here
             if (!gameMap.GameLost())
@@ -162,84 +138,6 @@ namespace TowerDefenseAttempt1
             }
 
             base.Update(gameTime);
-        }
-
-        /// <summary>
-        /// Handle press of non-exit keys.
-        /// </summary>
-        private void HandleKeyboard()
-        {
-            // tower upgrade
-            if (Keyboard.GetState().IsKeyDown(Keys.U))
-            {
-                long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                if (lastTowerUgrade < 0 || lastTowerUgrade + towerUpgradeTimeInterval <= now)
-                {
-                    gameMap.UpgradeSelectedTower();
-                    lastTowerUgrade = now;
-                }
-            } else if (Keyboard.GetState().IsKeyUp(Keys.U))
-            {
-                // upgrade key release = reset the timer so that the upgrades
-                // can be purchased every key 'click'
-                lastTowerUgrade = -1;
-            }
-        }
-
-        /// <summary>
-        /// Checks for mous click and places tower if possible.
-        /// </summary>
-        private void HandleMouse()
-        {
-            MouseState state = Mouse.GetState();
-            
-            // beginning the mouse click
-            if (state.LeftButton == ButtonState.Pressed)
-            {
-                leftMouseClick = true;
-            } 
-
-            // releasing the mouse = end of the click
-            else if (state.LeftButton == ButtonState.Released && leftMouseClick)
-            {
-                if (!gameMap.GameLost())
-                {
-                    // click ended on the side panel
-                    // attempting to select/deselect tower in shop
-                    if (state.X >= sidePanelX)
-                    {
-
-                        if (gameMap.SelectedMapTower != null)
-                        {
-                            // click ended in the side panel but tower on the map is selected
-                            gameMap.DeselectMapTower();
-                        }
-
-                        gameMap.SelectTowerFromShop(state.X, state.Y);
-                    }
-
-                    // click ended on the map
-                    // either attempting to select/deselect tower on the map
-                    // or place a new one from the shop
-                    else
-                    {
-                        if (gameMap.SelectedShopTower == null)
-                        {
-                            gameMap.SelectTowerOnTheMap(state.X, state.Y);
-                        } else
-                        {
-                            gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
-                        }
-                    }
-                } else if (gameOverPanel.RetryButtonClicked(state.X, state.Y))
-                {
-                    StartNewMap();
-                }
-
-
-
-                leftMouseClick = false;
-            }
         }
 
         protected override void Draw(GameTime gameTime)

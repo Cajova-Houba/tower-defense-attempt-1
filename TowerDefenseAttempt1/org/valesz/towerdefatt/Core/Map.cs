@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
+﻿using System.Collections.Generic;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
@@ -75,15 +72,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         /// <param name="playerBase">Player's base.</param>
         /// <param name="spawner">Spawner to be used on this map.</param>
-        public void StartNewMap(IBase playerBase, AbstractSpawner spawner)
+        public void StartNewMap(IBase playerBase, AbstractSpawner spawner, List<ITower> availableTowers, uint startingMoney)
         {
             Base = playerBase;
             Enemies = new List<IEnemy>();
             Towers = new List<ITower>();
-            AvailableTowers = new List<ITower>();
-            AvailableTowers.Add(new DefaultTower(0, 0));
+            AvailableTowers = availableTowers;
             Score = 0;
-            Money = new DefaultTower(0,0).Price;
+            Money = startingMoney;
             DeselectMapTower();
             DeselectShopTower();
             this.spawner = spawner;
