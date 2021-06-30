@@ -18,7 +18,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
         /// </summary>
         bool leftMouseClick = false;
 
-        public void HandleMouse(Map gameMap, float sidePanelX, GameOverPanel gameOverPanel)
+        public void HandleMouse(GameState gameState, Map gameMap, float sidePanelX, GameOverPanel gameOverPanel, ControlsPanel controlsPanel)
         {
             MouseState state = Mouse.GetState();
 
@@ -33,34 +33,46 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
             {
                 if (!gameMap.GameLost())
                 {
-                    // click ended on the side panel
-                    // attempting to select/deselect tower in shop
-                    if (state.X >= sidePanelX)
+                    if (gameState.IsPaused())
                     {
-
-                        if (gameMap.SelectedMapTower != null)
+                        // is pause => only handle resume button click and nothing else
+                        if (controlsPanel.IsResumeButtonClick(state.X, state.Y))
                         {
-                            // click ended in the side panel but tower on the map is selected
-                            gameMap.DeselectMapTower();
+                            gameState.UnPause();
+                        }
+                    } else
+                    {
+                        // click ended on the side panel
+                        // attempting to select/deselect tower in shop
+                        if (state.X >= sidePanelX)
+                        {
+
+                            if (gameMap.SelectedMapTower != null)
+                            {
+                                // click ended in the side panel but tower on the map is selected
+                                gameMap.DeselectMapTower();
+                            }
+
+                            gameMap.SelectTowerFromShop(state.X, state.Y);
                         }
 
-                        gameMap.SelectTowerFromShop(state.X, state.Y);
-                    }
-
-                    // click ended on the map
-                    // either attempting to select/deselect tower on the map
-                    // or place a new one from the shop
-                    else
-                    {
-                        if (gameMap.SelectedShopTower == null)
-                        {
-                            gameMap.SelectTowerOnTheMap(state.X, state.Y);
-                        }
+                        // click ended on the map
+                        // either attempting to select/deselect tower on the map
+                        // or place a new one from the shop
                         else
                         {
-                            gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+                            if (gameMap.SelectedShopTower == null)
+                            {
+                                gameMap.SelectTowerOnTheMap(state.X, state.Y);
+                            }
+                            else
+                            {
+                                gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+                            }
                         }
+
                     }
+
                 }
                 else if (gameOverPanel.RetryButtonClicked(state.X, state.Y))
                 {

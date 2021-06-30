@@ -36,8 +36,10 @@ namespace TowerDefenseAttempt1
         int sidePanelW = 225;
         int sidePanelH = 430;
         StatsDisplaySidePanel statsDisplaySidePanel;
-
         GameOverPanel gameOverPanel;
+        ControlsPanel controlsPanel;
+
+
         Map gameMap;
 
         KeyboardHandler keyboardHandler;
@@ -60,6 +62,7 @@ namespace TowerDefenseAttempt1
             keyboardHandler = new KeyboardHandler();
             mouseHandler = new MouseHandler();
             gameState = new GameState();
+            gameState.Pause();
 
             // TODO: Add your initialization logic here
             gameMap = new Map();
@@ -83,7 +86,14 @@ namespace TowerDefenseAttempt1
 
             InitSidePanel();
             InitGameOverPanel();
+            InitControlsPanel();
 
+        }
+
+        private void InitControlsPanel()
+        {
+            controlsPanel = new ControlsPanel(400, 200, new Vector2(150, 100), Color.LightGray, scoreFont, gameMap);
+            controlsPanel.InitPanel(GraphicsDevice);
         }
 
         private void InitGameOverPanel()
@@ -109,11 +119,11 @@ namespace TowerDefenseAttempt1
                 Exit();
             }
 
-            mouseHandler.HandleMouse(gameMap, sidePanelX, gameOverPanel);
+            mouseHandler.HandleMouse(gameState, gameMap, sidePanelX, gameOverPanel, controlsPanel);
             keyboardHandler.HandleKeyboard(gameState, gameMap);
 
             // TODO: Add your update logic here
-            if (!gameMap.GameLost())
+            if (!gameMap.GameLost() && !gameState.IsPaused())
             {
                 foreach(IHasAI enemy in gameMap.Enemies)
                 {
@@ -172,10 +182,20 @@ namespace TowerDefenseAttempt1
 
             DrawSidePanel();
 
+            DrawControlsPanel();
+
             DrawGameOverPanel();
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawControlsPanel()
+        {
+            if (gameState.IsPaused())
+            {
+                controlsPanel.DrawPanel(_spriteBatch);
+            }
         }
 
         /// <summary>

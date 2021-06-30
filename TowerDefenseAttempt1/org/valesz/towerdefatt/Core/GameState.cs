@@ -21,6 +21,29 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         long lastTowerUgrade = NO_UPGRADE;
 
+        bool paused = false;
+
+        /// <summary>
+        /// Pauses the current game.
+        /// </summary>
+        public void Pause()
+        {
+            paused = true;
+        }
+
+        /// <summary>
+        /// Unpauses current game.
+        /// </summary>
+        public void UnPause()
+        {
+            paused = false;
+        }
+
+        public bool IsPaused()
+        {
+            return paused;
+        }
+
         /// <summary>
         /// Checks the game state values and decides whether the tower upgrade is possible. In order for it to be possible,
         /// the limit between updates must be exceeded.
