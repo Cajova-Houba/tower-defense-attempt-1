@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
@@ -61,6 +62,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// How much money player has. Money can be gained by killing enemies.
         /// </summary>
         public uint Money { get; private set; }
+
+        /// <summary>
+        /// Object used to gather statistic data during the game.
+        /// </summary>
+        public IStatsCollector StatsCollector { get; set; }
 
         /// <summary>
         /// Spawner to be used on this map.
@@ -130,6 +136,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             {
                 Towers.Add(tower);
                 Money -= tower.Price;
+                CollectStatistics(StatsCollectionEvent.TOWER_BOUGHT);
             }
 
             DeselectShopTower();
@@ -157,6 +164,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             {
                 Money -= SelectedMapTower.UpgradePrice;
                 SelectedMapTower.Upgrade();
+                CollectStatistics(StatsCollectionEvent.TOWER_UPGRADE);
             }
         }
 
@@ -199,6 +207,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             if (Enemies.Count == 0)
             {
                 Enemies.AddRange(spawner.Spawn());
+                CollectStatistics(StatsCollectionEvent.WAVE_SPAWNED);
             }
         }
 
@@ -266,6 +275,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 
             // no tower lise on given coordinates => deselect
             DeselectShopTower();
+        }
+
+        /// <summary>
+        /// Attempts to call the stat collector with given event. If no collector is set, nothing happens.
+        /// </summary>
+        /// <param name="eventType">Type of the event to be passed to collector.</param>
+        private void CollectStatistics(StatsCollectionEvent eventType) {
+            StatsCollector?.CollectStatsOnEvent(eventType, this);
         }
     }
 }

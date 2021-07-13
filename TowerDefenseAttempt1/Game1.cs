@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Controls;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Statistics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI;
 
 namespace TowerDefenseAttempt1
@@ -46,6 +48,8 @@ namespace TowerDefenseAttempt1
         MouseHandler mouseHandler;
         GameState gameState;
 
+        IStatsCollector statsCollector;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -59,13 +63,15 @@ namespace TowerDefenseAttempt1
             _graphics.PreferredBackBufferWidth = WIDTH;
             _graphics.ApplyChanges();
 
+            statsCollector = new CsvStatsCollector();
+
             keyboardHandler = new KeyboardHandler();
             mouseHandler = new MouseHandler();
             gameState = new GameState();
             gameState.Pause();
 
             // TODO: Add your initialization logic here
-            gameMap = new Map();
+            gameMap = new Map() { StatsCollector = statsCollector };
             ConfigUtils.StartNewMapWithDefaultConfiguration(gameMap);
 
             base.Initialize();
@@ -205,6 +211,7 @@ namespace TowerDefenseAttempt1
         {
             if (gameMap.GameLost())
             {
+                statsCollector.FinalizeStatistics();
                 gameOverPanel.DrawPanel(_spriteBatch);
             }
         }

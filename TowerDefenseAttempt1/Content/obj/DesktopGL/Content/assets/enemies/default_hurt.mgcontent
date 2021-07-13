@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/enemies/default_hurt.png</SourceFile>
-  <SourceTime>2021-06-21T20:27:51.3345131+02:00</SourceTime>
-  <DestFile>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/bin/DesktopGL/Content/assets/enemies/default_hurt.xnb</DestFile>
-  <DestTime>2021-06-21T20:33:47.149658+02:00</DestTime>
+  <SourceFile>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/assets/enemies/default_hurt.png</SourceFile>
+  <SourceTime>2020-12-23T13:21:53.9882078+01:00</SourceTime>
+  <DestFile>C:/Users/zdenek/source/repos/TowerDefenseAttempt1/TowerDefenseAttempt1/Content/bin/DesktopGL/Content/assets/enemies/default_hurt.xnb</DestFile>
+  <DestTime>2021-07-06T20:47:09.6195369+02:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
+  <ImporterTime>2020-08-10T16:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2020-08-10T18:17:54+02:00</ProcessorTime>
+  <ProcessorTime>2020-08-10T16:17:54+02:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>
