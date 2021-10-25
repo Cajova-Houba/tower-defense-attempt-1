@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 {
@@ -52,10 +53,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public float AttackSpeedUpgradeFactor => 1.5f;
 
-        /// <summary>
-        /// Time when the next attack is allowed in millis. Initialized to -1.
-        /// </summary>
-        private long NextAttack { get; set; }
+        private Timer AttackTimer { get; set; }
 
 
         private bool shooting = false;
@@ -70,6 +68,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             stopShootingAnimation = -1;
             Shot = null;
             Selected = false;
+            AttackTimer = new Timer((long)(1000 / AttackSpeed));
         }
 
         public ITower Clone(float x, float y)
@@ -115,6 +114,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             UpgradePrice = (uint)( UpgradePrice * UpgradePriceFactor);
             Damage = (uint)(Damage * DamageUpgradeFactor);
             AttackSpeed = AttackSpeed * AttackSpeedUpgradeFactor;
+            AttackTimer.ResetPeriod((long)(1000 / AttackSpeed));
         }
 
         /// <summary>
@@ -123,10 +123,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         /// <param name="entity">Entity to attack.</param>
         private void Attack(IHasHp entity)
         {
-            if (NextAttack == NO_ATTACK)
+            if (AttackTimer.HasPassed())
             {
                 entity.TakeHit(Damage);
-                NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
                 shooting = true;
                 stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
                 Shot = new Point[]
@@ -134,22 +133,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
                         Position.ToPoint() + ShootingPoint,
                         entity.Position.ToPoint() + entity.Center
                     };
-            }
-            else
-            {
-                long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                if (now >= NextAttack)
-                {
-                    entity.TakeHit(Damage);
-                    NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
-                    shooting = true;
-                    stopShootingAnimation = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + 250;
-                    Shot = new Point[]
-                    {
-                        Position.ToPoint() + ShootingPoint,
-                        entity.Position.ToPoint() + entity.Center
-                    };
-                }
             }
         }
     }

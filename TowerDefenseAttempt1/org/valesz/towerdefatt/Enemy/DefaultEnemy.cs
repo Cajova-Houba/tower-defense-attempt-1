@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
 {
@@ -50,10 +51,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
         /// </summary>
         private Vector2 Destination { get; set; }
 
-        /// <summary>
-        /// Time when the next attack is allowed in millis. Initialized to -1.
-        /// </summary>
-        private long NextAttack { get; set; }
+        private Timer AttackTimer { get; set; }
 
         public DefaultEnemy(Vector2 position) : this(position.X, position.Y) {}
 
@@ -64,7 +62,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
             Speed = 0.5f;
             Damage = 10;
             AttackSpeed = 1;
-            NextAttack = NO_ATTACK;
+            AttackTimer = new Timer((long)(1000 / AttackSpeed));
         }
 
         public void TakeHit(uint damage)
@@ -105,18 +103,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
         /// <param name="entity">Entity to attack.</param>
         private void Attack(IHasHp entity)
         {
-            if (NextAttack == NO_ATTACK)
+            if (AttackTimer.HasPassed())
             {
                 entity.TakeHit(Damage);
-                NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
-            } else
-            {
-                long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                if (now >= NextAttack)
-                {
-                    entity.TakeHit(Damage);
-                    NextAttack = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + (long)(1000 / AttackSpeed);
-                }
             }
         }
     }
