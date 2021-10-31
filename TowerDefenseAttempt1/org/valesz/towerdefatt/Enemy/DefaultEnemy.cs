@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
@@ -23,9 +24,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
         /// </summary>
         const long NO_ATTACK = -1;
 
-        public string TextureName => (Hp < MAX_HP / 2) ? "assets/enemies/default_hurt" : "assets/enemies/default";
+        public string TextureName => (Hp < MAX_HP / 2) ? Textures.DEFAULT_ENEMY_HURT : Textures.DEFAULT_ENEMY;
 
-        public IEnumerable<string> AllTextures => new string[] { "assets/enemies/default_hurt", "assets/enemies/default" };
+        public IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_ENEMY_HURT, Textures.DEFAULT_ENEMY };
 
         public Vector2 Position { get; set; }
 

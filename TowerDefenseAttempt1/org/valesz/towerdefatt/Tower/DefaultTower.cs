@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
@@ -20,15 +21,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             {
                 if (shooting)
                 {
-                    return Selected ? "assets/towers/default_shot_selected" : "assets/towers/default_shot";
+                    return Selected ? Textures.DEFAULT_TOWER_SHOT_SELECTED : Textures.DEFAULT_TOWER_SHOT;
                 } else
                 {
-                    return Selected ? "assets/towers/default_selected" : "assets/towers/default";
+                    return Selected ? Textures.DEFAULT_TOWER_SELECTED : Textures.DEFAULT_TOWER;
                 }
             }
         }
 
-        public IEnumerable<string> AllTextures => new string[] { "assets/towers/default", "assets/towers/default_shot", "assets/towers/default_selected", "assets/towers/default_shot_selected" };
+        public IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_TOWER_SHOT_SELECTED, Textures.DEFAULT_TOWER, Textures.DEFAULT_TOWER_SELECTED, Textures.DEFAULT_TOWER_SHOT };
 
         public Vector2 Position { get; set; }
 
