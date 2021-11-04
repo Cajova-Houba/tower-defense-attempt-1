@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
@@ -29,24 +30,16 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Towers available through all the game.
+        /// Obstacles placed on the map.
         /// </summary>
-        public List<ITower> AvailableTowers
+        public List<IObstacle> Obstacles
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Tower selected in shop by player. Initialized to null.
-        /// </summary>
 
-        public ITower SelectedShopTower { get; private set; }
-
-        /// <summary>
-        /// Tower on map selected by player. Initialized to null.
-        /// </summary>
-        public ITower SelectedMapTower { get; private set; }
+        public Shop Shop { get; private set; }
 
         /// <summary>
         /// Score gained by killing enemies.
@@ -69,6 +62,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public IStatsCollector StatsCollector { get; set; }
 
         /// <summary>
+        /// Tower on map selected by player. Initialized to null.
+        /// </summary>
+        public ITower SelectedMapTower { get; private set; }
+
+        /// <summary>
         /// Spawner to be used on this map.
         /// </summary>
         private AbstractSpawner spawner;
@@ -78,18 +76,17 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         /// <param name="playerBase">Player's base.</param>
         /// <param name="spawner">Spawner to be used on this map.</param>
-        public void StartNewMap(IBase playerBase, AbstractSpawner spawner, List<ITower> availableTowers, uint startingMoney)
+        public void StartNewMap(IBase playerBase, AbstractSpawner spawner, List<ITower> availableTowers, List<IObstacle> availableObstacles, uint startingMoney)
         {
             Base = playerBase;
             Enemies = new List<IEnemy>();
             Towers = new List<ITower>();
-            AvailableTowers = availableTowers;
+            Obstacles = new List<IObstacle>();
+            Shop = new Shop(availableTowers, availableObstacles);
             Score = 0;
             Money = startingMoney;
             DeselectMapTower();
-            DeselectShopTower();
             this.spawner = spawner;
-
             SpawnEnemies();
         }
 
@@ -116,12 +113,25 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
                 textureNames.AddRange(enemy.AllTextures);
             }
 
-            foreach (ITower tower in AvailableTowers)
-            {
-                textureNames.AddRange(tower.AllTextures);
-            }
+            textureNames.AddRange(Shop.AllItemTextures());
 
             return textureNames;
+        }
+
+        /// <summary>
+        /// Buy and place the item currently selected in the shop.
+        /// </summary>
+        /// <param name="clickX"></param>
+        /// <param name="clickY"></param>
+        public void BuySelectedItem(float clickX, float clickY)
+        {
+            if (Shop.SelectedShopItem == null)
+            {
+                return;
+            } else
+            {
+                BuyTower(Shop.CloneSelectedItem(clickX, clickY));
+            }
         }
 
         /// <summary>
@@ -129,17 +139,26 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// If the player does not have enough money, no tower will be placed and SelectedShopTower
         /// will still be reset.
         /// </summary>
-        /// <param name="tower">Instance of a tower to be placed</param>
-        public void BuyTower(ITower tower)
+        /// <param name="shopItem">Instance of a tower to be placed</param>
+        public void BuyTower(IShopItem shopItem)
         {
-            if (Money >= tower.Price)
+            if (Money >= shopItem.Price)
             {
-                Towers.Add(tower);
-                Money -= tower.Price;
-                CollectStatistics(StatsCollectionEvent.TOWER_BOUGHT);
+                // todo: some generic way to handle this
+                if (shopItem is ITower)
+                {
+                    Towers.Add((ITower)shopItem);
+                    Money -= shopItem.Price;
+                    CollectStatistics(StatsCollectionEvent.TOWER_BOUGHT);
+                } else if (shopItem is IObstacle)
+                {
+                    Obstacles.Add((IObstacle)shopItem);
+                    Money -= shopItem.Price;
+                    CollectStatistics(StatsCollectionEvent.OBSTACLE_BOUGHT);
+                }
             }
 
-            DeselectShopTower();
+            Shop.DeselectAll();
         }
 
         /// <summary>
@@ -168,17 +187,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             }
         }
 
-        /// <summary>
-        /// Deselects selected tower in shop (if any).
-        /// </summary>
-        public void DeselectShopTower()
-        {
-            SelectedShopTower = null;
-            foreach (ITower t in AvailableTowers)
-            {
-                t.Selected = false;
-            }
-        }
 
         /// <summary>
         /// Adds value to the score and also to the money.
@@ -245,37 +253,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             DeselectMapTower();
         }
 
-        /// <summary>
-        /// Deselects all previously selected towers in shop and then selects available tower 
-        /// from shop on the given coordinates. If the tower on the given coordinates is already
-        /// selected, this method just deselects it.
-        /// </summary>
-        public void SelectTowerFromShop(float x, float y)
-        {
-            foreach(ITower availableTower in AvailableTowers)
-            {
-                if ((availableTower.Position.X <= x && availableTower.Position.X + 64 >= x) &&
-                    (availableTower.Position.Y <= y && availableTower.Position.Y + 64 >= y)  
-                    )
-                {
-                    // tower already selected => deselect
-                    if (availableTower.Selected)
-                    {
-                        DeselectShopTower();
-                    } else
-                    {
-                        // deselect others and select the current one
-                        DeselectShopTower();
-                        SelectedShopTower = availableTower;
-                        availableTower.Selected = true;
-                    }
-                    return;
-                }
-            }
-
-            // no tower lise on given coordinates => deselect
-            DeselectShopTower();
-        }
 
         /// <summary>
         /// Attempts to call the stat collector with given event. If no collector is set, nothing happens.

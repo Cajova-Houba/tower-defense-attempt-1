@@ -11,6 +11,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration
     public class Textures
     {
         public const string DEFAULT_OBSTACLE = "assets/obstacles/default";
+        public const string DEFAULT_OBSTACLE_SELECTED = "assets/obstacles/default_selected";
 
         public const string DEFAULT_ENEMY = "assets/enemies/default";
         public const string DEFAULT_ENEMY_HURT = "assets/enemies/default_hurt";

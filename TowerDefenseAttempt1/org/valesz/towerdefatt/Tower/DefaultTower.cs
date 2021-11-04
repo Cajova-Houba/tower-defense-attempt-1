@@ -5,16 +5,13 @@ using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 {
     public class DefaultTower : AbstractVisibleObject, ITower
     {
-        /// <summary>
-        /// Constant used to initialize NextAttack.
-        /// </summary>
-        const long NO_ATTACK = -1;
 
         public override string TextureName
         {
@@ -69,7 +66,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             AttackTimer = new Timer((long)(1000 / AttackSpeed));
         }
 
-        public ITower Clone(float x, float y)
+        public IShopItem Clone(float x, float y)
         {
             return new DefaultTower(x, y);
         }

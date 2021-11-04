@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -61,7 +62,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
             DrawTextLine(spriteBatch, "Base HP", GameMap.Base.Hp.ToString(), cntr++);
             cntr++;
 
-            DrawTowerShop(spriteBatch, "Towers", cntr++, textures);
+            DrawShop(spriteBatch, "Items", cntr++, textures);
 
             DrawSelectedMapTower(spriteBatch, GameMap.SelectedMapTower, 18);
         }
@@ -87,17 +88,29 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         /// <param name="heading">Heading of the shop.</param>
         /// <param name="lineNumber">Line number where to print heading. Will be used to print rest of the shop too.</param>
         /// <param name="textures">Dictionary which contains textures used to draw towers.</param>
-        private void DrawTowerShop(SpriteBatch spriteBatch, string heading, int lineNumber, Dictionary<string, Texture2D> textures)
+        private void DrawShop(SpriteBatch spriteBatch, string heading, int lineNumber, Dictionary<string, Texture2D> textures)
         {
             DrawTextLine(spriteBatch, heading, "", lineNumber);
-            for (int i = 0; i < GameMap.AvailableTowers.Count; i++)
+            int lineCounter = 0;
+            foreach (IShopItem shopItem in GameMap.Shop.AvailableTowers)
             {
-                float tY = Y + ContentTopBase + LineHeight * (lineNumber + 1) + 5 + i * 70;
-                ITower tower = GameMap.AvailableTowers[i];
-                tower.Position = new Vector2(X + Column1Base, tY);
-                spriteBatch.Draw(textures[tower.TextureName], tower.Position, Color.White);
-                spriteBatch.DrawString(TextFont, "x" + tower.Price.ToString(), new Vector2(X + Column1Base + 70, tY + 27), Color.Black);
+                float tY = Y + ContentTopBase + LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
+                DrawShopItem(spriteBatch, shopItem, tY, textures);
+                lineCounter++;
             }
+            foreach (IShopItem shopItem in GameMap.Shop.AvailableObstacles)
+            {
+                float tY = Y + ContentTopBase + LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
+                DrawShopItem(spriteBatch, shopItem, tY, textures);
+                lineCounter++;
+            }
+        }
+
+        private void DrawShopItem(SpriteBatch spriteBatch, IShopItem shopItem, float tY, Dictionary<string, Texture2D> textures)
+        {
+            shopItem.Position = new Vector2(X + Column1Base, tY);
+            spriteBatch.Draw(textures[shopItem.TextureName], shopItem.Position, Color.White);
+            spriteBatch.DrawString(TextFont, "x" + shopItem.Price.ToString(), new Vector2(X + Column1Base + 70, tY + 27), Color.Black);
         }
 
         /// <summary>

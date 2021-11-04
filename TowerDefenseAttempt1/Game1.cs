@@ -180,6 +180,11 @@ namespace TowerDefenseAttempt1
                 }
             }
 
+            foreach (IHasTexture obstacle in gameMap.Obstacles)
+            {
+                _spriteBatch.Draw(textures[obstacle.TextureName], obstacle.Position, Color.White);
+            }
+
             foreach (IHasTexture enemy in gameMap.Enemies) 
             {
                 _spriteBatch.Draw(textures[enemy.TextureName], enemy.Position, Color.White);

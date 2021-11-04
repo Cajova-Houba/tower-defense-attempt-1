@@ -20,6 +20,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics
         TOWER_BOUGHT,
 
         /// <summary>
+        /// Fired after an obstacle is bought.
+        /// </summary>
+        OBSTACLE_BOUGHT,
+
+        /// <summary>
         /// Fired after a tower is upgraded.
         /// </summary>
         TOWER_UPGRADE,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Base;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Obstacle;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Spawn;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Tower;
 
@@ -19,6 +20,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration
             {
                 new DefaultTower(0, 0)
             };
+            List<IObstacle> availableObstacles = new List<IObstacle>
+            {
+                new DefaultObstacle(0,0)
+            };
             uint startingMoney = new DefaultTower(0, 0).Price;
 
             float baseX = 480, baseY = 30, topY = 400;
@@ -32,7 +37,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration
                 spawnPoints.Add(new DefaultSpawnPoint(baseX + xDiff, baseY + yStep*i));
             }
 
-            gameMap.StartNewMap(new DefaultBase(50, 50), new WaveSpawner(spawnPoints), availableTowers, startingMoney);
+            gameMap.StartNewMap(new DefaultBase(50, 50), new WaveSpawner(spawnPoints), availableTowers, availableObstacles, startingMoney);
         }
     }
 }

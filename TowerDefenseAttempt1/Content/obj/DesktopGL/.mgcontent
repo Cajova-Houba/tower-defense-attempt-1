@@ -12,6 +12,7 @@
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/fonts/ScoreBold.spritefont</File>
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/ground/grass.png</File>
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/obstacles/default.png</File>
+    <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/obstacles/default_selected.png</File>
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default.png</File>
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_selected.png</File>
     <File>C:/Users/zdenda/source/repos/tower-defense-attempt-1/TowerDefenseAttempt1/Content/assets/towers/default_shot.png</File>
@@ -24,6 +25,7 @@
     <File xsi:nil="true" />
     <File>assets/fonts/score.spritefont</File>
     <File>assets/fonts/scoreBold.spritefont</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

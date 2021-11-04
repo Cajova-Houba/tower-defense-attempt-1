@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
@@ -53,7 +50,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                                 gameMap.DeselectMapTower();
                             }
 
-                            gameMap.SelectTowerFromShop(state.X, state.Y);
+                            gameMap.Shop.SelectFromShop(state.X, state.Y);
                         }
 
                         // click ended on the map
@@ -61,13 +58,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                         // or place a new one from the shop
                         else
                         {
-                            if (gameMap.SelectedShopTower == null)
+                            if (gameMap.Shop.SelectedShopItem == null)
                             {
                                 gameMap.SelectTowerOnTheMap(state.X, state.Y);
                             }
                             else
                             {
-                                gameMap.BuyTower(gameMap.SelectedShopTower.Clone(state.X - gameMap.SelectedShopTower.Center.X, state.Y - gameMap.SelectedShopTower.Center.Y));
+                                gameMap.BuySelectedItem(state.X, state.Y);
                             }
                         }
 
@@ -78,8 +75,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                 {
                     ConfigUtils.StartNewMapWithDefaultConfiguration(gameMap);
                 }
-
-
 
                 leftMouseClick = false;
             }

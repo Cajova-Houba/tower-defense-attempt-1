@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
@@ -13,7 +14,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
     /// It is assumed that obstacles are immovable - once the player palces them, they cannot move and are removed only when destroyed 
     /// by enemy.
     /// </summary>
-    public interface IObstacle : IHasHp, IHasPosition, IHasTexture
+    public interface IObstacle : IHasHp, IHasPosition, IHasTexture, IShopItem
     {
     }
 }
