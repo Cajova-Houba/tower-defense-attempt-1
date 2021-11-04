@@ -11,5 +11,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract
     {
         public abstract string TextureName { get; }
         public abstract IEnumerable<string> AllTextures { get; }
+
+        public AbstractVisibleObject(float x, float y) : base(x, y) { }
     }
 }

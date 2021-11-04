@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 {
-    public class DefaultTower : ITower
+    public class DefaultTower : AbstractVisibleObject, ITower
     {
         /// <summary>
         /// Constant used to initialize NextAttack.
         /// </summary>
         const long NO_ATTACK = -1;
 
-        public string TextureName
+        public override string TextureName
         {
             get
             {
@@ -29,9 +30,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
             }
         }
 
-        public IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_TOWER_SHOT_SELECTED, Textures.DEFAULT_TOWER, Textures.DEFAULT_TOWER_SELECTED, Textures.DEFAULT_TOWER_SHOT };
-
-        public Vector2 Position { get; set; }
+        public override IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_TOWER_SHOT_SELECTED, Textures.DEFAULT_TOWER, Textures.DEFAULT_TOWER_SELECTED, Textures.DEFAULT_TOWER_SHOT };
 
         public uint Damage {get; private set;}
 
@@ -41,7 +40,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
 
         public Point[] Shot { get; private set; }
         public Point ShootingPoint => new Point(34, 9);
-        public Point Center => new Point(32,32);
 
         public uint Price => 50;
 
@@ -60,12 +58,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower
         private bool shooting = false;
         private long stopShootingAnimation;
 
-        public DefaultTower(float x, float y)
+        public DefaultTower(float x, float y) : base(x,y)
         {
             Damage = 10;
             UpgradePrice = 100;
             AttackSpeed = 2;
-            Position = new Vector2(x, y);
             stopShootingAnimation = -1;
             Shot = null;
             Selected = false;

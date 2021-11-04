@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
 {
-    public class DefaultEnemy : IEnemy
+    public class DefaultEnemy : AbstractLivingObject, IEnemy
     {
         const uint MAX_HP = 100;
 
@@ -18,32 +19,16 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
         /// For the convenience, this constant holds squared treshold.
         /// </summary>
         const float DEST_REACHED_TRESHOLD_2 = 64*64;
+         
+        public override string TextureName => (Hp < MAX_HP / 2) ? Textures.DEFAULT_ENEMY_HURT : Textures.DEFAULT_ENEMY;
 
-        /// <summary>
-        /// Constant used to initialize NextAttack.
-        /// </summary>
-        const long NO_ATTACK = -1;
-
-        public string TextureName => (Hp < MAX_HP / 2) ? Textures.DEFAULT_ENEMY_HURT : Textures.DEFAULT_ENEMY;
-
-        public IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_ENEMY_HURT, Textures.DEFAULT_ENEMY };
-
-        public Vector2 Position { get; set; }
-
-        public uint Hp {
-            get;
-            private set;
-        }
-
-        public uint MaxHp => MAX_HP;
+        public override IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_ENEMY_HURT, Textures.DEFAULT_ENEMY };
 
         public float Speed { get; private set; }
 
         public uint Damage { get; private set; }
 
         public float AttackSpeed { get; private set; }
-
-        public Point Center => new Point(32, 32);
 
         public uint Value => 25;
 
@@ -56,26 +41,12 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
 
         public DefaultEnemy(Vector2 position) : this(position.X, position.Y) {}
 
-        public DefaultEnemy(float x, float y)
+        public DefaultEnemy(float x, float y) : base(MAX_HP, x, y)
         {
-            Hp = MAX_HP;
-            Position = new Vector2(x, y);
             Speed = 0.5f;
             Damage = 10;
             AttackSpeed = 1;
             AttackTimer = new Timer((long)(1000 / AttackSpeed));
-        }
-
-        public void TakeHit(uint damage)
-        {
-            if (Hp < damage)
-            {
-                Hp = 0;
-            }
-            else
-            {
-                Hp -= damage;
-            }
         }
 
         public void UpdateState(Map gameMap)

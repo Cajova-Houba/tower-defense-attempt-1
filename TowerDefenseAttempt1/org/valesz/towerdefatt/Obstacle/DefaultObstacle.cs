@@ -3,41 +3,34 @@ using System;
 using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Obstacle
 {
-    public class DefaultObstacle : IObstacle
+    public class DefaultObstacle : AbstractLivingObject, IObstacle
     {
-        private readonly Point center = new Point(32, 32);
 
-        public uint Hp { get; private set; }
+        public override string TextureName => Textures.DEFAULT_OBSTACLE;
 
-        public uint MaxHp => 50;
-
-        public string TextureName => Textures.DEFAULT_OBSTACLE;
-
-        public IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_OBSTACLE };
+        public override IEnumerable<string> AllTextures => new string[] { Textures.DEFAULT_OBSTACLE };
 
         private Vector2 position;
-        public Vector2 Position { get => position; set => throw new InvalidOperationException("Obstacle cannot be moved."); }
-
-        public Point Center => center;
-
-        public DefaultObstacle(float x, float y)
-        {
-            position = new Vector2(x, y);
-            Hp = MaxHp;
+        public override Vector2 Position { get => position; 
+            set
+            {
+                if (position != null)
+                {
+                    throw new InvalidOperationException("Obstacle cannot be moved.");
+                }
+                else
+                {
+                    position = value;
+                }
+            }
         }
 
-        public void TakeHit(uint damage)
+        public DefaultObstacle(float x, float y) : base(50, x, y)
         {
-            if (Hp < damage)
-            {
-                Hp = 0;
-            } else
-            {
-                Hp -= damage;
-            }
         }
     }
 }

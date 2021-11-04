@@ -9,9 +9,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract
     /// </summary>
     public abstract class AbstractLivingObject : AbstractVisibleObject, IHasHp
     {
-        public uint Hp { get; private set; }
+        public uint Hp { get; protected set; }
 
-        public abstract uint MaxHp { get; }
+        public uint MaxHp { get; protected set; }
+
+        public AbstractLivingObject(uint maxHp, float x, float y) : base(x,y)
+        {
+            MaxHp = maxHp;
+            Hp = MaxHp;
+        }
 
         public void TakeHit(uint damage)
         {
