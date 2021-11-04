@@ -64,7 +64,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 
             DrawShop(spriteBatch, "Items", cntr++, textures);
 
-            DrawSelectedMapTower(spriteBatch, GameMap.SelectedMapTower, 18);
+            DrawSelectedMapTower(spriteBatch, 18);
         }
 
         /// <summary>
@@ -116,14 +116,24 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         /// <summary>
         /// Draws tower that is selected on the map.
         /// </summary>
-        private void DrawSelectedMapTower(SpriteBatch spriteBatch, ITower tower, int lineNumber)
+        private void DrawSelectedMapTower(SpriteBatch spriteBatch, int lineNumber)
         {
-            DrawTextLine(spriteBatch, "Selected tower", "", lineNumber);
-            if (GameMap.SelectedMapTower != null)
+            DrawTextLine(spriteBatch, "Selected", "", lineNumber);
+            if (GameMap.SelectedItem == null)
             {
+                return;
+            }
+
+            if (GameMap.SelectedItem is ITower)
+            {
+                ITower tower = (ITower)GameMap.SelectedItem;
                 DrawTextLine(spriteBatch, "Attack", tower.Damage.ToString(), lineNumber+1);
                 DrawTextLine(spriteBatch, "Speed", tower.AttackSpeed.ToString(), lineNumber+2);
                 DrawTextLine(spriteBatch, "(U)pgrade", "x"+tower.UpgradePrice.ToString(), lineNumber+3);
+            } else if (GameMap.SelectedItem is IObstacle)
+            {
+                IObstacle obstacle = (IObstacle)GameMap.SelectedItem;
+                DrawTextLine(spriteBatch, "HP", obstacle.Hp.ToString(), lineNumber + 1);
             }
         }
     }

@@ -26,5 +26,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         {
             get;
         }
+
+        /// <summary>
+        /// Checks whether the given position collides with this object.
+        /// </summary>
+        /// <param name="x">Position x</param>
+        /// <param name="y">Position y.</param>
+        /// <returns>True if the collision is detected.</returns>
+        public bool CheckColision(float x, float y);
     }
 }

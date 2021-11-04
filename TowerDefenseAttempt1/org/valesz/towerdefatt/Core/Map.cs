@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
+using Microsoft.Xna.Framework;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
@@ -62,9 +63,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         public IStatsCollector StatsCollector { get; set; }
 
         /// <summary>
-        /// Tower on map selected by player. Initialized to null.
+        /// Item on a map selected by player. Initialized to null.
         /// </summary>
-        public ITower SelectedMapTower { get; private set; }
+        public ISelectable SelectedItem { get; private set; }
 
         /// <summary>
         /// Spawner to be used on this map.
@@ -85,7 +86,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
             Shop = new Shop(availableTowers, availableObstacles);
             Score = 0;
             Money = startingMoney;
-            DeselectMapTower();
+            DeselectMapItems();
             this.spawner = spawner;
             SpawnEnemies();
         }
@@ -162,14 +163,19 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Deselects selected tower on map (if any).
+        /// Deselects selected item on map (if any).
         /// </summary>
-        public void DeselectMapTower()
+        public void DeselectMapItems()
         {
-            SelectedMapTower = null;
+            SelectedItem = null;
             foreach(ITower t in Towers)
             {
                 t.Selected = false;
+            }
+
+            foreach(IObstacle o in Obstacles)
+            {
+                o.Selected = false;
             }
         }
 
@@ -179,10 +185,16 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// </summary>
         public void UpgradeSelectedTower()
         {
-            if (SelectedMapTower != null && Money >= SelectedMapTower.UpgradePrice)
+            if (SelectedItem == null || !(SelectedItem is ITower))
             {
-                Money -= SelectedMapTower.UpgradePrice;
-                SelectedMapTower.Upgrade();
+                return;
+            }
+
+            ITower selectedTower = (ITower)SelectedItem;
+            if (Money >= selectedTower.UpgradePrice)
+            {
+                Money -= selectedTower.UpgradePrice;
+                selectedTower.Upgrade();
                 CollectStatistics(StatsCollectionEvent.TOWER_UPGRADE);
             }
         }
@@ -220,39 +232,72 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Deselects all previously selected towers (on the map) and then selects tower on the map. If the tower on the given coordinates is already
+        /// Deselects all previously selected items (on the map) and then selects one on the map. If the item on the given coordinates is already
         /// selected, this method just deselects it.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void SelectTowerOnTheMap(float x, float y)
+        public void SelectItemOnTheMap(float x, float y)
         {
             foreach (ITower mapTower in Towers)
             {
-                if ((mapTower.Position.X <= x && mapTower.Position.X + 64 >= x) &&
-                    (mapTower.Position.Y <= y && mapTower.Position.Y + 64 >= y)
-                    )
+                if (mapTower.CheckColision(x, y))
                 {
-                    // tower already selected => deselect
-                    if (mapTower.Selected)
-                    {
-                        DeselectMapTower();
-                    }
-                    else
-                    {
-                        // deselect others and select the current one
-                        DeselectMapTower();
-                        SelectedMapTower = mapTower;
-                        mapTower.Selected = true;
-                    }
+                    HandleItemSelection(mapTower);
+                    return;
+                }
+            }
+
+            foreach (IObstacle obstacle in Obstacles)
+            {
+                if (obstacle.CheckColision(x,y))
+                {
+                    HandleItemSelection(obstacle);
                     return;
                 }
             }
 
             // no tower lise on given coordinates => deselect
-            DeselectMapTower();
+            DeselectMapItems();
         }
 
+        /// <summary>
+        /// Returns any obstacle coliding with the given position.
+        /// </summary>
+        /// <param name="position">Position to check.</param>
+        /// <returns>Obstacle if collision is found or null if nothing is found.</returns>
+        public IObstacle CheckObstacle(Vector2 position)
+        {
+            foreach(IObstacle obstacle in Obstacles)
+            {
+                if (obstacle.CheckColision(position.X, position.Y))
+                {
+                    return obstacle;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Handles selection of an item on the map.
+        /// </summary>
+        /// <param name="item">Selected item</param>
+        private void HandleItemSelection(ISelectable item)
+        {
+            // item already selected => deselect
+            if (item.Selected)
+            {
+                DeselectMapItems();
+            }
+            else
+            {
+                // deselect others and select the current one
+                DeselectMapItems();
+                SelectedItem = item;
+                item.Selected = true;
+            }
+        }
 
         /// <summary>
         /// Attempts to call the stat collector with given event. If no collector is set, nothing happens.

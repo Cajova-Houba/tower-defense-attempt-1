@@ -65,7 +65,17 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Enemy
                 float alpha = (float)Math.Asin(distanceVector.Y / distanceVector.Length());
                 float y1 = (float)(Math.Sin(alpha) * Speed);
                 float x1 = (float)(Math.Cos(alpha) * Speed);
-                Position = new Vector2(Position.X - x1, Position.Y + y1);
+                Vector2 newPosition = new Vector2(Position.X - x1, Position.Y + y1);
+
+                // check if there's an obstacle in the new position and if there is, attack it
+                IObstacle obstacle = gameMap.CheckObstacle(newPosition);
+                if (obstacle != null)
+                {
+                    Attack(obstacle);
+                } else
+                {
+                    Position = newPosition;
+                }
             }
         }
 

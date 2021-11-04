@@ -142,8 +142,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop
         /// <returns></returns>
         private bool IsClickedOn(IShopItem shopItem, float clickX, float clickY)
         {
-            return (shopItem.Position.X <= clickX && shopItem.Position.X + 64 >= clickX) &&
-                    (shopItem.Position.Y <= clickY && shopItem.Position.Y + 64 >= clickY);
+            return shopItem.CheckColision(clickX, clickY);
         }
     }
 }

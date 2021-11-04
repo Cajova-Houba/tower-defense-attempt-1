@@ -13,6 +13,8 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract
 
         public uint MaxHp { get; protected set; }
 
+        public bool IsDead => Hp == 0;
+
         public AbstractLivingObject(uint maxHp, float x, float y) : base(x,y)
         {
             MaxHp = maxHp;

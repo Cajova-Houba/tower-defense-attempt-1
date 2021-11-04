@@ -131,25 +131,34 @@ namespace TowerDefenseAttempt1
             // TODO: Add your update logic here
             if (!gameMap.GameLost() && !gameState.IsPaused())
             {
-                foreach(IHasAI enemy in gameMap.Enemies)
+                foreach (IHasAI enemy in gameMap.Enemies)
                 {
                     enemy.UpdateState(gameMap);
                 }
 
-                foreach(IHasAI tower in gameMap.Towers)
+                foreach (IHasAI tower in gameMap.Towers)
                 {
                     tower.UpdateState(gameMap);
                 }
 
-                for(int i = gameMap.Enemies.Count -1; i >= 0; i--)
+                for (int i = gameMap.Enemies.Count - 1; i >= 0; i--)
                 {
-                    if (gameMap.Enemies[i].Hp == 0)
+                    if (gameMap.Enemies[i].IsDead)
                     {
                         gameMap.AddScore(gameMap.Enemies[i].Value);
                         gameMap.IncrementKillCounter();
                         gameMap.Enemies.RemoveAt(i);
                     }
                 }
+
+                for (int i = gameMap.Obstacles.Count - 1; i >= 0; i--)
+                {
+                    if (gameMap.Obstacles[i].IsDead)
+                    {
+                        gameMap.Obstacles.RemoveAt(i);
+                    }
+                }
+
                 gameMap.SpawnEnemies();
             }
 

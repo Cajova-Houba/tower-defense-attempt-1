@@ -19,6 +19,11 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
+        /// Returns true if this entity is dead (has 0 HP).
+        /// </summary>
+        public bool IsDead { get; }
+
+        /// <summary>
         /// Returns the max HP of this entity.
         /// </summary>
         public uint MaxHp { get; }

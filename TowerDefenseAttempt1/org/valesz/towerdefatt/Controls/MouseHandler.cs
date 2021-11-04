@@ -44,10 +44,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                         if (state.X >= sidePanelX)
                         {
 
-                            if (gameMap.SelectedMapTower != null)
+                            if (gameMap.SelectedItem != null)
                             {
                                 // click ended in the side panel but tower on the map is selected
-                                gameMap.DeselectMapTower();
+                                gameMap.DeselectMapItems();
                             }
 
                             gameMap.Shop.SelectFromShop(state.X, state.Y);
@@ -60,7 +60,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                         {
                             if (gameMap.Shop.SelectedShopItem == null)
                             {
-                                gameMap.SelectTowerOnTheMap(state.X, state.Y);
+                                gameMap.SelectItemOnTheMap(state.X, state.Y);
                             }
                             else
                             {

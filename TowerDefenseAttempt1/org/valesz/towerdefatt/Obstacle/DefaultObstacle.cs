@@ -19,7 +19,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Obstacle
 
         public bool Selected { get; set; }
 
-        public DefaultObstacle(float x, float y) : base(50, x, y)
+        public DefaultObstacle(float x, float y) : base(125, x, y)
         {
             Selected = false;
         }
