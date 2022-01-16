@@ -6,7 +6,7 @@ using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
 {
-    public interface ITower : IHasTexture, IHasAI, ICanAttack, IShopItem
+    public interface ITower : IHasTexture, IHasAI, ICanAttack, IShopItem, IUpgradable
     {
         /// <summary>
         /// Returns the attack range of this tower.
@@ -24,11 +24,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         Point[] Shot { get; }
 
         /// <summary>
-        /// How much does it cost to upgrade this tower (may change with each upgrade).
-        /// </summary>
-        uint UpgradePrice { get; }
-
-        /// <summary>
         /// How much the price changes with each upgrade.
         /// </summary>
         float UpgradePriceFactor { get; }
@@ -42,10 +37,5 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         /// How much the attack speed changes with each upgrade.
         /// </summary>
         float AttackSpeedUpgradeFactor { get; }
-
-        /// <summary>
-        /// Upgrades stats of this tower by given coefficients.
-        /// </summary>
-        void Upgrade();
     }
 }

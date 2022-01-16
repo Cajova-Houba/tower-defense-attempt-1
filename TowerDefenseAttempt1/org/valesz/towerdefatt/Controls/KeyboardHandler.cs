@@ -16,7 +16,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
         /// How long to wait before registering key presses again.
         /// </summary>
         const long keyPressCoolDown = 500;
-        const Keys TOWER_UPGRADE_KEY = Keys.U;
+        const Keys UPGRADE_ITEM_KEY = Keys.U;
         const Keys EXIT_KEY = Keys.Escape;
         const Keys PAUSE_KEY = Keys.Pause;
         const Keys PAUSE_KEY_2 = Keys.P;
@@ -59,19 +59,19 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Controls
                 gameState.Pause();
                 RegisterPauseKeyPresses();
             } 
-            else if (Keyboard.GetState().IsKeyDown(TOWER_UPGRADE_KEY))
+            else if (Keyboard.GetState().IsKeyDown(UPGRADE_ITEM_KEY))
             {
-                if (gameState.CanUpdateTower())
+                if (gameState.CanBuyUpgrade())
                 {
-                    gameMap.UpgradeSelectedTower();
-                    gameState.UpdateTowerUpgradeTimer();
+                    gameMap.UpgradeSelected();
+                    gameState.UpdateUpgradeTimer();
                 }
             }
-            else if (Keyboard.GetState().IsKeyUp(TOWER_UPGRADE_KEY))
+            else if (Keyboard.GetState().IsKeyUp(UPGRADE_ITEM_KEY))
             {
                 // upgrade key release = reset the timer so that the upgrades
                 // can be purchased every key 'click'
-                gameState.ResetTowerUpgradeTimer();
+                gameState.ResetUpgradeTimer();
             }
 
         }

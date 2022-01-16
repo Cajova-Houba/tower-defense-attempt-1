@@ -35,7 +35,7 @@ namespace TowerDefenseAttempt1
         /// </summary>
         float sidePanelX = 750;
         float sidePanelY = 20;
-        int sidePanelW = 225;
+        int sidePanelW = 235;
         int sidePanelH = 430;
         StatsDisplaySidePanel statsDisplaySidePanel;
         GameOverPanel gameOverPanel;

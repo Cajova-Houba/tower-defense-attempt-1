@@ -180,22 +180,25 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
         }
 
         /// <summary>
-        /// Attempts to upgrade tower currently selected on the map. If no tower is selected,
-        /// nothing happens.
+        /// Attempts to upgrade IUpgradable entity that is currently selected on the map. 
+        /// If no such entity is selected, nothing happens.
         /// </summary>
-        public void UpgradeSelectedTower()
+        public void UpgradeSelected()
         {
-            if (SelectedItem == null || !(SelectedItem is ITower))
+            if (SelectedItem == null || !(SelectedItem is IUpgradable))
             {
                 return;
             }
 
-            ITower selectedTower = (ITower)SelectedItem;
-            if (Money >= selectedTower.UpgradePrice)
+            IUpgradable selectedUpgradable = (IUpgradable)SelectedItem;
+            if (Money >= selectedUpgradable.UpgradePrice)
             {
-                Money -= selectedTower.UpgradePrice;
-                selectedTower.Upgrade();
-                CollectStatistics(StatsCollectionEvent.TOWER_UPGRADE);
+                Money -= selectedUpgradable.UpgradePrice;
+                selectedUpgradable.Upgrade();
+                if (selectedUpgradable is ITower)
+                {
+                    CollectStatistics(StatsCollectionEvent.TOWER_UPGRADE);
+                }
             }
         }
 
