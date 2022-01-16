@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Labels;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -53,18 +54,18 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         {
             spriteBatch.Draw(panelBackground, new Vector2(X, Y), Color.White);
             int cntr = 0;
-            DrawTextLine(spriteBatch, "Money", GameMap.Money.ToString(), cntr++, true);
+            DrawTextLine(spriteBatch, "Money", new PriceLabel(GameMap.Money).Get(), cntr++, true);
             cntr++;
 
-            DrawTextLine(spriteBatch, "Score", GameMap.Score.ToString(), cntr++);
-            DrawTextLine(spriteBatch, "Kills", GameMap.EnemiesKilled.ToString(), cntr++);
-            DrawTextLine(spriteBatch, "Enemies", GameMap.Enemies.Count.ToString(), cntr++);
-            DrawTextLine(spriteBatch, "Base HP", GameMap.Base.Hp.ToString(), cntr++);
+            DrawTextLine(spriteBatch, "Score", new NumberLabel(GameMap.Score).Get(), cntr++);
+            DrawTextLine(spriteBatch, "Kills", new NumberLabel(GameMap.EnemiesKilled).Get(), cntr++);
+            DrawTextLine(spriteBatch, "Enemies", new NumberLabel(GameMap.Enemies.Count).Get(), cntr++);
+            DrawTextLine(spriteBatch, "Base HP", new NumberLabel(GameMap.Base.Hp).Get(), cntr++);
             cntr++;
 
             DrawShop(spriteBatch, "Items", cntr++, textures);
 
-            DrawSelectedMapTower(spriteBatch, 18);
+            DrawSelectedItem(spriteBatch, 18);
         }
 
         /// <summary>
@@ -110,13 +111,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         {
             shopItem.Position = new Vector2(X + Column1Base, tY);
             spriteBatch.Draw(textures[shopItem.TextureName], shopItem.Position, Color.White);
-            spriteBatch.DrawString(TextFont, "x" + shopItem.Price.ToString(), new Vector2(X + Column1Base + 70, tY + 27), Color.Black);
+            spriteBatch.DrawString(TextFont, new PriceLabel(shopItem.Price).Get(), new Vector2(X + Column1Base + 70, tY + 27), Color.Black);
         }
 
         /// <summary>
-        /// Draws tower that is selected on the map.
+        /// Draws item that is selected on the map.
         /// </summary>
-        private void DrawSelectedMapTower(SpriteBatch spriteBatch, int lineNumber)
+        private void DrawSelectedItem(SpriteBatch spriteBatch, int lineNumber)
         {
             DrawTextLine(spriteBatch, "Selected", "", lineNumber);
             if (GameMap.SelectedItem == null)
@@ -127,13 +128,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
             if (GameMap.SelectedItem is ITower)
             {
                 ITower tower = (ITower)GameMap.SelectedItem;
-                DrawTextLine(spriteBatch, "Attack", tower.Damage.ToString(), lineNumber+1);
-                DrawTextLine(spriteBatch, "Speed", tower.AttackSpeed.ToString(), lineNumber+2);
-                DrawTextLine(spriteBatch, "(U)pgrade", "x"+tower.UpgradePrice.ToString(), lineNumber+3);
+                DrawTextLine(spriteBatch, "Attack", new NumberLabel(tower.Damage).Get(), lineNumber+1);
+                DrawTextLine(spriteBatch, "Speed", new NumberLabel(tower.AttackSpeed).Get(), lineNumber+2);
+                DrawTextLine(spriteBatch, "(U)pgrade", new PriceLabel(tower.UpgradePrice).Get(), lineNumber+3);
             } else if (GameMap.SelectedItem is IObstacle)
             {
                 IObstacle obstacle = (IObstacle)GameMap.SelectedItem;
                 DrawTextLine(spriteBatch, "HP", obstacle.Hp.ToString(), lineNumber + 1);
+                DrawTextLine(spriteBatch, "(U)pgrade", new PriceLabel(obstacle.UpgradePrice).Get(), lineNumber + 3);
             }
         }
     }
