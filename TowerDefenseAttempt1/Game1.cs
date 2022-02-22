@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
@@ -9,6 +8,7 @@ using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Statistics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Statistics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Theme;
 
 namespace TowerDefenseAttempt1
 {
@@ -25,8 +25,6 @@ namespace TowerDefenseAttempt1
         /// Texture map -> texture
         /// </summary>
         Dictionary<string, Texture2D> textures;
-
-        SpriteFont scoreFont, scoreFontBold;
 
         Texture2D grassTexture;
 
@@ -49,6 +47,8 @@ namespace TowerDefenseAttempt1
         GameState gameState;
 
         IStatsCollector statsCollector;
+
+        private ITheme theme;
 
         public Game1()
         {
@@ -86,9 +86,12 @@ namespace TowerDefenseAttempt1
             // TODO: use this.Content to load your game content here
             InitTextureMap(gameMap);
 
-            scoreFont = Content.Load<SpriteFont>("assets/fonts/score");
-            scoreFontBold = Content.Load<SpriteFont>("assets/fonts/scoreBold");
             grassTexture = Content.Load<Texture2D>("assets/ground/grass");
+
+            theme = new DefaultTheme(
+                Content.Load<SpriteFont>("assets/fonts/score"), 
+                Content.Load<SpriteFont>("assets/fonts/scoreBold")
+            );
 
             InitSidePanel();
             InitGameOverPanel();
@@ -98,23 +101,20 @@ namespace TowerDefenseAttempt1
 
         private void InitControlsPanel()
         {
-            controlsPanel = new ControlsPanel(400, 200, new Vector2(150, 100), Color.LightGray, scoreFont, gameMap);
+            controlsPanel = new ControlsPanel(400, 200, new Vector2(150, 100), gameMap, theme);
             controlsPanel.InitPanel(GraphicsDevice);
         }
 
         private void InitGameOverPanel()
         {
-            gameOverPanel = new GameOverPanel(400, 100, 100, 100, Color.LightGray, scoreFont, gameMap);
+            gameOverPanel = new GameOverPanel(400, 100, 100, 100, gameMap, theme);
             gameOverPanel.InitPanel(GraphicsDevice);
         }
 
         private void InitSidePanel()
         {
             statsDisplaySidePanel = new StatsDisplaySidePanel(sidePanelW, sidePanelH, sidePanelX, sidePanelY, 
-                Color.LightGray, 
-                15, 30, 
-                10, 85, 
-                scoreFont, scoreFontBold, gameMap);
+                85, gameMap, theme);
             statsDisplaySidePanel.InitPanel(GraphicsDevice);
         }
 

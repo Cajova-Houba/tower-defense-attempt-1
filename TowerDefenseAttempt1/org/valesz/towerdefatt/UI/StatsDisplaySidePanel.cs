@@ -6,6 +6,7 @@ using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Labels;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Theme;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -16,32 +17,14 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
     {
 
         /// <summary>
-        /// Height of one line item.
-        /// </summary>
-        public float LineHeight { get; set; }
-
-        /// <summary>
-        /// Where to start drawing content on the panel. Relative to the top of the panel.
-        /// </summary>
-        public float ContentTopBase { get; set; }
-
-        /// <summary>
-        /// Where to start drawing the content of the first column. Relative to the left side of the panel.
-        /// </summary>
-        public float Column1Base { get; set; }
-
-        /// <summary>
         /// Where to start drawing the content of the second column. Relative to the left side of the panel.
         /// </summary>
         public float Column2Base { get; set; }
 
 
-        public StatsDisplaySidePanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, float lineHeight, float contentTopBase, float column1Base, float column2Base, SpriteFont font, SpriteFont boldFont, Map gameMap)
-            :base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, font, boldFont, gameMap)
+        public StatsDisplaySidePanel(int panelWidth, int panelHeight, float x, float y, float column2Base, Map gameMap, ITheme theme)
+            :base(panelWidth, panelHeight, new Vector2(x,y), gameMap, theme)
         {
-            LineHeight = lineHeight;
-            ContentTopBase = contentTopBase;
-            Column1Base = column1Base;
             Column2Base = column2Base;
         }
 
@@ -77,9 +60,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         /// <param name="lineNumber">Number of the line (used for spacing). Starts at 0.</param>
         private void DrawTextLine(SpriteBatch spriteBatch, string column1, string column2, int lineNumber, bool bold = false)
         {
-            SpriteFont font = bold ? BoldTextFont : TextFont;
-            spriteBatch.DrawString(font, column1, new Vector2(X + Column1Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
-            spriteBatch.DrawString(font, column2, new Vector2(X + Column2Base, Y + ContentTopBase + lineNumber*LineHeight), Color.Black);
+            SpriteFont font = bold ? Theme.BoldTextFont : Theme.TextFont;
+            spriteBatch.DrawString(font, column1, new Vector2(X + Theme.MarginLeft, Y + Theme.MarginTop + lineNumber* Theme.LineHeight), Theme.FontColor);
+            spriteBatch.DrawString(font, column2, new Vector2(X + Column2Base, Y + Theme.MarginTop + lineNumber* Theme.LineHeight), Theme.FontColor);
         }
 
         /// <summary>
@@ -95,13 +78,13 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
             int lineCounter = 0;
             foreach (IShopItem shopItem in GameMap.Shop.AvailableTowers)
             {
-                float tY = Y + ContentTopBase + LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
+                float tY = Y + Theme.MarginTop + Theme.LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
                 DrawShopItem(spriteBatch, shopItem, tY, textures);
                 lineCounter++;
             }
             foreach (IShopItem shopItem in GameMap.Shop.AvailableObstacles)
             {
-                float tY = Y + ContentTopBase + LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
+                float tY = Y + Theme.MarginTop + Theme.LineHeight * (lineNumber + 1) + 5 + lineCounter * 70;
                 DrawShopItem(spriteBatch, shopItem, tY, textures);
                 lineCounter++;
             }
@@ -109,9 +92,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 
         private void DrawShopItem(SpriteBatch spriteBatch, IShopItem shopItem, float tY, Dictionary<string, Texture2D> textures)
         {
-            shopItem.Position = new Vector2(X + Column1Base, tY);
+            shopItem.Position = new Vector2(X + Theme.MarginLeft, tY);
             spriteBatch.Draw(textures[shopItem.TextureName], shopItem.Position, Color.White);
-            spriteBatch.DrawString(TextFont, new PriceLabel(shopItem.Price).Get(), new Vector2(X + Column1Base + 70, tY + 27), Color.Black);
+            spriteBatch.DrawString(Theme.TextFont, new PriceLabel(shopItem.Price).Get(), new Vector2(X + Theme.MarginLeft + 70, tY + 27), Theme.FontColor);
         }
 
         /// <summary>

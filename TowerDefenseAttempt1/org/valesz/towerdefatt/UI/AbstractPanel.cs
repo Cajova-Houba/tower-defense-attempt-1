@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Theme;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -23,18 +24,6 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 
         public Point Center => Position.ToPoint() + new Point(PanelWidth / 2, PanelHeight / 2);
 
-        public Color BackgroundColor { get; set; }
-
-        /// <summary>
-        /// Font to be used to print text.
-        /// </summary>
-        public SpriteFont TextFont { get; set; }
-
-        /// <summary>
-        /// Same as TextFont but bold.
-        /// </summary>
-        public SpriteFont BoldTextFont { get; set; }
-
         /// <summary>
         /// Game map object to get data from.
         /// </summary>
@@ -42,16 +31,16 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 
         protected Texture2D panelBackground;
 
+        protected ITheme Theme { get; private set; }
 
-        protected AbstractPanel(int panelWidth, int panelHeight, Vector2 position, Color backgroundColor, SpriteFont textFont, SpriteFont boldTextFont, Map gameMap)
+
+        protected AbstractPanel(int panelWidth, int panelHeight, Vector2 position, Map gameMap, ITheme theme)
         {
             PanelWidth = panelWidth;
             PanelHeight = panelHeight;
             Position = position;
-            BackgroundColor = backgroundColor;
-            TextFont = textFont;
-            BoldTextFont = boldTextFont;
             GameMap = gameMap;
+            Theme = theme;
         }
 
         /// <summary>
@@ -61,7 +50,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         {
             panelBackground = new Texture2D(graphicsDevice, PanelWidth, PanelHeight);
             Color[] data = new Color[PanelWidth * PanelHeight];
-            for (int i = 0; i < data.Length; ++i) data[i] = BackgroundColor;
+            for (int i = 0; i < data.Length; ++i) data[i] = Theme.BackgroundColor;
             panelBackground.SetData(data);
         }
     }

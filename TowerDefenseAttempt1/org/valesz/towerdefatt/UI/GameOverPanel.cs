@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Buttons;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Theme;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -15,15 +16,15 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         protected Texture2D againButtonBackground;
         private SimpleButton againButton;
 
-        public GameOverPanel(int panelWidth, int panelHeight, float x, float y, Color backgroundColor, SpriteFont textFont, Map gameMap) 
-            : base(panelWidth, panelHeight, new Vector2(x,y), backgroundColor, textFont, textFont, gameMap)
+        public GameOverPanel(int panelWidth, int panelHeight, float x, float y, Map gameMap, ITheme theme) 
+            : base(panelWidth, panelHeight, new Vector2(x,y), gameMap, theme)
         {
         }
 
         public override void InitPanel(GraphicsDevice graphicsDevice)
         {
             base.InitPanel(graphicsDevice);
-            againButton = new SimpleButton(AgainButtonX, AgainButtonY, "Retry", TextFont);
+            againButton = new SimpleButton(AgainButtonX, AgainButtonY, "Retry", Theme.TextFont);
             againButton.Initialize(graphicsDevice);
         }
 
@@ -35,7 +36,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         {
             spriteBatch.Draw(panelBackground, new Vector2(X, Y), Color.White);
 
-            spriteBatch.DrawString(TextFont, GameOverMessage, new Vector2(X + 100, Y + 25), Color.Black);
+            spriteBatch.DrawString(Theme.TextFont, GameOverMessage, new Vector2(X + 100, Y + 25), Theme.FontColor);
             againButton.Draw(spriteBatch);
         }
 

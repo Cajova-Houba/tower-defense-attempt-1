@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Buttons;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.UI.Theme;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
 {
@@ -13,23 +14,30 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         private float ResumeButtonX => X + 150;
         private float ResumeButtonY => X + 110;
 
-        private float TextX => X + 20;
-        private float TextY => Y + 20;
+        private readonly float TextX;
+        private readonly float TextY;
 
         private SimpleButton resumeGameButton;
-        private readonly float textLineHeight = 20;
+        private string[] textLines = new string[] {
+            "Controls",
+            "Buying, placing and selecting towers: Mouse",
+            "Upgrading selected tower: U",
+            "Pause / unpause the game: P, Pause",
+            "Exit game: Esc"
+        };
 
-
-        public ControlsPanel(int panelWidth, int panelHeight, Vector2 position, Color backgroundColor, SpriteFont textFont, Map gameMap) 
-            : base(panelWidth, panelHeight, position, backgroundColor, textFont, textFont, gameMap)
+        public ControlsPanel(int panelWidth, int panelHeight, Vector2 position, Map gameMap, ITheme theme) 
+            : base(panelWidth, panelHeight, position, gameMap, theme)
         {
+            TextX = X + theme.MarginLeft;
+            TextY = Y + theme.MarginTop;
         }
 
         public override void InitPanel(GraphicsDevice graphicsDevice)
         {
             base.InitPanel(graphicsDevice);
 
-            resumeGameButton = new SimpleButton(ResumeButtonX, ResumeButtonY, "Resume", TextFont);
+            resumeGameButton = new SimpleButton(ResumeButtonX, ResumeButtonY, "Resume", Theme.TextFont);
             resumeGameButton.Initialize(graphicsDevice);
         }
 
@@ -41,12 +49,10 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
         {
             spriteBatch.Draw(panelBackground, new Vector2(X, Y), Color.White);
 
-            DrawTextLine(spriteBatch, new Vector2(TextX, TextY), "Controls");
-            int line = 2;
-            DrawTextLine(spriteBatch, new Vector2(TextX, TextY + line++ * textLineHeight), "Buying, placing and selecting towers: Mouse");
-            DrawTextLine(spriteBatch, new Vector2(TextX, TextY + line++ * textLineHeight), "Upgrading selected tower: U");
-            DrawTextLine(spriteBatch, new Vector2(TextX, TextY + line++ * textLineHeight), "Pause / unpause the game: P, Pause");
-            DrawTextLine(spriteBatch, new Vector2(TextX, TextY + line++ * textLineHeight), "Exit game: Esc");
+            for(int i = 0; i < textLines.Length; i++)
+            {
+                DrawTextLine(spriteBatch, TextX, TextY, i, textLines[i]);
+            }
 
             resumeGameButton.Draw(spriteBatch);
         }
@@ -56,9 +62,9 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.UI
             return resumeGameButton.IsClick(x, y);
         }
 
-        private void DrawTextLine(SpriteBatch spriteBatch, Vector2 position, string text)
+        private void DrawTextLine(SpriteBatch spriteBatch, float x, float y, int lineNumber, string text)
         {
-            spriteBatch.DrawString(TextFont, text, position, Color.Black);
+            spriteBatch.DrawString(Theme.TextFont, text, new Vector2(x, y + lineNumber * Theme.BigLineHeight), Theme.FontColor);
         }
     }
 }
