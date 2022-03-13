@@ -4,8 +4,6 @@ using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Attack;
 
 /// <summary>
-/// TODO: attack
-/// TODO: direction
 /// </summary>
 public class Enemy : GenericLivingObject, IHasHpBehavior
 {
