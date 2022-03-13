@@ -12,7 +12,12 @@ config_version=4
 
 config/name="Tower Defense Attempt 1"
 config/description="My attempt in towerdef game."
+run/main_scene="res://scenes/Level/Level.tscn"
 config/icon="res://icon.png"
+
+[logging]
+
+file_logging/enable_file_logging=true
 
 [physics]
 
