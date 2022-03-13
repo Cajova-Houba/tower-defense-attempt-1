@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/ground/grass.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Base/Base.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/SpawnPoint/WaveSpawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Enemy/Enemy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Level/Level.cs" type="Script" id=5]
+
+[node name="Level" type="Node"]
+script = ExtResource( 5 )
+
+[node name="GroundSprite" type="Sprite" parent="."]
+position = Vector2( 512, 300 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="Base" parent="." instance=ExtResource( 2 )]
+position = Vector2( 59, 285 )
+
+[node name="WaveSpawner" parent="." instance=ExtResource( 3 )]
+position = Vector2( 59, 285 )
+SpawnArea = Rect2( 824, 0, 200, 600 )
+EnemiesToSpawn = [ ExtResource( 4 ) ]
