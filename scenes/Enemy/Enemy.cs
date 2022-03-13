@@ -1,7 +1,6 @@
 using Godot;
-using System;
+using TowerDefenseAttempt1.scenes.Attack;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
-using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Attack;
 
 /// <summary>
 /// </summary>
@@ -53,9 +52,9 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	{
 		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
 		{
-			if (child is IAttack && Target != null)
+			if (child is GenericAttack && Target != null)
 			{
-				((IAttack)child).Attack(Target, Position);
+				((GenericAttack)child).Attack(Target, Position);
 			}
 		}
 	}

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/Generic/GenericVisibleObject.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Tower/tower_animation.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://scenes/Attack/RangedAttack.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Tower/Tower.cs" type="Script" id=4]
+
+[node name="Tower" instance=ExtResource( 1 )]
+pause_mode = 1
+script = ExtResource( 4 )
+
+[node name="AnimatedSprite" parent="." index="1"]
+frames = ExtResource( 2 )
+
+[node name="Attacks" type="Node" parent="." index="2"]
+
+[node name="RangedAttack" parent="Attacks" index="0" instance=ExtResource( 3 )]
+Range = 350
+Damage = 10
+AttackSpeed = 2.0
+
+[node name="AttackPosition" type="Position2D" parent="." index="3"]
+position = Vector2( 2, -23 )

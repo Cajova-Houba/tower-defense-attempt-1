@@ -8,6 +8,7 @@ public class WaveSpawner : Node2D
 	/// Name of the node to put all spawned enemies into.
 	/// </summary>
 	private const string SPAWNED_ENEMIES_NODE = "SpawnedEnemies";
+	private const string ENEMIES_GROUP = "enemies";
 
 	/// <summary>
 	/// How fast the count of spawned enemies grows with each passed wave.
@@ -48,10 +49,19 @@ public class WaveSpawner : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
 	{
-		if (GetNode(SPAWNED_ENEMIES_NODE).GetChildCount() == 0)
+		if (AllEnemisGone())
 		{
 			Spawn();
 		}
+	}
+
+	/// <summary>
+	/// Checks whether there are any live enemies and returns true if there are not any.
+	/// </summary>
+	/// <returns></returns>
+	private bool AllEnemisGone()
+	{
+		return GetTree().GetNodesInGroup(ENEMIES_GROUP).Count == 0;
 	}
 
 	public void Spawn()
