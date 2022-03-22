@@ -1,0 +1,125 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/UI/Generic/GenericLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/UI/Generic/GenericShopItem.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/towers/default.png" type="Texture" id=3]
+[ext_resource path="res://assets/obstacles/default.png" type="Texture" id=4]
+[ext_resource path="res://assets/obstacles/default_selected.png" type="Texture" id=5]
+[ext_resource path="res://assets/towers/default_selected.png" type="Texture" id=6]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="SidePanel" type="Panel" parent="."]
+margin_left = 824.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SidePanel"]
+margin_left = 5.0
+margin_right = 195.0
+margin_bottom = 247.0
+
+[node name="Stats" type="GridContainer" parent="SidePanel/VBoxContainer"]
+margin_right = 190.0
+margin_bottom = 161.0
+columns = 2
+
+[node name="MoneyLabel" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_right = 95.0
+margin_bottom = 29.0
+text = "Money"
+
+[node name="Money" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_left = 99.0
+margin_right = 142.0
+margin_bottom = 29.0
+text = "0"
+
+[node name="ScoreLabel" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_top = 33.0
+margin_right = 95.0
+margin_bottom = 62.0
+text = "Score"
+
+[node name="Score" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_left = 99.0
+margin_top = 33.0
+margin_right = 142.0
+margin_bottom = 62.0
+text = "0"
+
+[node name="KillsLabel" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_top = 66.0
+margin_right = 95.0
+margin_bottom = 95.0
+text = "Kills"
+
+[node name="Kills" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_left = 99.0
+margin_top = 66.0
+margin_right = 142.0
+margin_bottom = 95.0
+text = "0"
+
+[node name="EnemiesLabel" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_top = 99.0
+margin_right = 95.0
+margin_bottom = 128.0
+text = "Enemies"
+
+[node name="Enemies" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_left = 99.0
+margin_top = 99.0
+margin_right = 142.0
+margin_bottom = 128.0
+text = "0"
+
+[node name="BaseHpLabel" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_top = 132.0
+margin_right = 95.0
+margin_bottom = 161.0
+text = "Base HP"
+
+[node name="BaseHp" parent="SidePanel/VBoxContainer/Stats" instance=ExtResource( 1 )]
+margin_left = 99.0
+margin_top = 132.0
+margin_right = 142.0
+margin_bottom = 161.0
+text = "500"
+
+[node name="VSplitContainer" type="VSplitContainer" parent="SidePanel/VBoxContainer"]
+margin_top = 165.0
+margin_right = 190.0
+margin_bottom = 165.0
+split_offset = 50
+
+[node name="Shop" type="VBoxContainer" parent="SidePanel/VBoxContainer"]
+margin_top = 169.0
+margin_right = 190.0
+margin_bottom = 362.0
+
+[node name="Label" parent="SidePanel/VBoxContainer/Shop" instance=ExtResource( 1 )]
+margin_right = 190.0
+margin_bottom = 29.0
+text = "Shop"
+
+[node name="ShopItems" type="VBoxContainer" parent="SidePanel/VBoxContainer/Shop"]
+margin_top = 33.0
+margin_right = 190.0
+margin_bottom = 193.0
+
+[node name="Tower" parent="SidePanel/VBoxContainer/Shop/ShopItems" instance=ExtResource( 2 )]
+margin_left = 0.0
+margin_right = 190.0
+Texture = ExtResource( 3 )
+SelectedTexture = ExtResource( 6 )
+Price = "50"
+
+[node name="Obstacle" parent="SidePanel/VBoxContainer/Shop/ShopItems" instance=ExtResource( 2 )]
+margin_left = 0.0
+margin_top = 82.0
+margin_right = 190.0
+margin_bottom = 160.0
+Texture = ExtResource( 4 )
+SelectedTexture = ExtResource( 5 )
+Price = "100"

@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj": {}
+    "C:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj": {}
   },
   "projects": {
-    "c:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj": {
+    "C:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
+        "projectUniqueName": "C:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
         "projectName": "Tower Defense Attempt 1",
-        "projectPath": "c:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
+        "projectPath": "C:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
         "packagesPath": "C:\\Users\\zdenda\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\zdenda\\source\\repos\\tower-defense-attempt-1\\.mono\\temp\\obj\\",
         "projectStyle": "PackageReference",

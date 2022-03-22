@@ -22,9 +22,9 @@ public class GenericVisibleObject : Area2D
 	}
 
 	public AnimatedSprite GetAnimationNode()
-    {
+	{
 		return GetNode<AnimatedSprite>(ANIMATION_NODE);
-    }
+	}
 
 	/// <summary>
 	/// Callback for when this object is clicked on.
