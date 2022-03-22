@@ -2,9 +2,8 @@ using Godot;
 using System;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 
-public class GenericLivingObject : Area2D, IHasHpBehavior
+public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
 {
-	protected const string COLLISION_NODE = "CollisionShape2D";
 
 	[Export]
 	public uint MaxHp = 100;

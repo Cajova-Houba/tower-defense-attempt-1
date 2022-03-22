@@ -3,6 +3,10 @@ using System;
 
 public class GenericVisibleObject : Area2D
 {
+	protected const string ANIMATION_NODE = "AnimatedSprite";
+	protected const string COLLISION_NODE = "CollisionShape2D";
+
+
 	/// <summary>
 	/// Milliseconds.
 	/// </summary>
@@ -16,6 +20,11 @@ public class GenericVisibleObject : Area2D
 		base._Ready();
 		clickTimer = new TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer(ClickDetectionTime);
 	}
+
+	public AnimatedSprite GetAnimationNode()
+    {
+		return GetNode<AnimatedSprite>(ANIMATION_NODE);
+    }
 
 	/// <summary>
 	/// Callback for when this object is clicked on.

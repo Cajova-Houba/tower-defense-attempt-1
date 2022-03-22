@@ -1,22 +1,22 @@
 using Godot;
 using System;
 using TowerDefenseAttempt1.scenes.Attack;
+using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 public class Tower : GenericVisibleObject
 {
-	protected const string DEFAULT_ANIMATION = "default";
-	protected const string SELECTED_ANIMATION = "selected";
+	
 	private const string ATTACKS_NODE = "Attacks";
 	private const string ATTACK_POSITION_NODE = "AttackPosition";
 
-
-	private bool selected = false;
+	private SelectableBehavior selectableBehavior;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		base._Ready();	
+		base._Ready();
+		selectableBehavior = new SelectableBehavior();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,7 +30,7 @@ public class Tower : GenericVisibleObject
 
 	public override void _Draw()
 	{
-		if (selected)
+		if (selectableBehavior.IsSelected())
 		{
 			foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
 			{
@@ -45,7 +45,7 @@ public class Tower : GenericVisibleObject
 
 	protected override void OnClick()
 	{
-		this.selected = !selected;
+		selectableBehavior.ChangeSelect();
 	}
 
 	private void Attack()
@@ -93,7 +93,6 @@ public class Tower : GenericVisibleObject
 
 	private void UpdateAnimation()
 	{
-		string animationName = selected ? SELECTED_ANIMATION : DEFAULT_ANIMATION;
-		GetNode<AnimatedSprite>("AnimatedSprite").Animation = animationName;
+		selectableBehavior.UpdateAimation(this);
 	}
 }
