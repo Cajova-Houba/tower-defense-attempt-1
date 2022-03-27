@@ -31,14 +31,11 @@ public class Level : Node
 	/// <param name="entity">Selected entity.</param>
 	public void OnEntitySelectionChanged(ISelectableEntity entity)
 	{
-		Console.WriteLine("Handling entity selection change " + entity);
 		bool entitySelected = entity.Selection.IsSelected();
-		Console.WriteLine("Is entity selected: " + entitySelected);
 		DeselectEntities();
 
 		if (entitySelected)
 		{
-			Console.WriteLine("Selecting entity");
 			entity.Selection.Select();
 			selectedEntity = entity;
 		}
@@ -49,9 +46,9 @@ public class Level : Node
 		selectedEntity = null;
 		foreach(Node n in GetTree().GetNodesInGroup(GameConstants.SELECTABLE_GROUP))
 		{
-			if (n is ISelectableEntity)
+			if (n is ISelectableEntity entity)
 			{
-				((ISelectableEntity)n).Deselect();
+				entity.Deselect();
 			}
 		}
 	}

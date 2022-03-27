@@ -64,7 +64,6 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 	/// </summary>
 	protected virtual void OnClick()
 	{
-		Console.WriteLine("Selection " + selectionAllowed + ", current level " + currentLevel + " current selection: "+Selection.IsSelected());
 		if (selectionAllowed && currentLevel != null)
 		{
 			Selection.ChangeSelect();
@@ -78,7 +77,6 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 		{
 			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && clickTimer.HasPassed())
 			{
-				Console.WriteLine("Click " + GetPath());
 				OnClick();
 			}
 		}
@@ -92,7 +90,6 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 		Level level = GetNode<Level>(GameConstants.LEVEL_NODE);
 		if (level != null)
 		{
-			Console.WriteLine("Setting level " + GetPath());
 			currentLevel = level;
 		}
 	}
