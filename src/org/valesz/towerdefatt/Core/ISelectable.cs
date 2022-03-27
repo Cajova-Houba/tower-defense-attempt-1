@@ -7,6 +7,7 @@ namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Core
     /// <summary>
     /// Interface for entities that can be selected (either in the map or 
     /// </summary>
+    [Obsolete]
     public interface ISelectable
     {
         /// <summary>

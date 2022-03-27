@@ -12,5 +12,11 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
     public class GameConstants
     {
         public const string ENEMIES_GROUP = "enemies";
+        public const string SELECTABLE_GROUP = "selectable";
+
+        /// <summary>
+        /// The Level node is always the root of level scene.
+        /// </summary>
+        public const string LEVEL_NODE = "/root/Level";
     }
 }

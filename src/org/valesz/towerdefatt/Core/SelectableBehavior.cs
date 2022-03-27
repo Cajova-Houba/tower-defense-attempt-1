@@ -18,6 +18,16 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core
             return selected;
         }
 
+        public void Deselect()
+        {
+            selected = false;
+        }
+
+        public void Select()
+        {
+            selected = true;
+        }
+
         public void ChangeSelect()
         {
             selected = !selected;
