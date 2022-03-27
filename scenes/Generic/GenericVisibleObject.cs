@@ -75,7 +75,7 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 	{
 		if (@event is InputEventMouseButton inputEventMouseButton)
 		{
-			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && clickTimer.HasPassed())
+			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && inputEventMouseButton.IsActionReleased(GameConstants.LEFT_MOUSE_CLICK) && clickTimer.HasPassed())
 			{
 				OnClick();
 			}

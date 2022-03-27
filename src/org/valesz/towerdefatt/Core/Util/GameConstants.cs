@@ -11,6 +11,8 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
     /// </summary>
     public class GameConstants
     {
+        public const string LEFT_MOUSE_CLICK = "ui_mouse_left";
+
         public const string ENEMIES_GROUP = "enemies";
         public const string SELECTABLE_GROUP = "selectable";
 

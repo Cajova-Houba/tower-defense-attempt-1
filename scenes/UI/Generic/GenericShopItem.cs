@@ -77,7 +77,7 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 	{
 		if (@event is InputEventMouseButton inputEventMouseButton)
 		{
-			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && clickTimer.HasPassed() && currentLevel != null)
+			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && inputEventMouseButton.IsActionReleased(GameConstants.LEFT_MOUSE_CLICK) && clickTimer.HasPassed() && currentLevel != null)
 			{
 				Selection.ChangeSelect();
 				currentLevel.OnEntitySelectionChanged(this);
