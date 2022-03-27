@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/UI/Generic/GenericLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/UI/Generic/GenericShopItem.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://assets/towers/default_selected.png" type="Texture" id=6]
 [ext_resource path="res://scenes/UI/HUD.cs" type="Script" id=7]
 [ext_resource path="res://assets/fonts/raleway.tres" type="DynamicFont" id=8]
+[ext_resource path="res://scenes/Tower/Tower.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/Obstacle/Obstacle.tscn" type="PackedScene" id=10]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 7 )
@@ -116,6 +118,7 @@ margin_left = 0.0
 margin_right = 190.0
 Texture = ExtResource( 3 )
 SelectedTexture = ExtResource( 6 )
+ItemScene = ExtResource( 9 )
 Price = "50"
 
 [node name="Obstacle" parent="SidePanel/Items/Shop/ShopItems" instance=ExtResource( 2 )]
@@ -125,6 +128,7 @@ margin_right = 190.0
 margin_bottom = 160.0
 Texture = ExtResource( 4 )
 SelectedTexture = ExtResource( 5 )
+ItemScene = ExtResource( 10 )
 Price = "100"
 
 [node name="ItemStats" type="GridContainer" parent="SidePanel/Items"]

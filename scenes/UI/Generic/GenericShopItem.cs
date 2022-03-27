@@ -19,6 +19,18 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 	[Export]
 	public Texture SelectedTexture;
 
+	/// <summary>
+	/// Texture to use when this item is being placed in incorrect place.
+	/// </summary>
+	[Export]
+	public Texture UnplacableTexture;
+
+	/// <summary>
+	/// Scene that is used to create new item and place it into the level when this item is bought. 
+	/// </summary>
+	[Export]
+	public PackedScene ItemScene;
+
 	[Export]
 	public string Price = "0";
 
