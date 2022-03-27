@@ -7,6 +7,8 @@ using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 public class Level : Node
 {
 
+	private const string HUD_NODE = "HUD";
+
 	/// <summary>
 	/// Entity that is currently selected. May be null.
 	/// </summary>
@@ -33,11 +35,13 @@ public class Level : Node
 	{
 		bool entitySelected = entity.Selection.IsSelected();
 		DeselectEntities();
+		GetNode<HUD>(HUD_NODE).ClearItemStatsDisplay();
 
 		if (entitySelected)
 		{
 			entity.Selection.Select();
 			selectedEntity = entity;
+			GetNode<HUD>(HUD_NODE).ShowItemStats(entity);
 		}
 	}
 

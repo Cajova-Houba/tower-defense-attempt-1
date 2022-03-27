@@ -40,6 +40,20 @@ public class Tower : GenericVisibleObject
 		}
 	}
 
+	public GenericAttack GetAttack()
+	{
+		// todo: refactor when attacks are finally decided
+		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
+		{
+			if (child is GenericAttack attack)
+			{
+				return attack;
+			}
+		}
+
+		return null;
+	}
+
 	private void Attack()
 	{
 		Enemy target = PickTarget();
