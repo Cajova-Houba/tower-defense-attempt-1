@@ -10,15 +10,33 @@ public class Level : Node
 	private const string SELECTED_SHOP_ITEM = "SelectedShopItem";
 
 	/// <summary>
+	/// Player's money at the start of level.
+	/// </summary>
+	[Export]
+	public uint InitMoney = 50;
+
+	/// <summary>
 	/// Entity that is currently selected. May be null.
 	/// </summary>
 	private ISelectableEntity selectedEntity;
+
+	/// <summary>
+	/// Player's money in this level.
+	/// </summary>
+	private uint money;
+
+	/// <summary>
+	/// How many enemies were killed in this level.
+	/// </summary>
+	private uint kills;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		GetNode<WaveSpawner>("WaveSpawner").Target = GetNode<GenericLivingObject>("Base");
 		selectedEntity = null;
+		SetMoney(InitMoney);
+		SetKills(0);
 	}
 
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -63,6 +81,16 @@ public class Level : Node
 	}
 
 	/// <summary>
+	/// Callback for signal emitted when enemy is killed.
+	/// </summary>
+	/// <param name="enemy">Killed enemy.</param>
+	public void OnEnemyKilled(Enemy enemy)
+	{
+		SetMoney(money + enemy.RewardMoney);
+		SetKills(kills + 1);
+	}
+
+	/// <summary>
 	/// Tries to place the selected shop item - if possible.
 	/// </summary>
 	private void PlaceSelectedShopItem()
@@ -79,12 +107,23 @@ public class Level : Node
 
 		if (canBePlaced)
 		{
-			GenericVisibleObject newObject = (GenericVisibleObject)selectedShopItem.ShopItem.ItemScene.Instance();
-			newObject.Position = selectedShopItem.Position;
-			AddChild(newObject);
-			DeselectEntities();
-			GetNode<HUD>(HUD_NODE).ClearItemStatsDisplay();
+			BuyShopItem(selectedShopItem);
+			
 		}
+	}
+
+	/// <summary>
+	/// Buys the shop item - places it on the map, subtracts money, clears selection in HUD.
+	/// </summary>
+	/// <param name="selectedShopItem">Shop item</param>
+	private void BuyShopItem(SelectedShopItem selectedShopItem)
+	{
+		GenericVisibleObject newObject = (GenericVisibleObject)selectedShopItem.ShopItem.ItemScene.Instance();
+		newObject.Position = selectedShopItem.Position;
+		AddChild(newObject);
+		DeselectEntities();
+		GetNode<HUD>(HUD_NODE).ClearItemStatsDisplay();
+		SetMoney(money - selectedShopItem.ShopItem.Price);
 	}
 
 	/// <summary>
@@ -92,10 +131,9 @@ public class Level : Node
 	/// </summary>
 	/// <param name="price">Price to pay.</param>
 	/// <returns>True if the player has enough money to pay the price.</returns>
-	private bool HasPlayerEnoughMoney(string price)
+	private bool HasPlayerEnoughMoney(uint price)
 	{
-		// todo: later
-		return true;
+		return price <= money;
 	}
 
 	/// <summary>
@@ -105,6 +143,26 @@ public class Level : Node
 	private bool IsShopItemSelected()
 	{
 		return selectedEntity != null && selectedEntity is GenericShopItem;
+	}
+
+	/// <summary>
+	/// Set new value and update HUD.
+	/// </summary>
+	/// <param name="newMoney">New money.</param>
+	private void SetMoney(uint newMoney)
+	{
+		money = newMoney;
+		GetNode<HUD>(HUD_NODE).ShowMoney(money);
+	}
+
+	/// <summary>
+	/// Set new value and update HUD.
+	/// </summary>
+	/// <param name="newKills">New kills.</param>
+	private void SetKills(uint newKills)
+	{
+		kills = newKills;
+		GetNode<HUD>(HUD_NODE).ShowKills(newKills);
 	}
 
 	private void HideSelectedShopItemNode()

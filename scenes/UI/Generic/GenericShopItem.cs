@@ -32,7 +32,7 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 	public PackedScene ItemScene;
 
 	[Export]
-	public string Price = "0";
+	public uint Price = 0;
 
 	/// <summary>
 	/// Selection details of this entity.
@@ -56,10 +56,7 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 			GetNode<TextureRect>(TEXTURE_NODE).Texture = Texture;
 		}
 
-		if (Price != null)
-		{
-			GetNode<Label>(PRICE_NODE).Text = Price;
-		}
+		GetNode<Label>(PRICE_NODE).Text = Price.ToString();
 	}
 
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -75,10 +72,7 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 		
 		}
 
-		if (Price != null)
-		{
-			GetNode<Label>(PRICE_NODE).Text = Price;
-		}
+		GetNode<Label>(PRICE_NODE).Text = Price.ToString();
 	}
 	public void Deselect()
 	{

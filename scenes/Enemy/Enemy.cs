@@ -1,6 +1,7 @@
 using Godot;
 using TowerDefenseAttempt1.scenes.Attack;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 /// <summary>
 /// </summary>
@@ -23,6 +24,12 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	/// </summary>
 	[Export]
 	public int MovementSpeed = 75;
+
+	/// <summary>
+	/// How much money player gains on this enemy's dead.
+	/// </summary>
+	[Export]
+	public uint RewardMoney = 25;
 
 	/// <summary>
 	/// Target this enemy will seek to destroy.
@@ -48,6 +55,11 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 		Attack();
 	}
 
+	protected override void OnDeath()
+	{
+		GetNode<Level>(GameConstants.LEVEL_NODE).OnEnemyKilled(this);
+	}
+
 	private void Attack()
 	{
 		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
@@ -61,6 +73,11 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 	private void MoveTowardsDestination(float delta)
 	{
+		if (Target == null || Target.IsQueuedForDeletion())
+		{
+			return;
+		}
+
 		Vector2 velocity = Target.Position - Position;
 
 		if (velocity.Length() <= DestinationReachedTreshold)

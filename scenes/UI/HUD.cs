@@ -4,7 +4,23 @@ using TowerDefenseAttempt1.scenes.Attack;
 public class HUD : CanvasLayer
 {
 	private const string ITEM_STATS_NODE = "SidePanel/Items/ItemStats";
+	private const string STATS_NODE = "SidePanel/Items/Stats";
 	private const string UPGRADE_BUTTON = "UpgradeButton";
+
+	public void ShowMoney(uint money)
+	{
+		GetNode<Label>(STATS_NODE+"/Money").Text = money.ToString();
+	}
+
+	public void ShowKills(uint kills)
+	{
+		GetNode<Label>(STATS_NODE + "/Kills").Text = kills.ToString();
+	}
+
+	public void ShowBaseHp(uint baseHp)
+	{
+		GetNode<Label>(STATS_NODE + "/BaseHp").Text = baseHp.ToString();
+	}
 
 	/// <summary>
 	/// Show statistics of selected item.

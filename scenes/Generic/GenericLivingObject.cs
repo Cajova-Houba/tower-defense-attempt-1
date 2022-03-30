@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 
 public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
@@ -22,7 +21,15 @@ public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
 	{
 		if (Hp.IsDead)
 		{
+			OnDeath();
 			QueueFree();
 		}
+	}
+
+	/// <summary>
+	/// Called when this entity dies. Implement to provide custom behavior.
+	/// </summary>
+	protected virtual void OnDeath()
+	{
 	}
 }

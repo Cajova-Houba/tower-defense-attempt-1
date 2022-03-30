@@ -119,7 +119,7 @@ margin_right = 190.0
 Texture = ExtResource( 3 )
 SelectedTexture = ExtResource( 6 )
 ItemScene = ExtResource( 9 )
-Price = "50"
+Price = 50
 
 [node name="Obstacle" parent="SidePanel/Items/Shop/ShopItems" instance=ExtResource( 2 )]
 margin_left = 0.0
@@ -129,7 +129,7 @@ margin_bottom = 160.0
 Texture = ExtResource( 4 )
 SelectedTexture = ExtResource( 5 )
 ItemScene = ExtResource( 10 )
-Price = "100"
+Price = 100
 
 [node name="ItemStats" type="GridContainer" parent="SidePanel/Items"]
 margin_top = 366.0
