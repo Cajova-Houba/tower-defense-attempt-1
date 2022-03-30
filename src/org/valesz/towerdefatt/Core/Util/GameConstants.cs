@@ -13,6 +13,8 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
     {
         public const string LEFT_MOUSE_CLICK = "ui_mouse_left";
 
+        public const string UPGRADE_ACTION = "upgrade_action";
+
         public const string ENEMIES_GROUP = "enemies";
         public const string SELECTABLE_GROUP = "selectable";
 

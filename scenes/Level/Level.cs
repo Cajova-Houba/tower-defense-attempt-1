@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
@@ -8,6 +9,7 @@ public class Level : Node
 
 	private const string HUD_NODE = "HUD";
 	private const string SELECTED_SHOP_ITEM = "SelectedShopItem";
+	private const string CONTROLS_NODE = "Controls";
 
 	/// <summary>
 	/// Player's money at the start of level.
@@ -40,10 +42,13 @@ public class Level : Node
 	}
 
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-	//  public override void _Process(float delta)
-	//  {
-	//      
-	//  }
+	public override void _Process(float delta)
+	{
+		if (GetControls().IsActionPressed(GameConstants.UPGRADE_ACTION))
+		{
+			UpgradeSelected();
+		}
+	}
 
 	public override void _Input(InputEvent @event)
 	{
@@ -88,6 +93,27 @@ public class Level : Node
 	{
 		SetMoney(money + enemy.RewardMoney);
 		SetKills(kills + 1);
+	}
+
+	/// <summary>
+	/// Upgrade selected item. Item can be upgraded only if palyer has enough money.
+	/// </summary>
+	public void UpgradeSelected()
+	{
+		if (selectedEntity != null && selectedEntity is IUpgradable upgradable)
+		{
+			if (HasPlayerEnoughMoney(upgradable.UpgradePrice))
+			{
+				SetMoney(money - upgradable.UpgradePrice);
+				upgradable.Upgrade();
+				GetNode<HUD>(HUD_NODE).ShowItemStats(selectedEntity);
+			}
+		}
+	}
+
+	private Controls GetControls()
+	{
+		return GetNode<Controls>(CONTROLS_NODE);
 	}
 
 	/// <summary>

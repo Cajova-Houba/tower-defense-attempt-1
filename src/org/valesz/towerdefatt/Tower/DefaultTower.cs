@@ -1,13 +1,10 @@
-﻿using Godot;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Configuration;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Abstract;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.GameShop;
-using TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util;
 using Timer = TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer;
 
 namespace TowerDefenseAttempt1.org.valesz.towerdefatt.Tower

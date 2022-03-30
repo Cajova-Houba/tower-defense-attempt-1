@@ -1,5 +1,7 @@
 using Godot;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.scenes.Attack;
+using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 public class HUD : CanvasLayer
 {
@@ -30,21 +32,26 @@ public class HUD : CanvasLayer
 	{
 		GridContainer statsNode = GetNode<GridContainer>(ITEM_STATS_NODE);
 
+
 		if (item is Tower tower)
 		{
-
 			GenericAttack attack = tower.GetAttack();
 			if (attack != null)
 			{
 				ShowStat(1, "Attack", attack.Damage.ToString());
 				ShowStat(2, "Speed", attack.AttackSpeed.ToString());
-
-				ShowUpgradeButton(statsNode);
 			}
-		} else if (item is Obstacle obstacle)
+		}
+		else if (item is Obstacle obstacle)
 		{
 			ShowStat(1, "HP", obstacle.Hp.Hp.ToString());
 		}
+
+		if (item is IUpgradable upgradable)
+		{
+			ShowUpgradeButton(statsNode);
+			ShowUpgradePrice(upgradable.UpgradePrice);
+		} 
 	}
 
 	public void ClearItemStatsDisplay()
@@ -71,13 +78,19 @@ public class HUD : CanvasLayer
 		}
 	}
 
-	private void ShowStat(uint statNum, string label, string value)
+	private void ShowUpgradePrice(uint price)
 	{
-		SetStatĹabelText(ITEM_STATS_NODE + $"/Stat{statNum}Label", label);
-		SetStatĹabelText(ITEM_STATS_NODE + $"/Stat{statNum}", value);
+		GetNode<Label>(ITEM_STATS_NODE + "/PriceLabel").Visible = true;
+		SetLabelText(ITEM_STATS_NODE + "/Price", price.ToString());
 	}
 
-	private void SetStatĹabelText(string nodePath, string text)
+	private void ShowStat(uint statNum, string label, string value)
+	{
+		SetLabelText(ITEM_STATS_NODE + $"/Stat{statNum}Label", label);
+		SetLabelText(ITEM_STATS_NODE + $"/Stat{statNum}", value);
+	}
+
+	private void SetLabelText(string nodePath, string text)
 	{
 		Label l = GetNode<Label>(nodePath);
 		if (l != null)
@@ -91,4 +104,11 @@ public class HUD : CanvasLayer
 	{
 		statsContainer.GetNode<Button>(UPGRADE_BUTTON).Show();
 	}
+
+	private void OnUpgradeButton()
+	{
+		GetNode<Level>(GameConstants.LEVEL_NODE).UpgradeSelected();
+	}
+
 }
+

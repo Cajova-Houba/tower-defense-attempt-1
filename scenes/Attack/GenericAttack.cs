@@ -25,6 +25,12 @@ namespace TowerDefenseAttempt1.scenes.Attack
 		[Export]
 		public float AttackSpeed = 1;
 
+		[Export]
+		public float DamageUpgradeFactor = 1.5f;
+
+		[Export]
+		public float AttackSpeedUpgradeFactor = 1.5f;
+
 		protected org.valesz.towerdefatt.Core.Util.Timer attackTimer;
 
 		public override void _Ready()
@@ -38,6 +44,13 @@ namespace TowerDefenseAttempt1.scenes.Attack
 			{
 				target.Hp.TakeHit(Damage);
 			}
+		}
+
+		public void Upgrade()
+		{
+			Damage = (uint)(Damage * DamageUpgradeFactor);
+			AttackSpeed = AttackSpeed * AttackSpeedUpgradeFactor;
+			attackTimer.ResetPeriod((long)(1000 / AttackSpeed));
 		}
 
 		/// <summary>

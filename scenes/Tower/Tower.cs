@@ -1,19 +1,31 @@
 using Godot;
 using System;
+using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.scenes.Attack;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
-public class Tower : GenericVisibleObject
+public class Tower : GenericVisibleObject, IUpgradable
 {
 	
 	private const string ATTACKS_NODE = "Attacks";
 	private const string ATTACK_POSITION_NODE = "AttackPosition";
+
+	[Export]
+	public uint BaseUpgradePrice = 100;
+
+	[Export]
+	public float UpgradePriceFactor = 2f;
+
+
+
+	public uint UpgradePrice { get; private set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		base._Ready();
 		AllowSelection();
+		UpgradePrice = BaseUpgradePrice;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -52,6 +64,18 @@ public class Tower : GenericVisibleObject
 		}
 
 		return null;
+	}
+
+	public void Upgrade()
+	{
+		UpgradePrice = (uint)(UpgradePrice * UpgradePriceFactor);
+		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
+		{
+			if (child is GenericAttack attack)
+			{
+				attack.Upgrade();
+			}
+		}
 	}
 
 	private void Attack()
@@ -101,4 +125,6 @@ public class Tower : GenericVisibleObject
 	{
 		Selection.UpdateAimation(this);
 	}
+
+
 }

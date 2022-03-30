@@ -92,6 +92,6 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	private void UpdateAnimation()
 	{
 		string animationName = (Hp.Hp < MaxHp / 2) ? HURT_ANIMATION : DEFAULT_ANIMATION;
-		GetNode<AnimatedSprite>("AnimatedSprite").Animation = animationName;
+		GetAnimationNode().Animation = animationName;
 	}
 }

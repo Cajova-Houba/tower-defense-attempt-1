@@ -134,7 +134,7 @@ Price = 100
 [node name="ItemStats" type="GridContainer" parent="SidePanel/Items"]
 margin_top = 366.0
 margin_right = 190.0
-margin_bottom = 467.0
+margin_bottom = 500.0
 columns = 2
 
 [node name="Stat1Label" parent="SidePanel/Items/ItemStats" instance=ExtResource( 1 )]
@@ -157,9 +157,23 @@ margin_top = 33.0
 margin_right = 152.0
 margin_bottom = 62.0
 
-[node name="UpgradeButton" type="Button" parent="SidePanel/Items/ItemStats"]
+[node name="PriceLabel" parent="SidePanel/Items/ItemStats" instance=ExtResource( 1 )]
 margin_top = 66.0
 margin_right = 108.0
-margin_bottom = 101.0
+margin_bottom = 95.0
+text = "Price"
+
+[node name="Price" parent="SidePanel/Items/ItemStats" instance=ExtResource( 1 )]
+margin_left = 112.0
+margin_top = 66.0
+margin_right = 152.0
+margin_bottom = 95.0
+
+[node name="UpgradeButton" type="Button" parent="SidePanel/Items/ItemStats"]
+margin_top = 99.0
+margin_right = 108.0
+margin_bottom = 134.0
 custom_fonts/font = ExtResource( 8 )
 text = "Upgrade"
+
+[connection signal="pressed" from="SidePanel/Items/ItemStats/UpgradeButton" to="." method="OnUpgradeButton"]
