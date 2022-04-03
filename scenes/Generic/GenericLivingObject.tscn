@@ -12,3 +12,5 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
+[connection signal="input_event" from="." to="." method="OnInput"]
