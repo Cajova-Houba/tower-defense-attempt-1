@@ -11,6 +11,8 @@ public class HUD : CanvasLayer
 	private const string SHOP_TOWER = "SidePanel/Items/Shop/ShopItems/Tower";
 	private const string SHOP_OBSTACLE = "SidePanel/Items/Shop/ShopItems/Obstacle";
 
+	private object selectedItem;
+
 	public void ShowMoney(uint money)
 	{
 		GetNode<Label>(STATS_NODE+"/Money").Text = money.ToString();
@@ -27,41 +29,26 @@ public class HUD : CanvasLayer
 	}
 
 	/// <summary>
-	/// Show statistics of selected item.
+	/// Select item to show statistics its statistics.
 	/// </summary>
-	/// <param name="item">Item to show stats of</param>
-	public void ShowItemStats(object item)
+	/// <param name="item">Item to select and show stats of</param>
+	public void SelectItem(object item)
 	{
-		GridContainer statsNode = GetNode<GridContainer>(ITEM_STATS_NODE);
-
-
-		if (item is Tower tower)
-		{
-			GenericAttack attack = tower.GetAttack();
-			if (attack != null)
-			{
-				ShowStat(1, "Attack", attack.Damage.ToString());
-				ShowStat(2, "Speed", attack.AttackSpeed.ToString());
-			}
-		}
-		else if (item is Obstacle obstacle)
-		{
-			ShowStat(1, "HP", obstacle.Hp.Hp.ToString());
-		}
-
-		if (item is IUpgradable upgradable)
-		{
-			ShowUpgradeButton(statsNode);
-			ShowUpgradePrice(upgradable.UpgradePrice);
-		} 
+		selectedItem = item;
 	}
 
 	public void ClearItemStatsDisplay()
 	{
+		selectedItem = null;
 		GridContainer statsNode = GetNode<GridContainer>(ITEM_STATS_NODE);
 		HideItemStats(statsNode);
 	}
 
+	public override void _Process(float delta)
+	{
+		base._Process(delta);
+		ShowSelectedItem();
+	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -77,6 +64,39 @@ public class HUD : CanvasLayer
 	public void SelectObstacleInShop()
 	{
 		GetNode<GenericShopItem>(SHOP_OBSTACLE).SelectItem();
+	}
+
+	/// <summary>
+	/// Show stats of selected item (if any).
+	/// </summary>
+	private void ShowSelectedItem()
+	{
+		GridContainer statsNode = GetNode<GridContainer>(ITEM_STATS_NODE);
+
+		if (selectedItem == null)
+		{
+			return;
+		}
+
+		if (selectedItem is Tower tower)
+		{
+			GenericAttack attack = tower.GetAttack();
+			if (attack != null)
+			{
+				ShowStat(1, "Attack", attack.Damage.ToString());
+				ShowStat(2, "Speed", attack.AttackSpeed.ToString());
+			}
+		}
+		else if (selectedItem is Obstacle obstacle)
+		{
+			ShowStat(1, "HP", obstacle.Hp.Hp.ToString());
+		}
+
+		if (selectedItem is IUpgradable upgradable)
+		{
+			ShowUpgradeButton(statsNode);
+			ShowUpgradePrice(upgradable.UpgradePrice);
+		}
 	}
 
 	private void HideItemStats(GridContainer statsContainer)

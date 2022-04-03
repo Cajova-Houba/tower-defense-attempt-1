@@ -75,7 +75,7 @@ public class Level : Node
 		{
 			entity.Selection.Select();
 			selectedEntity = entity;
-			GetNode<HUD>(HUD_NODE).ShowItemStats(entity);
+			GetNode<HUD>(HUD_NODE).SelectItem(entity);
 
 			if (entity is GenericShopItem shopItem)
 			{
@@ -105,7 +105,7 @@ public class Level : Node
 			{
 				SetMoney(money - upgradable.UpgradePrice);
 				upgradable.Upgrade();
-				GetNode<HUD>(HUD_NODE).ShowItemStats(selectedEntity);
+				GetNode<HUD>(HUD_NODE).SelectItem(selectedEntity);
 			}
 		}
 	}
