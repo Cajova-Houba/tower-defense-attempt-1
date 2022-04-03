@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 /// <summary>
 /// Simple node used to handle keyboard inputs - mainly timeouts between them.
@@ -33,6 +34,24 @@ public class Controls : Node
 	//  {
 	//      
 	//  }
+
+	/// <summary>
+	/// Returns the action that is currently pressed. Multi-action input is ignored and only 
+	/// one action is returned. 
+	/// </summary>
+	/// <returns>Name fo the action or GameConstants.NO_ACTION</returns>
+	public string GetPressedAction()
+	{
+		foreach(string actionName in GameConstants.ACTIONS)
+		{
+			if (IsActionPressed(actionName))
+			{
+				return actionName;
+			}
+		}
+
+		return GameConstants.NO_ACTION;
+	}
 
 	/// <summary>
 	/// Checks whether the given action is pressed and if it has cooled down.

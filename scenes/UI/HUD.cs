@@ -8,6 +8,8 @@ public class HUD : CanvasLayer
 	private const string ITEM_STATS_NODE = "SidePanel/Items/ItemStats";
 	private const string STATS_NODE = "SidePanel/Items/Stats";
 	private const string UPGRADE_BUTTON = "UpgradeButton";
+	private const string SHOP_TOWER = "SidePanel/Items/Shop/ShopItems/Tower";
+	private const string SHOP_OBSTACLE = "SidePanel/Items/Shop/ShopItems/Obstacle";
 
 	public void ShowMoney(uint money)
 	{
@@ -65,6 +67,16 @@ public class HUD : CanvasLayer
 	public override void _Ready()
 	{
 		ClearItemStatsDisplay();
+	}
+
+	public void SelectTowerInShop()
+	{
+		GetNode<GenericShopItem>(SHOP_TOWER).SelectItem();
+	}
+
+	public void SelectObstacleInShop()
+	{
+		GetNode<GenericShopItem>(SHOP_OBSTACLE).SelectItem();
 	}
 
 	private void HideItemStats(GridContainer statsContainer)

@@ -79,14 +79,22 @@ public class GenericShopItem : PanelContainer, ISelectableEntity
 		Selection.Deselect();
 	}
 
+	/// <summary>
+	/// Selects this shop item.
+	/// </summary>
+	public void SelectItem()
+	{
+		Selection.ChangeSelect();
+		currentLevel.OnEntitySelectionChanged(this);
+	}
+
 	private void OnGuiInput(object @event)
 	{
 		if (@event is InputEventMouseButton inputEventMouseButton)
 		{
 			if (inputEventMouseButton.ButtonIndex == ((int)ButtonList.Left) && inputEventMouseButton.IsActionReleased(GameConstants.LEFT_MOUSE_CLICK) && clickTimer.HasPassed() && currentLevel != null)
 			{
-				Selection.ChangeSelect();
-				currentLevel.OnEntitySelectionChanged(this);
+				SelectItem();
 			}
 		}
 	}

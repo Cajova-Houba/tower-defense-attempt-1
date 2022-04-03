@@ -13,7 +13,10 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
     {
         public const string LEFT_MOUSE_CLICK = "ui_mouse_left";
 
+        internal const string NO_ACTION = "";
         public const string UPGRADE_ACTION = "upgrade_action";
+        internal const string SHOP_TOWER_ACTION = "shop_tower_action";
+        internal const string SHOP_OBSTACLE_ACTION = "shop_obstacle_action";
 
         public const string ENEMIES_GROUP = "enemies";
         public const string SELECTABLE_GROUP = "selectable";
@@ -22,5 +25,11 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
         /// The Level node is always the root of level scene.
         /// </summary>
         public const string LEVEL_NODE = "/root/Level";
+
+        internal static string[] ACTIONS = new string[] { 
+            UPGRADE_ACTION,
+            SHOP_TOWER_ACTION,
+            SHOP_OBSTACLE_ACTION
+        };
     }
 }

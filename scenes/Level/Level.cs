@@ -44,11 +44,10 @@ public class Level : Node
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
 	{
-		if (GetControls().IsActionPressed(GameConstants.UPGRADE_ACTION))
-		{
-			UpgradeSelected();
-		}
+		HandlePressedAction();
+		
 	}
+
 
 	public override void _Input(InputEvent @event)
 	{
@@ -114,6 +113,25 @@ public class Level : Node
 	private Controls GetControls()
 	{
 		return GetNode<Controls>(CONTROLS_NODE);
+	}
+
+	/// <summary>
+	/// Use controls to get currently pressed action and handle it.
+	/// </summary>
+	private void HandlePressedAction()
+	{
+		string action = GetControls().GetPressedAction();
+		if (GameConstants.UPGRADE_ACTION == action)
+		{
+			UpgradeSelected();
+		}
+		else if (GameConstants.SHOP_TOWER_ACTION == action)
+		{
+			GetNode<HUD>(HUD_NODE).SelectTowerInShop();
+		} else if (GameConstants.SHOP_OBSTACLE_ACTION == action)
+		{
+			GetNode<HUD>(HUD_NODE).SelectObstacleInShop();
+		}
 	}
 
 	/// <summary>
