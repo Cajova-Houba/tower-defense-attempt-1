@@ -49,6 +49,7 @@ public class Level : Node
 			GameOver();
 		} else
 		{
+			GetNode<HUD>(HUD_NODE).ShowBaseHp(GetBaseHp());
 			HandlePressedAction();
 		}
 	}
@@ -123,6 +124,15 @@ public class Level : Node
 	{
 		GenericLivingObject playerBase = (GenericLivingObject)FindNode(BASE);
 		return IsInstanceValid(playerBase) && !playerBase.IsQueuedForDeletion() && !playerBase.Hp.IsDead;
+	}
+
+	/// <summary>
+	/// Assumes the base exists and is valid.
+	/// </summary>
+	/// <returns></returns>
+	private uint GetBaseHp()
+	{
+		return GetNode<GenericLivingObject>(BASE).Hp.Hp;
 	}
 
 	/// <summary>
