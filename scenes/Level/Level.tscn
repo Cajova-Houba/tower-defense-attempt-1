@@ -21,7 +21,6 @@ region_rect = Rect2( 0, 0, 1024, 600 )
 
 [node name="Base" parent="." instance=ExtResource( 2 )]
 position = Vector2( 59, 285 )
-MaxHp = 1
 
 [node name="WaveSpawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( 59, 285 )
