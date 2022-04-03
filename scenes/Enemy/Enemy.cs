@@ -76,7 +76,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 				// we tried to attack the main target -> no success -> try to attack intermediate if any
 				if (!attack.Attack(Target, Position) && intermediateTarget != null)
 				{
-					if (intermediateTarget.IsQueuedForDeletion())
+					if (!IsInstanceValid(intermediateTarget) || intermediateTarget.IsQueuedForDeletion())
 					{
 						intermediateTarget = null;
 					} else
