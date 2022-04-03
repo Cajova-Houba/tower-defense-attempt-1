@@ -78,7 +78,7 @@ public class WaveSpawner : Node2D
 
 			Enemy enemy = (Enemy)toSpawn.Instance();
 			enemy.Position = spawnPosition;
-			enemy.Target = Target;
+			enemy.PrimaryTarget = Target;
 			GetNode(SPAWNED_ENEMIES_NODE).AddChild(enemy);
 		}
 

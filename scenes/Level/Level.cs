@@ -6,7 +6,7 @@ using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 public class Level : Node
 {
-
+	private const string BASE = "Base";
 	private const string HUD_NODE = "HUD";
 	private const string SELECTED_SHOP_ITEM = "SelectedShopItem";
 	private const string CONTROLS_NODE = "Controls";
@@ -44,8 +44,13 @@ public class Level : Node
 	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
 	{
-		HandlePressedAction();
-		
+		if (!IsBaseAlive())
+		{
+			GameOver();
+		} else
+		{
+			HandlePressedAction();
+		}
 	}
 
 
@@ -108,6 +113,24 @@ public class Level : Node
 				GetNode<HUD>(HUD_NODE).SelectItem(selectedEntity);
 			}
 		}
+	}
+	
+	/// <summary>
+	/// Check whether the base still lives and if not show game over.
+	/// </summary>
+	/// <returns>False if the base is dead.</returns>
+	private bool IsBaseAlive()
+	{
+		GenericLivingObject playerBase = (GenericLivingObject)FindNode(BASE);
+		return IsInstanceValid(playerBase) && !playerBase.IsQueuedForDeletion() && !playerBase.Hp.IsDead;
+	}
+
+	/// <summary>
+	/// Show game over, stop game etc.
+	/// </summary>
+	private void GameOver()
+	{
+		GetNode<HUD>(HUD_NODE).ShowGameOver();
 	}
 
 	private Controls GetControls()

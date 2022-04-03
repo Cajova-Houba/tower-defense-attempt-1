@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/ground/grass.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Base/Base.tscn" type="PackedScene" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://scenes/UI/HUD.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/Level/SelectedShopItem.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/Level/Controls.cs" type="Script" id=9]
-[ext_resource path="res://scenes/Obstacle/Obstacle.tscn" type="PackedScene" id=10]
 
 [node name="Level" type="Node"]
 script = ExtResource( 5 )
@@ -22,6 +21,7 @@ region_rect = Rect2( 0, 0, 1024, 600 )
 
 [node name="Base" parent="." instance=ExtResource( 2 )]
 position = Vector2( 59, 285 )
+MaxHp = 1
 
 [node name="WaveSpawner" parent="." instance=ExtResource( 3 )]
 position = Vector2( 59, 285 )
@@ -37,6 +37,3 @@ position = Vector2( 229, 131 )
 
 [node name="Controls" type="Node" parent="."]
 script = ExtResource( 9 )
-
-[node name="Obstacle" parent="." instance=ExtResource( 10 )]
-position = Vector2( 165, 288 )

@@ -32,9 +32,9 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	public uint RewardMoney = 25;
 
 	/// <summary>
-	/// Target this enemy will seek to destroy.
+	/// Target this enemy will seek to destroy. Typically a player's base in a level.
 	/// </summary>
-	public GenericLivingObject Target { get; set; }
+	public GenericLivingObject PrimaryTarget { get; set; }
 
 	/// <summary>
 	/// Targets picked up around the route to the main Target. Currently only Obstacle which will
@@ -70,19 +70,14 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	{
 		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
 		{
-			if (child is GenericAttack attack && Target != null)
+			if (child is GenericAttack attack)
 			{
+				bool attacked = IsPrimaryTargetValid() && attack.Attack(PrimaryTarget, Position);
 
 				// we tried to attack the main target -> no success -> try to attack intermediate if any
-				if (!attack.Attack(Target, Position) && intermediateTarget != null)
+				if (!attacked && IsIntermediateTargetValid())
 				{
-					if (!IsInstanceValid(intermediateTarget) || intermediateTarget.IsQueuedForDeletion())
-					{
-						intermediateTarget = null;
-					} else
-					{
-						attack.Attack(intermediateTarget, Position);
-					}
+					attack.Attack(intermediateTarget, Position);
 				}
 			}
 		}
@@ -90,12 +85,12 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 	private void MoveTowardsDestination(float delta)
 	{
-		if (Target == null || Target.IsQueuedForDeletion() || IsBlockedByObstacle())
+		if (!IsPrimaryTargetValid() || IsBlockedByObstacle())
 		{
 			return;
 		}
 
-		Vector2 velocity = Target.Position - Position;
+		Vector2 velocity = PrimaryTarget.Position - Position;
 
 		if (velocity.Length() <= DestinationReachedTreshold)
 		{
@@ -104,6 +99,16 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 		velocity = velocity.Normalized() * MovementSpeed;
 		Position += velocity * delta;
+	}
+
+	private bool IsPrimaryTargetValid()
+	{
+		return PrimaryTarget != null && IsInstanceValid(PrimaryTarget) && !PrimaryTarget.IsQueuedForDeletion();
+	}
+
+	private bool IsIntermediateTargetValid()
+	{
+		return intermediateTarget != null && IsInstanceValid(intermediateTarget) && !intermediateTarget.IsQueuedForDeletion();
 	}
 
 	private bool IsBlockedByObstacle()
