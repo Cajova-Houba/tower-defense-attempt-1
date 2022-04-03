@@ -29,3 +29,5 @@ frames = SubResource( 1 )
 
 [node name="MeleeAttack" parent="Attacks" index="0" instance=ExtResource( 4 )]
 Damage = 10
+
+[connection signal="area_entered" from="." to="." method="OnCollision"]

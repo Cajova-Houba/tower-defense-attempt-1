@@ -36,6 +36,12 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	/// </summary>
 	public GenericLivingObject Target { get; set; }
 
+	/// <summary>
+	/// Targets picked up around the route to the main Target. Currently only Obstacle which will
+	/// block movement of this enemy.
+	/// </summary>
+	private GenericLivingObject intermediateTarget;
+
 	// Declare member variables here. Examples:
 	// private int a = 2;
 	// private string b = "text";
@@ -64,16 +70,27 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	{
 		foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
 		{
-			if (child is GenericAttack && Target != null)
+			if (child is GenericAttack attack && Target != null)
 			{
-				((GenericAttack)child).Attack(Target, Position);
+
+				// we tried to attack the main target -> no success -> try to attack intermediate if any
+				if (!attack.Attack(Target, Position) && intermediateTarget != null)
+				{
+					if (intermediateTarget.IsQueuedForDeletion())
+					{
+						intermediateTarget = null;
+					} else
+					{
+						attack.Attack(intermediateTarget, Position);
+					}
+				}
 			}
 		}
 	}
 
 	private void MoveTowardsDestination(float delta)
 	{
-		if (Target == null || Target.IsQueuedForDeletion())
+		if (Target == null || Target.IsQueuedForDeletion() || IsBlockedByObstacle())
 		{
 			return;
 		}
@@ -89,9 +106,25 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 		Position += velocity * delta;
 	}
 
+	private bool IsBlockedByObstacle()
+	{
+		return intermediateTarget != null;
+	}
+
 	private void UpdateAnimation()
 	{
 		string animationName = (Hp.Hp < MaxHp / 2) ? HURT_ANIMATION : DEFAULT_ANIMATION;
 		GetAnimationNode().Animation = animationName;
 	}
+
+	private void OnCollision(Area2D otherArea)
+	{
+		if (otherArea is Obstacle)
+		{
+			intermediateTarget = (Obstacle)otherArea;
+		}
+	}
+
 }
+
+

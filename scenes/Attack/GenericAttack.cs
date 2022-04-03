@@ -38,12 +38,19 @@ namespace TowerDefenseAttempt1.scenes.Attack
 			attackTimer = new org.valesz.towerdefatt.Core.Util.Timer((long)(1000 / AttackSpeed));
 		}
 
-		public virtual void Attack(GenericLivingObject target, Vector2 currentPosition)
+		/// <summary>
+		/// Returns true if the attack was executed.
+		/// </summary>
+		/// <param name="target"></param>
+		/// <param name="currentPosition"></param>
+		public virtual bool Attack(GenericLivingObject target, Vector2 currentPosition)
 		{
 			if (IsTargetInRange(target.Position, currentPosition) && IsTimeToAttack())
 			{
 				target.Hp.TakeHit(Damage);
+				return true;
 			}
+			return false;
 		}
 
 		public void Upgrade()
