@@ -66,7 +66,6 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 	{
 		if (selectionAllowed && currentLevel != null)
 		{
-			Console.WriteLine("Selecting " + this.GetType().Name);
 			Selection.ChangeSelect();
 			currentLevel.OnEntitySelectionChanged(this);
 		}
