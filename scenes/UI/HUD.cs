@@ -25,6 +25,11 @@ public class HUD : CanvasLayer
 		GetNode<Label>(STATS_NODE + "/Kills").Text = kills.ToString();
 	}
 
+	public void ShowEnemyCount(uint enemyCount)
+    {
+		GetNode<Label>(STATS_NODE + "/Enemies").Text = enemyCount.ToString();
+    }
+
 	public void ShowBaseHp(uint baseHp)
 	{
 		GetNode<Label>(STATS_NODE + "/BaseHp").Text = baseHp.ToString();

@@ -6,3 +6,11 @@ C:\Users\zdenda\source\repos\tower-defense-attempt-1\.mono\temp\bin\Debug\Tower 
 C:\Users\zdenda\source\repos\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.dll
 C:\Users\zdenda\source\repos\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.pdb
 C:\Users\zdenda\source\repos\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.csproj.AssemblyReference.cache
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\bin\Debug\Tower Defense Attempt 1.dll
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\bin\Debug\Tower Defense Attempt 1.pdb
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.csprojAssemblyReference.cache
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.AssemblyInfoInputs.cache
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.AssemblyInfo.cs
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.csproj.CoreCompileInputs.cache
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.dll
+C:\Users\zdenek\Documents\prg\tower-defense-attempt-1\.mono\temp\obj\Debug\Tower Defense Attempt 1.pdb

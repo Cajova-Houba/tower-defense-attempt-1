@@ -50,6 +50,7 @@ public class Level : Node
 		} else
 		{
 			GetNode<HUD>(HUD_NODE).ShowBaseHp(GetBaseHp());
+			ShowEnemyCount();
 			HandlePressedAction();
 		}
 	}
@@ -98,6 +99,7 @@ public class Level : Node
 	{
 		SetMoney(money + enemy.RewardMoney);
 		SetKills(kills + 1);
+		ShowEnemyCount();
 	}
 
 	/// <summary>
@@ -116,6 +118,11 @@ public class Level : Node
 		}
 	}
 	
+	private void ShowEnemyCount()
+    {
+		GetNode<HUD>(HUD_NODE).ShowEnemyCount((uint)GetTree().GetNodesInGroup(GameConstants.ENEMIES_GROUP).Count);
+	}
+
 	/// <summary>
 	/// Check whether the base still lives and if not show game over.
 	/// </summary>

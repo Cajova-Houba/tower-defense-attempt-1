@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 public class WaveSpawner : Node2D
 {
@@ -30,6 +31,12 @@ public class WaveSpawner : Node2D
 	public List<PackedScene> EnemiesToSpawn;
 
 	/// <summary>
+	/// Delay between spawning enemies in one wave. In milliseconds.
+	/// </summary>
+	[Export]
+	public int spawnDelay = 30;
+
+	/// <summary>
 	/// Target for the spawned enemies.
 	/// </summary>
 	public GenericLivingObject Target { get; set; }
@@ -41,9 +48,19 @@ public class WaveSpawner : Node2D
 	/// </summary>
 	private float enemiesPerWave = 1f;
 
+	/// <summary>
+	/// Flag indicating active spawning in one wave.
+	/// </summary>
+	private bool spawning;
+
+	private int enemiesSpawnedInWave;
+
+	private TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer spawnTimer;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		spawnTimer = new TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer(spawnDelay);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,38 +68,77 @@ public class WaveSpawner : Node2D
 	{
 		if (AllEnemisGone())
 		{
-			Spawn();
+			GD.Print("All enemies gone, start spawning");
+			StartSpawning();
 		}
+
+		HandleSpawning();
 	}
 
-	/// <summary>
-	/// Checks whether there are any live enemies and returns true if there are not any.
-	/// </summary>
-	/// <returns></returns>
-	private bool AllEnemisGone()
+    private void HandleSpawning()
+    {
+		if (EnemiesToSpawn == null || EnemiesToSpawn.Count == 0 || !spawning)
+		{
+			StopSpawning();
+			return;
+		}
+
+		if (spawnTimer.HasPassed() && enemiesSpawnedInWave < enemiesPerWave)
+        {
+			GD.Print("Spawning");
+			Spawn();
+			GD.Print($"{enemiesSpawnedInWave} out of {enemiesPerWave:0.##} spawned");
+			
+			if (enemiesSpawnedInWave >= enemiesPerWave)
+            {
+				GD.Print($"All enemies spawned ({enemiesSpawnedInWave}), stopping spawning");
+				EndWave();
+				GD.Print($"{enemiesPerWave} in next wave");
+            }
+        }
+	}
+
+    /// <summary>
+    /// Checks whether there are any live enemies and returns true if there are not any.
+    /// </summary>
+    /// <returns></returns>
+    private bool AllEnemisGone()
 	{
 		return GetTree().GetNodesInGroup(ENEMIES_GROUP).Count == 0;
 	}
 
-	public void Spawn()
-	{
-		if (EnemiesToSpawn == null || EnemiesToSpawn.Count == 0)
-		{
-			return;
-		}
+	private void StartSpawning()
+    {
+		spawning = true;
+		enemiesSpawnedInWave = 0;
+    }
 
-		for(uint i = 0; i < enemiesPerWave; i++)
-		{
-			Vector2 spawnPosition = RandomSpawnPosition();
-			PackedScene toSpawn = RandomEnemyType();
-
-			Enemy enemy = (Enemy)toSpawn.Instance();
-			enemy.Position = spawnPosition;
-			enemy.PrimaryTarget = Target;
-			GetNode(SPAWNED_ENEMIES_NODE).AddChild(enemy);
-		}
-
+	private void EndWave()
+    {
+		StopSpawning();
+		enemiesSpawnedInWave = 0;
 		enemiesPerWave *= EnemyGrowthFactor;
+    }
+
+	private void StopSpawning()
+    {
+		spawning = false;
+	}
+
+	/// <summary>
+	/// Spawns one enemy in wave.
+	/// </summary>
+	private void Spawn()
+	{
+		Vector2 spawnPosition = RandomSpawnPosition();
+		PackedScene toSpawn = RandomEnemyType();
+
+		Enemy enemy = (Enemy)toSpawn.Instance();
+		enemy.Position = spawnPosition;
+		enemy.PrimaryTarget = Target;
+		GetNode(SPAWNED_ENEMIES_NODE).AddChild(enemy);
+
+		enemiesSpawnedInWave++;
 	}
 
 	private PackedScene RandomEnemyType()
