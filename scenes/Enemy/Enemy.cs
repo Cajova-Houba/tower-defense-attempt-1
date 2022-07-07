@@ -127,7 +127,12 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 		if (otherArea is Obstacle)
 		{
 			intermediateTarget = (Obstacle)otherArea;
-		}
+		} else if (otherArea is Projectile)
+        {
+			Projectile p = (Projectile)otherArea;
+			Hp.TakeHit(p.GetHitDamage());
+			p.QueueFree();
+        }
 	}
 
 }

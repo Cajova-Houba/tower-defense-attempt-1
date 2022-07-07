@@ -34,14 +34,10 @@ public class Projectile : GenericVisibleObject
 		MoveInDirection(delta);
 	}
 
-	private void OnCollision(Area2D otherObject)
-	{
-		if (otherObject is Enemy)
-		{
-			((Enemy)otherObject).Hp.TakeHit(damage);
-			QueueFree();
-		}
-	}
+	public uint GetHitDamage()
+    {
+		return damage;
+    }
 
 	private void OnScreenExit()
 	{
