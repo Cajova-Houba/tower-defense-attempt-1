@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using TowerDefenseAttempt1.org.valesz.towerdefatt.Core;
+using TowerDefenseAttempt1.scenes.UI.EnemyModifier;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
@@ -10,6 +12,7 @@ public class Level : Node
 	private const string HUD_NODE = "HUD";
 	private const string SELECTED_SHOP_ITEM = "SelectedShopItem";
 	private const string CONTROLS_NODE = "Controls";
+	private const string SPAWNER_NODE = "WaveSpawner";
 
 	/// <summary>
 	/// Player's money at the start of level.
@@ -32,10 +35,17 @@ public class Level : Node
 	/// </summary>
 	private uint kills;
 
+	/// <summary>
+	/// Modifiers selected by player as he progresses through the waves of enemies.
+	/// todo: use this to display all active modifiers?
+	/// </summary>
+	private List<EnemyModifierData> modifiers;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GetNode<WaveSpawner>("WaveSpawner").Target = GetNode<GenericLivingObject>("Base");
+		GetNode<WaveSpawner>(SPAWNER_NODE).Target = GetNode<GenericLivingObject>("Base");
+		modifiers = new List<EnemyModifierData>();
 		selectedEntity = null;
 		SetMoney(InitMoney);
 		SetKills(0);
@@ -90,6 +100,27 @@ public class Level : Node
 			}
 		}
 	}
+
+	/// <summary>
+	/// Callback for when player picks modifier and game can be resumed.
+	/// </summary>
+	/// <param name="selectedModifier">Modifier selected by player.</param>
+	public void OnEnemyModifierSelected(EnemyModifierData selectedModifier)
+    {
+		modifiers.Add(selectedModifier);
+		GetNode<HUD>(HUD_NODE).HideEnemyModifierWindow();
+		GetNode<WaveSpawner>(SPAWNER_NODE).AddModifier(selectedModifier);
+		GetTree().Paused = false;
+	}
+
+	/// <summary>
+	/// Callback for when the last enemy in wave is killed.
+	/// </summary>
+	public void OnWaveEnd()
+    {
+		GetNode<HUD>(HUD_NODE).ShowEnemyModifierWindow();
+		GetTree().Paused = true;
+    }
 
 	/// <summary>
 	/// Callback for signal emitted when enemy is killed.

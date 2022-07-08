@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/UI/Generic/GenericLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/UI/EnemyModifier/EnemyModifier.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/ui/enemyModifier/speed.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/enemyModifier/attack.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/enemyModifier/heart.png" type="Texture" id=5]
+
+[node name="EnemyModifierWindow" type="Panel"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -424.0
+margin_bottom = -300.0
+
+[node name="Layout" type="VBoxContainer" parent="."]
+margin_right = 600.0
+margin_bottom = 66.0
+alignment = 1
+
+[node name="Message" parent="Layout" instance=ExtResource( 1 )]
+margin_right = 600.0
+margin_bottom = 29.0
+text = "Congratulations! You've survived this wave."
+align = 1
+
+[node name="Message2" parent="Layout" instance=ExtResource( 1 )]
+margin_top = 33.0
+margin_right = 600.0
+margin_bottom = 62.0
+text = "Pick next modifier:"
+align = 1
+
+[node name="Modifiers" type="HBoxContainer" parent="Layout"]
+margin_top = 66.0
+margin_right = 600.0
+margin_bottom = 162.0
+alignment = 1
+
+[node name="HPModifier" parent="Layout/Modifiers" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 179.0
+margin_right = 257.0
+margin_bottom = 96.0
+Texture = ExtResource( 5 )
+Value = 15
+
+[node name="SpeedModifier" parent="Layout/Modifiers" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 261.0
+margin_right = 339.0
+margin_bottom = 96.0
+Texture = ExtResource( 3 )
+Type = 1
+Value = 10
+
+[node name="DamageModifier" parent="Layout/Modifiers" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 343.0
+margin_right = 421.0
+margin_bottom = 96.0
+Texture = ExtResource( 4 )
+Type = 2
+Value = 10

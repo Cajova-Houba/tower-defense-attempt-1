@@ -1,5 +1,7 @@
 using Godot;
+using System.Collections.Generic;
 using TowerDefenseAttempt1.scenes.Attack;
+using TowerDefenseAttempt1.scenes.UI.EnemyModifier;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
@@ -45,6 +47,25 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	// Declare member variables here. Examples:
 	// private int a = 2;
 	// private string b = "text";
+
+	public void ApplyModifiers(List<EnemyModifierData> modifiers)
+    {
+		foreach (EnemyModifierData modifierData in modifiers)
+        {
+			switch (modifierData.modifierType)
+            {
+				case EnemyModifier.ModifierType.HP:
+					MaxHp = MaxHp + modifierData.value;
+					break;
+				case EnemyModifier.ModifierType.DAMAGE:
+					// todo:
+					break;
+				case EnemyModifier.ModifierType.SPEED:
+					MovementSpeed += (int)modifierData.value;
+					break;
+            }
+        }
+    }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

@@ -10,6 +10,7 @@ public class HUD : CanvasLayer
 	private const string UPGRADE_BUTTON = "UpgradeButton";
 	private const string SHOP_TOWER = "SidePanel/Items/Shop/ShopItems/Tower";
 	private const string SHOP_OBSTACLE = "SidePanel/Items/Shop/ShopItems/Obstacle";
+	private const string ENEMY_MODIFIER_WINDOW = "EnemyModifierWindow";
 
 	private const string GAME_OVER = "GameOverPanel";
 
@@ -40,6 +41,16 @@ public class HUD : CanvasLayer
 		GetNode<Panel>(GAME_OVER).Show();
 	}
 
+	public void HideEnemyModifierWindow()
+    {
+		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Hide();
+	}
+
+	public void ShowEnemyModifierWindow()
+    {
+		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Show();
+    }
+
 	/// <summary>
 	/// Select item to show statistics its statistics.
 	/// </summary>
@@ -66,6 +77,7 @@ public class HUD : CanvasLayer
 	public override void _Ready()
 	{
 		GetNode<Panel>(GAME_OVER).Hide();
+		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Hide();
 		ClearItemStatsDisplay();
 	}
 

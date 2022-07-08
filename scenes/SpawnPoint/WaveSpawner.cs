@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using TowerDefenseAttempt1.scenes.UI.EnemyModifier;
 using TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util;
 
 public class WaveSpawner : Node2D
@@ -55,13 +56,24 @@ public class WaveSpawner : Node2D
 
 	private int enemiesSpawnedInWave;
 
+	private bool firstWave;
+
 	private TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer spawnTimer;
+
+	private List<EnemyModifierData> modifiers;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		spawnTimer = new TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer(spawnDelay);
+		firstWave = true;
+		modifiers = new List<EnemyModifierData>();
 	}
+
+	public void AddModifier(EnemyModifierData modifier)
+    {
+		modifiers.Add(modifier);
+    }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(float delta)
@@ -111,7 +123,13 @@ public class WaveSpawner : Node2D
     {
 		spawning = true;
 		enemiesSpawnedInWave = 0;
-    }
+		if (!firstWave)
+        {
+			GetNode<Level>(GameConstants.LEVEL_NODE).OnWaveEnd();
+        }
+
+		firstWave = false;
+	}
 
 	private void EndWave()
     {
@@ -136,6 +154,7 @@ public class WaveSpawner : Node2D
 		Enemy enemy = (Enemy)toSpawn.Instance();
 		enemy.Position = spawnPosition;
 		enemy.PrimaryTarget = Target;
+		enemy.ApplyModifiers(modifiers);
 		GetNode(SPAWNED_ENEMIES_NODE).AddChild(enemy);
 
 		enemiesSpawnedInWave++;
