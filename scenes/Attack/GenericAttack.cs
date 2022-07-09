@@ -46,7 +46,7 @@ namespace TowerDefenseAttempt1.scenes.Attack
 		public virtual bool Attack(GenericLivingObject target, Vector2 currentPosition)
 		{
 			bool timeToAttack = IsTimeToAttack();
-			bool targetInRange = IsTargetInRange(target.Position, currentPosition);
+			bool targetInRange = IsTargetInRange(target.Position, currentPosition);	
 			if (targetInRange && timeToAttack)
 			{
 				GD.Print("Attacking");

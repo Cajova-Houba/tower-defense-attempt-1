@@ -21,6 +21,7 @@ public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
 	{
 		if (Hp.IsDead)
 		{
+			GD.Print(Name + " is dying");
 			OnDeath();
 			OnAfterDeath();
 		}

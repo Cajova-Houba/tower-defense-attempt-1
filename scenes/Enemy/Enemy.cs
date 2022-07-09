@@ -36,6 +36,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	/// <summary>
 	/// Target this enemy will seek to destroy. Typically a player's base in a level.
 	/// </summary>
+	[Export]
 	public GenericLivingObject PrimaryTarget { get; set; }
 
 	/// <summary>
@@ -114,6 +115,8 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	{
 		if (!IsPrimaryTargetValid() || IsBlockedByObstacle())
 		{
+			//GD.Print("Primary target not valid or blocked by obstacle");
+			//GD.Print("Is blocked by obstacle: "+IsBlockedByObstacle());
 			return;
 		}
 
@@ -140,7 +143,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 	private bool IsBlockedByObstacle()
 	{
-		return intermediateTarget != null;
+		return intermediateTarget != null && IsInstanceValid(intermediateTarget);
 	}
 
 	private void UpdateAnimation()
