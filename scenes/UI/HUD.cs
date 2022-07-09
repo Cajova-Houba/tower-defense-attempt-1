@@ -53,7 +53,7 @@ public class HUD : CanvasLayer
 
 	public void ShowEnemyModifierWindow()
 	{
-		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Show();
+		GetNode<EnemyModifierWindow>(ENEMY_MODIFIER_WINDOW).ShowWithRandomModifiers();
 	}
 
 	/// <summary>
@@ -82,7 +82,7 @@ public class HUD : CanvasLayer
 	public override void _Ready()
 	{
 		GetNode<Panel>(GAME_OVER).Hide();
-		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Hide();
+		GetNode<EnemyModifierWindow>(ENEMY_MODIFIER_WINDOW).Hide();
 		ClearItemStatsDisplay();
 	}
 
