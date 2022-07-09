@@ -45,9 +45,13 @@ namespace TowerDefenseAttempt1.scenes.Attack
 		/// <param name="currentPosition"></param>
 		public virtual bool Attack(GenericLivingObject target, Vector2 currentPosition)
 		{
-			if (IsTargetInRange(target.Position, currentPosition) && IsTimeToAttack())
+			bool timeToAttack = IsTimeToAttack();
+			bool targetInRange = IsTargetInRange(target.Position, currentPosition);
+			if (targetInRange && timeToAttack)
 			{
+				GD.Print("Attacking");
 				target.Hp.TakeHit(Damage);
+				GD.Print("Target HP " + target.Hp.Hp);
 				return true;
 			}
 			return false;
@@ -75,7 +79,7 @@ namespace TowerDefenseAttempt1.scenes.Attack
 		/// <param name="targetPosition">Target's position.</param>
 		/// <param name="currentPosition">Attacker's position.</param>
 		/// <returns>True if the target is in range of this attack.</returns>
-		protected bool IsTargetInRange(Vector2 targetPosition, Vector2 currentPosition)
+		public bool IsTargetInRange(Vector2 targetPosition, Vector2 currentPosition)
 		{
 			float distance = (targetPosition - currentPosition).Length();
 			return (distance >= 0 && distance <= Range) || (distance < 0 && distance >= -Range);

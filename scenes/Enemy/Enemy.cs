@@ -49,11 +49,11 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	// private string b = "text";
 
 	public void ApplyModifiers(List<EnemyModifierData> modifiers)
-    {
+	{
 		foreach (EnemyModifierData modifierData in modifiers)
-        {
+		{
 			switch (modifierData.modifierType)
-            {
+			{
 				case EnemyModifier.ModifierType.HP:
 					MaxHp = MaxHp + modifierData.value;
 					break;
@@ -69,9 +69,9 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 				case EnemyModifier.ModifierType.SPEED:
 					MovementSpeed += (int)modifierData.value;
 					break;
-            }
-        }
-    }
+			}
+		}
+	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -99,7 +99,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 		{
 			if (child is GenericAttack attack)
 			{
-				bool attacked = IsPrimaryTargetValid() && attack.Attack(PrimaryTarget, Position);
+				bool attacked = IsPrimaryTargetValid() && attack.IsTargetInRange(PrimaryTarget.Position, Position) && attack.Attack(PrimaryTarget, Position);
 
 				// we tried to attack the main target -> no success -> try to attack intermediate if any
 				if (!attacked && IsIntermediateTargetValid())
@@ -155,11 +155,11 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 		{
 			intermediateTarget = (Obstacle)otherArea;
 		} else if (otherArea is Projectile)
-        {
+		{
 			Projectile p = (Projectile)otherArea;
 			Hp.TakeHit(p.GetHitDamage());
 			p.QueueFree();
-        }
+		}
 	}
 
 }

@@ -4,3 +4,4 @@
 
 [node name="MeleeAttack" type="Node"]
 script = ExtResource( 1 )
+Range = 80
