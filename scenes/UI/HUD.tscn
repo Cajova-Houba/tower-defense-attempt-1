@@ -207,6 +207,7 @@ custom_fonts/font = ExtResource( 8 )
 text = "Upgrade"
 
 [node name="GameOverPanel" type="Panel" parent="."]
+pause_mode = 2
 visible = false
 margin_left = 212.0
 margin_top = 250.0
@@ -254,3 +255,5 @@ margin_right = -285.0
 margin_bottom = -175.0
 
 [connection signal="pressed" from="SidePanel/Items/ItemStats/UpgradeButton" to="." method="OnUpgradeButton"]
+[connection signal="pressed" from="GameOverPanel/VBoxContainer/HBoxContainer/RetryButton" to="." method="OnRetryButtonPressed"]
+[connection signal="pressed" from="GameOverPanel/VBoxContainer/HBoxContainer/ExitButton" to="." method="OnExitButtonPressed"]

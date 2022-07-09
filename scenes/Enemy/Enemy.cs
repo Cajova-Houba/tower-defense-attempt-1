@@ -58,7 +58,13 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 					MaxHp = MaxHp + modifierData.value;
 					break;
 				case EnemyModifier.ModifierType.DAMAGE:
-					// todo:
+					foreach (object child in GetNode<Node>(ATTACKS_NODE).GetChildren())
+					{
+						if (child is GenericAttack attack)
+						{
+							attack.Damage += modifierData.value;
+						}
+					}
 					break;
 				case EnemyModifier.ModifierType.SPEED:
 					MovementSpeed += (int)modifierData.value;

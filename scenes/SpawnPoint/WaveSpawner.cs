@@ -65,9 +65,19 @@ public class WaveSpawner : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Reset();
+	}
+
+	public void Reset()
+    {
 		spawnTimer = new TowerDefenseAttempt1.org.valesz.towerdefatt.Core.Util.Timer(spawnDelay);
 		firstWave = true;
 		modifiers = new List<EnemyModifierData>();
+		enemiesPerWave = 1f;
+		foreach(Node enemy in GetNode<Node>(SPAWNED_ENEMIES_NODE).GetChildren())
+        {
+			enemy.QueueFree();
+        }
 	}
 
 	public void AddModifier(EnemyModifierData modifier)

@@ -15,6 +15,18 @@ public class Level : Node
 	private const string SPAWNER_NODE = "WaveSpawner";
 
 	/// <summary>
+	/// Where to place initial tower at the beginning of level.
+	/// </summary>
+	[Export]
+	public Vector2 InitialTowerPosition;
+
+	/// <summary>
+	/// Instance of a initial tower to use.
+	/// </summary>
+	[Export]
+	public PackedScene InitialTower;
+
+	/// <summary>
 	/// Player's money at the start of level.
 	/// </summary>
 	[Export]
@@ -41,28 +53,85 @@ public class Level : Node
 	/// </summary>
 	private List<EnemyModifierData> modifiers;
 
+	private bool startNewGame = true;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GetNode<WaveSpawner>(SPAWNER_NODE).Target = GetNode<GenericLivingObject>("Base");
-		modifiers = new List<EnemyModifierData>();
-		selectedEntity = null;
-		SetMoney(InitMoney);
-		SetKills(0);
 	}
 
-	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(float delta)
+	public void Reset()
+    {
+        GD.Print("Resetting level");
+
+        SpawnNewBase();
+
+        GetNode<WaveSpawner>(SPAWNER_NODE).Target = GetNode<GenericLivingObject>("Base");
+        GetNode<WaveSpawner>(SPAWNER_NODE).Reset();
+        modifiers = new List<EnemyModifierData>();
+        selectedEntity = null;
+        SetMoney(InitMoney);
+        SetKills(0);
+
+        RemovePlayerBoughtObjects();
+
+        PlaceInitialTower();
+        GD.Print("Base: " + GetNode<GenericLivingObject>(BASE));
+    }
+
+    private void RemovePlayerBoughtObjects()
+    {
+        GD.Print("Removing objects bought by player");
+        foreach (object item in GetTree().GetNodesInGroup(GameConstants.PLAYER_ITEMS))
+        {
+            if (item is Node)
+            {
+                ((Node)item).QueueFree();
+            }
+        }
+    }
+
+    private void SpawnNewBase()
+    {
+		GD.Print("Respawning new base");
+		GetNode<Base>(BASE).Respawn();
+    }
+
+    /// <summary>
+    /// Place initial tower at the start of the level
+    /// </summary>
+    private void PlaceInitialTower()
+    {
+		GD.Print("Placing initial tower");
+		Node t = InitialTower.Instance();
+		t.AddToGroup(GameConstants.PLAYER_ITEMS);
+		if (t is GenericVisibleObject)
+        {
+			((GenericVisibleObject)t).Position = InitialTowerPosition;
+        }
+		AddChild(t);
+    }
+
+    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(float delta)
 	{
-		if (!IsBaseAlive())
-		{
-			GameOver();
-		} else
-		{
-			GetNode<HUD>(HUD_NODE).ShowBaseHp(GetBaseHp());
-			ShowEnemyCount();
-			HandlePressedAction();
-		}
+		if (startNewGame)
+        {
+			startNewGame = false;
+			Reset();
+        } else
+        {
+			if (!IsBaseAlive())
+			{
+				GD.Print("Base is dead, game over");
+				GameOver();
+			} else
+			{
+				GetNode<HUD>(HUD_NODE).ShowBaseHp(GetBaseHp());
+				ShowEnemyCount();
+				HandlePressedAction();
+			}
+        }
 	}
 
 
@@ -160,7 +229,7 @@ public class Level : Node
 	/// <returns>False if the base is dead.</returns>
 	private bool IsBaseAlive()
 	{
-		GenericLivingObject playerBase = (GenericLivingObject)FindNode(BASE);
+		GenericLivingObject playerBase = GetNode<GenericLivingObject>(BASE);
 		return IsInstanceValid(playerBase) && !playerBase.IsQueuedForDeletion() && !playerBase.Hp.IsDead;
 	}
 
@@ -178,7 +247,9 @@ public class Level : Node
 	/// </summary>
 	private void GameOver()
 	{
+		GD.Print("Game over");
 		GetNode<HUD>(HUD_NODE).ShowGameOver();
+		GetTree().Paused = true;
 	}
 
 	private Controls GetControls()
@@ -235,6 +306,7 @@ public class Level : Node
 	{
 		GenericVisibleObject newObject = (GenericVisibleObject)selectedShopItem.ShopItem.ItemScene.Instance();
 		newObject.Position = selectedShopItem.Position;
+		newObject.AddToGroup(GameConstants.PLAYER_ITEMS);
 		AddChild(newObject);
 		DeselectEntities();
 		GetNode<HUD>(HUD_NODE).ClearItemStatsDisplay();

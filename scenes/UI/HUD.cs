@@ -27,9 +27,9 @@ public class HUD : CanvasLayer
 	}
 
 	public void ShowEnemyCount(uint enemyCount)
-    {
+	{
 		GetNode<Label>(STATS_NODE + "/Enemies").Text = enemyCount.ToString();
-    }
+	}
 
 	public void ShowBaseHp(uint baseHp)
 	{
@@ -41,15 +41,20 @@ public class HUD : CanvasLayer
 		GetNode<Panel>(GAME_OVER).Show();
 	}
 
+	public void HideGameOver()
+	{
+		GetNode<Panel>(GAME_OVER).Hide();
+	}
+
 	public void HideEnemyModifierWindow()
-    {
+	{
 		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Hide();
 	}
 
 	public void ShowEnemyModifierWindow()
-    {
+	{
 		GetNode<Panel>(ENEMY_MODIFIER_WINDOW).Show();
-    }
+	}
 
 	/// <summary>
 	/// Select item to show statistics its statistics.
@@ -167,5 +172,20 @@ public class HUD : CanvasLayer
 		GetNode<Level>(GameConstants.LEVEL_NODE).UpgradeSelected();
 	}
 
+	private void OnRetryButtonPressed()
+	{
+		HideGameOver();
+		GetTree().Paused = false;
+		GetNode<Level>(GameConstants.LEVEL_NODE).Reset();
+	}
+
+
+	private void OnExitButtonPressed()
+	{
+		GetTree().Quit();
+	}
 }
+
+
+
 

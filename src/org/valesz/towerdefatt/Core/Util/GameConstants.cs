@@ -22,6 +22,11 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
         public const string SELECTABLE_GROUP = "selectable";
 
         /// <summary>
+        /// Group for all items bought by player.
+        /// </summary>
+        public const string PLAYER_ITEMS = "itemsBoughtByPlayer";
+
+        /// <summary>
         /// The Level node is always the root of level scene.
         /// </summary>
         public const string LEVEL_NODE = "/root/Level";

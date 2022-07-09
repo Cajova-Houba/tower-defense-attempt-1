@@ -22,7 +22,7 @@ public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
 		if (Hp.IsDead)
 		{
 			OnDeath();
-			QueueFree();
+			OnAfterDeath();
 		}
 	}
 
@@ -31,5 +31,10 @@ public class GenericLivingObject : GenericVisibleObject, IHasHpBehavior
 	/// </summary>
 	protected virtual void OnDeath()
 	{
+	}
+
+	protected virtual void OnAfterDeath()
+	{
+		QueueFree();
 	}
 }
