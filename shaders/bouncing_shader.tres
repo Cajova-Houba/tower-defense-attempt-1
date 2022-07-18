@@ -1,0 +1,18 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform float max_bounce_height = 3.0;
+uniform float bounce_speed = 3.0;
+uniform float bounce_time_offset = 0.0;
+
+void vertex() {
+	float newY = max_bounce_height*sin(bounce_time_offset + bounce_speed*TIME);
+	
+	// the bottom vertexes stay at the bottom line
+	if (VERTEX.y > 0.0 && newY > 0.0) {
+		newY = 0.0;
+	}
+	VERTEX += vec2(0.0, newY);
+}"

@@ -4,9 +4,8 @@
 [ext_resource path="res://scenes/UI/EnemyModifier/EnemyModifier.cs" type="Script" id=2]
 
 [node name="EnemyModifier" type="PanelContainer"]
-anchor_right = 0.078
 anchor_bottom = 1.0
-margin_right = -1.872
+margin_right = 78.0
 margin_bottom = -500.0
 script = ExtResource( 2 )
 
@@ -15,16 +14,20 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 71.0
 margin_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+margin_top = 2.0
 margin_right = 64.0
-margin_bottom = 64.0
+margin_bottom = 66.0
 texture = ExtResource( 1 )
 
 [node name="Info" type="Label" parent="VBoxContainer"]
-margin_top = 68.0
+margin_top = 70.0
 margin_right = 64.0
-margin_bottom = 82.0
+margin_bottom = 84.0
 text = " + 10 HP"
 
 [connection signal="gui_input" from="." to="." method="OnGuiInput"]

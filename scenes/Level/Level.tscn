@@ -36,3 +36,5 @@ EnemiesToSpawn = [ ExtResource( 4 ) ]
 
 [node name="Controls" type="Node" parent="."]
 script = ExtResource( 9 )
+
+[connection signal="input_event" from="Base" to="Base" method="OnInput"]
