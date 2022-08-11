@@ -87,7 +87,7 @@ public class GenericVisibleObject : Area2D, ISelectableEntity
 	/// </summary>
 	private void ConnectSelectionSignal()
 	{
-		Level level = GetNode<Level>(GameConstants.LEVEL_NODE);
+		Level level = GetNodeOrNull<Level>(GameConstants.LEVEL_NODE);
 		if (level != null)
 		{
 			currentLevel = level;

@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using TowerDefenseAttempt1.scenes.Attack;
 using TowerDefenseAttempt1.scenes.UI.EnemyModifier;
@@ -101,7 +102,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 	protected override void OnDeath()
 	{
-		GetNode<Level>(GameConstants.LEVEL_NODE).OnEnemyKilled(this);
+		GetNodeOrNull<Level>(GameConstants.LEVEL_NODE)?.OnEnemyKilled(this);
 	}
 
 	/// <summary>
@@ -122,6 +123,9 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 				if (IsPrimaryTargetValid())
 				{
 					currentState = EnemyAiState.MOVE;
+				} else
+				{
+					AttemptToFindPrimaryTarget();
 				}
 				break;
 			case EnemyAiState.MOVE:
@@ -166,6 +170,11 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 				// fail hard and loud
 				throw new System.Exception("Unhandled state: " + currentState);
 		}
+	}
+
+	private void AttemptToFindPrimaryTarget()
+	{
+		PrimaryTarget = GetNodeOrNull<Base>(GameConstants.BASE_NODE);
 	}
 
 	private void Attack()

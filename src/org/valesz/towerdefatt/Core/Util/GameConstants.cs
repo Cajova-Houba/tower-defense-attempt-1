@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,10 @@ namespace TowerDefenseAttempt1.src.org.valesz.towerdefatt.Core.Util
         /// </summary>
         public const string LEVEL_NODE = "/root/Level";
 
+        /// <summary>
+        /// Base node in the level.
+        /// </summary>
+        public const string BASE_NODE = LEVEL_NODE+"/Base";
         internal static string[] ACTIONS = new string[] { 
             UPGRADE_ACTION,
             SHOP_TOWER_ACTION,

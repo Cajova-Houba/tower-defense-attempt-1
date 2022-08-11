@@ -1,11 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/ground/grass.png" type="Texture" id=1]
-[ext_resource path="res://scenes/Base/Base.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/SpawnPoint/WaveSpawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Tower/Tower.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Base/Base.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Enemy/Enemy.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/UI/HUD.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/Level/SelectedShopItem.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/Level/Controls.cs" type="Script" id=9]
 [ext_resource path="res://scenes/Obstacle/Obstacle.tscn" type="PackedScene" id=10]
 
@@ -17,24 +15,17 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1024, 600 )
 
-[node name="Base" parent="." instance=ExtResource( 2 )]
-position = Vector2( 59, 285 )
-MaxHp = 500
-
-[node name="WaveSpawner" parent="." instance=ExtResource( 3 )]
-position = Vector2( 59, 285 )
-SpawnArea = Rect2( 824, 0, 200, 600 )
-EnemiesToSpawn = [ ExtResource( 4 ) ]
-
-[node name="HUD" parent="." instance=ExtResource( 7 )]
-
-[node name="SelectedShopItem" parent="." instance=ExtResource( 8 )]
-
 [node name="Controls" type="Node" parent="."]
 script = ExtResource( 9 )
 
 [node name="Obstacle" parent="." instance=ExtResource( 10 )]
 position = Vector2( 268, 279 )
 
+[node name="Tower" parent="." instance=ExtResource( 2 )]
+position = Vector2( 140, 271 )
+
+[node name="Base" parent="." instance=ExtResource( 3 )]
+position = Vector2( 48, 267 )
+
 [node name="Enemy" parent="." instance=ExtResource( 4 )]
-position = Vector2( 411, 281 )
+position = Vector2( 461, 276 )
