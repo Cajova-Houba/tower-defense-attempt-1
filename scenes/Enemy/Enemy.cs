@@ -13,6 +13,13 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	private const string HURT_ANIMATION = "hurt";
 	private const string ATTACKS_NODE = "Attacks";
 
+	private enum EnemyAiState
+	{
+		IDLE,
+		MOVE,
+		ATTACK
+	}
+
 	/// <summary>
 	/// Destination is reached when it's closer to the current position than this treshold.
 	/// 
@@ -45,9 +52,10 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	/// </summary>
 	private GenericLivingObject intermediateTarget;
 
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
+	/// <summary>
+	/// Current state for enemy AI:
+	/// </summary>
+	private EnemyAiState currentState;
 
 	public void ApplyModifiers(List<EnemyModifierData> modifiers)
 	{
@@ -78,6 +86,7 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	public override void _Ready()
 	{
 		base._Ready();
+		currentState = EnemyAiState.IDLE;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -85,13 +94,78 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 	{
 		base._Process(delta);
 		UpdateAnimation();
-		MoveTowardsDestination(delta);
-		Attack();
+		ThinkAndDoNextAction(delta);
+		//MoveTowardsDestination(delta);
+		//Attack();
 	}
 
 	protected override void OnDeath()
 	{
 		GetNode<Level>(GameConstants.LEVEL_NODE).OnEnemyKilled(this);
+	}
+
+	/// <summary>
+	/// Implementation of FSA representing enemy's AI.
+	/// </summary>
+	private void ThinkAndDoNextAction(float delta)
+	{
+		// null-check just to be extra sure
+		if (currentState == null)
+		{
+			currentState = EnemyAiState.IDLE;
+		}
+
+		switch (currentState)
+		{
+			case EnemyAiState.IDLE:
+				// target defined
+				if (IsPrimaryTargetValid())
+				{
+					currentState = EnemyAiState.MOVE;
+				}
+				break;
+			case EnemyAiState.MOVE:
+				// target lost
+				if (!IsPrimaryTargetValid())
+				{
+					currentState = EnemyAiState.IDLE;
+				}
+
+				// primary target reached or blocked by obstacle
+				else if (IsPrimaryTargetReached() || IsBlockedByObstacle())
+				{
+					currentState = EnemyAiState.ATTACK;
+				}
+
+				// move
+				else
+				{
+					MoveTowardsDestination(delta);
+				}
+				break;
+			case EnemyAiState.ATTACK:
+				// primary target lost
+				if (!IsPrimaryTargetValid())
+				{
+					currentState = EnemyAiState.IDLE;
+				}
+
+				// was attacking intermediate target that is now dead
+				else if (!IsPrimaryTargetReached() && !IsIntermediateTargetValid())
+				{
+					currentState = EnemyAiState.IDLE;
+				}
+
+				// attempt to attack
+				else
+				{
+					Attack();
+				}
+				break;
+			default:
+				// fail hard and loud
+				throw new System.Exception("Unhandled state: " + currentState);
+		}
 	}
 
 	private void Attack()
@@ -122,13 +196,27 @@ public class Enemy : GenericLivingObject, IHasHpBehavior
 
 		Vector2 velocity = PrimaryTarget.Position - Position;
 
-		if (velocity.Length() <= DestinationReachedTreshold)
+		if (IsPrimaryTargetReached())
 		{
 			velocity = new Vector2(0, 0);
 		}
 
 		velocity = velocity.Normalized() * MovementSpeed;
 		Position += velocity * delta;
+	}
+
+	/// <summary>
+	/// Checks if the primary target was reached and the distance from it is
+	/// lower than a set threshold.
+	/// 
+	/// Assumes the primary target is valid.
+	/// </summary>
+	/// <returns>True if the primary target was reached.</returns>
+	private bool IsPrimaryTargetReached()
+	{
+		Vector2 velocity = PrimaryTarget.Position - Position;
+
+		return velocity.Length() <= DestinationReachedTreshold;
 	}
 
 	private bool IsPrimaryTargetValid()
