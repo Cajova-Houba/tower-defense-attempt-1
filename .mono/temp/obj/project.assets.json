@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
+      "projectUniqueName": "c:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
       "projectName": "Tower Defense Attempt 1",
-      "projectPath": "C:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
+      "projectPath": "c:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\Tower Defense Attempt 1.csproj",
       "packagesPath": "C:\\Users\\zdenek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\.mono\\temp\\obj\\",
+      "outputPath": "c:\\Users\\zdenek\\Documents\\prg\\tower-defense-attempt-1\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\zdenek\\AppData\\Roaming\\NuGet\\NuGet.Config",
